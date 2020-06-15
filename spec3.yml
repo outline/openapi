@@ -597,7 +597,7 @@ paths:
 
   /documents.drafts:
     summary: "List all draft documents"
-    description: "This method will last all draft documents belonging to the current user."
+    description: "This method will list all draft documents belonging to the current user."
     post:
       requestBody:
         content:
@@ -606,6 +606,115 @@ paths:
               allOf:
                 - $ref: '#/components/schemas/Pagination'
                 - $ref: '#/components/schemas/Sorting'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Document'
+                  policies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Policy'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+
+  /documents.viewed:
+    summary: "List all recently viewed documents"
+    description: "This method will list all documents recently viewed by the current user."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Pagination'
+                - $ref: '#/components/schemas/Sorting'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Document'
+                  policies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Policy'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+
+  /documents.starred:
+    summary: "List all starred documents"
+    description: "This method will list all documents starred by the current user."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Pagination'
+                - $ref: '#/components/schemas/Sorting'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Document'
+                  policies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Policy'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+
+  /documents.pinned:
+    summary: "List all pinned documents"
+    description: "This method will list all documents pinned in a collection."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Pagination'
+                - $ref: '#/components/schemas/Sorting'
+                - type: object
+                  properties:
+                    collectionId:
+                      type: string
+                      format: uuid
+                  required:
+                    - collectionId
       responses:
         200:
           description: OK
@@ -762,6 +871,7 @@ paths:
               properties:
                 id:
                   type: string
+                  example: "hDYep1TPAM"
                   description: "Unique identifier for the document. Either the UUID or the urlId is acceptable."
                 title:
                   type: string
@@ -804,6 +914,154 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
 
+  /documents.star:
+    summary: "Star a document"
+    description: "Starring a document gives it extra priority in the UI and makes it easier to find important information later."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: "hDYep1TPAM"
+                  description: "Unique identifier for the document. Either the UUID or the urlId is acceptable."
+              required: 
+                - id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  /documents.unstar:
+    summary: "Unstar a document"
+    description: "Starring a document gives it extra priority in the UI and makes it easier to find important information later."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: "hDYep1TPAM"
+                  description: "Unique identifier for the document. Either the UUID or the urlId is acceptable."
+              required: 
+                - id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  /documents.pin:
+    summary: "Pin a document"
+    description: "Pinning a document highlights it on the collection page for everyone on the team."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: "hDYep1TPAM"
+                  description: "Unique identifier for the document. Either the UUID or the urlId is acceptable."
+              required: 
+                - id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Document'
+                  policies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Policy'
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  /documents.unpin:
+    summary: "Unpin a document"
+    description: "Pinning a document highlights it on the collection page for everyone on the team."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: "hDYep1TPAM"
+                  description: "Unique identifier for the document. Either the UUID or the urlId is acceptable."
+              required: 
+                - id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Document'
+                  policies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Policy'
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
   /documents.move:
     summary: "Move a document"
     description: "Move a document to a new location or collection. If no parent document is provided, the document will be moved to the collection root."
@@ -816,6 +1074,7 @@ paths:
               properties:
                 id:
                   type: string
+                  example: "hDYep1TPAM"
                   description: "Unique identifier for the document. Either the UUID or the urlId is acceptable."
                 collectionId:
                   type: string
@@ -848,6 +1107,125 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Policy'
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  /documents.archive:
+    summary: "Archive a document"
+    description: "Archiving a document allows outdated information to be moved out of sight whilst retaining the ability to optionally search and restore it later."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: "hDYep1TPAM"
+                  description: "Unique identifier for the document. Either the UUID or the urlId is acceptable."
+              required: 
+                - id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Document'
+                  policies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Policy'
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+
+  /documents.restore:
+    summary: "Restore a document"
+    description: "If a document has been archived or deleted, it can be restored. Optionally a revision can be passed to restore the document to a previous point in time."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: "hDYep1TPAM"
+                  description: "Unique identifier for the document. Either the UUID or the urlId is acceptable."
+                revisionId:
+                  type: string
+                  format: uuid
+                  description: "Identifier for the revision to restore to."
+              required: 
+                - id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Document'
+                  policies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Policy'
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  /documents.delete:
+    summary: "Delete a document"
+    description: "Deleting a document moves it to the trash. If not restored within 30 days it is permenantly deleted."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: "hDYep1TPAM"
+                  description: "Unique identifier for the document. Either the UUID or the urlId is acceptable."
+              required: 
+                - id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
         400:
           $ref: '#/components/responses/Validation'
         401:

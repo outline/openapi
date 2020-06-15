@@ -1,0 +1,781 @@
+openapi: 3.0.0
+info:
+  title: Outline API
+  description: Programmatic interface for the Outline knowledge base
+  version: 0.1.0
+servers:
+  - url: 'https://www.getoutline.com/api'
+    description: Production
+security: 
+  - http: []
+paths:
+  /auth.info:
+    summary: "Retrieve auth"
+    description: "Retrieve auth object for the current API key"
+    post:
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Auth'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+  
+  /collections.info:
+    summary: "Retrieve a collection object"
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: "Unique identifier for the collection."
+                  format: uuid
+              required: 
+                - id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Collection'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+  
+  /collections.list:
+    summary: "List all collections"
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pagination'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Collection'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+  
+  /collections.create:
+    summary: "Create a collection"
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Human Resources"
+                description:
+                  type: string
+                  example: ""
+                color:
+                  type: string
+                  example: "#123123"
+                private:
+                  type: boolean
+                  example: false
+              required: 
+                - name
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Collection'
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+  
+  /collections.update:
+    summary: "Update a collection"
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                name:
+                  type: string
+                  example: "Human Resources"
+                description:
+                  type: string
+                  example: ""
+                color:
+                  type: string
+                  example: "#123123"
+              required: 
+                - id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Collection'
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+  
+  /collections.add_user:
+    summary: "Add a collection member"
+    description: "This method allows you to add a user membefship to the specified collection."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                userId:
+                  type: string
+                  format: uuid
+              required: 
+                - id
+                - userId
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/User'
+                      memberships:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Membership'
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+  
+  /collections.remove_user:
+    summary: "Remove a collection member"
+    description: "This method allows you to remove a user membefship to the specified collection."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: "Identifier for the collection"
+                  format: uuid
+                userId:
+                  type: string
+                  format: uuid
+              required: 
+                - id
+                - userId
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  /collections.memberships:
+    summary: "List all collection members"
+    description: "This method allows you to list a collections individual memberships. It's important to note that memberships returned from this endpoint do not include group memberships."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Pagination'
+                - type: object
+                  properties:
+                    id:
+                      type: string
+                      description: "Identifier for the collection"
+                      format: uuid
+                    query:
+                      type: string
+                      description: "Filter memberships by user names"
+                      example: "jenny"
+                    permission:
+                      type: string
+                      description: "Filter memberships by permissions"
+                      enum:
+                        - read
+                        - read_write
+                        - maintainer
+                  required:
+                    - id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/User'
+                      memberships:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Membership'
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  /collections.add_group:
+    summary: "Add a group to a collection"
+    description: "This method allows you to give all members in a group access to a collection."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                groupId:
+                  type: string
+                  format: uuid
+              required: 
+                - id
+                - groupId
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      collectionGroupMemberships:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/CollectionGroupMembership'
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  /collections.remove_group:
+    summary: "Remove a collection group"
+    description: "This method allows you to revoke all members in a group access to a collection. Note that members of the group may still retain access through other groups or individual memberships."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: "Identifier for the collection"
+                  format: uuid
+                groupId:
+                  type: string
+                  format: uuid
+              required: 
+                - id
+                - groupId
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  /collections.delete:
+    summary: "Delete a collection"
+    description: "Delete a collection and all of its documents. This action can’t be undone so please be careful."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+              required: 
+                - id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  /collections.export:
+    summary: "Export a collection"
+    description: "Returns a zip file of all the collections documents in markdown format. If documents are nested then they will be nested in folders inside the zip file."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+              required: 
+                - id
+      responses:
+        200:
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Pagination:
+      type: object
+      properties:
+        offset:
+          type: number
+        limit:
+          type: number
+          example: 25
+    NavigationNode:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Unique identifier for the document."
+          format: uuid
+        title:
+          type: string
+        url:
+          type: string
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/NavigationNode'
+    Auth:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        team:
+          $ref: '#/components/schemas/Team'
+    Collection:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Unique identifier for the object."
+          readOnly: true
+          format: uuid
+        name:
+          type: string
+          description: "The name of the collection."
+          example: "Human Resources"
+        description:
+          type: string
+          description: "A description of the collection, may contain markdown formatting"
+          example: ""
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/NavigationNode'
+          example: []
+        color:
+          type: string
+          description: "A color representing the collection, this is used to help make collections more identifiable in the UI. It should be in HEX format including the #"
+          example: "#123123"
+        private:
+          type: boolean
+          description: "Whether this collection is considered to be private. Private collections are only visible to those with a user or group membership."
+          example: false
+        createdAt:
+          type: string
+          description: "The date and time that this object was created"
+          readOnly: true
+          format: date-time
+        updatedAt:
+          type: string
+          description: "The date and time that this object was last changed"
+          readOnly: true
+          format: date-time
+        deletedAt:
+          type: string
+          nullable: true
+          description: "The date and time that this object was deleted"
+          readOnly: true
+          format: date-time
+    Document:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Unique identifier for the object."
+          readOnly: true
+          format: uuid
+        collectionId:
+          type: string
+          description: "Identifier for the associated collection."
+          format: uuid
+        parentDocumentId:
+          type: string
+          description: "Identifier for the document this is a child of, if any."
+          format: uuid
+        title:
+          type: string
+          description: "The title of the document."
+        emoji:
+          type: string
+          description: "An emoji associated with the document."
+          readOnly: true
+        text:
+          type: string
+          description: "The text content of the document, contains markdown formatting"
+        urlId:
+          type: string
+          description: "A short unique ID that appears in the document path"
+        collaborators:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        pinned:
+          type: boolean
+          description: "Whether this document is pinned in the collection"
+        starred:
+          type: boolean
+          description: "Whether this document is starred by the current user"
+        revision:
+          type: number
+          description: "A number that is auto incrementing with every revision of the document that is saved"
+          readOnly: true
+        createdAt:
+          type: string
+          description: "The date and time that this object was created"
+          readOnly: true
+          format: date-time
+        createdBy:
+          $ref: '#/components/schemas/User'
+        updatedAt:
+          type: string
+          description: "The date and time that this object was last changed"
+          readOnly: true
+          format: date-time
+        updatedBy:
+          $ref: '#/components/schemas/User'
+        publishedAt:
+          type: string
+          nullable: true
+          description: "The date and time that this object was published"
+          readOnly: true
+          format: date-time
+        archivedAt:
+          type: string
+          description: "The date and time that this object was archived"
+          readOnly: true
+          format: date-time
+        deletedAt:
+          type: string
+          nullable: true
+          description: "The date and time that this object was deleted"
+          readOnly: true
+          format: date-time
+    Error:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: false
+        error:
+          type: string
+    Share:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Unique identifier for the object."
+          readOnly: true
+          format: uuid
+    Team:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Unique identifier for the object."
+          readOnly: true
+          format: uuid
+        name:
+          type: string
+          description: "The name of this team, it is usually auto-generated when the first SSO connection is made but can be changed if neccessary."
+        avatarUrl:
+          type: string
+          format: uri
+          description: "The URL for the image associated with this team, it will be displayed in the team switcher and in the top left of the knowledge base along with the name."
+        slackConnected:
+          type: boolean
+          readOnly: true
+          description: "Whether this team has authentication with Slack enabled."
+        googleConnected:
+          type: boolean
+          readOnly: true
+          description: "Whether this team has authentication with GSuite enabled."
+        sharing:
+          type: boolean
+          description: "Whether this team has share links globally enabled. If this value is false then all sharing UI and APIs are disabled."
+        documentEmbeds:
+          type: boolean
+          description: "Whether this team has embeds in documents globally enabled. It can be disabled to reduce potential data leakage to third parties."
+        guestSignin:
+          type: boolean
+          description: "Whether this team has guest signin enabled. Guests can signin with an email address and are not required to have a Gsuite/Slack SSO account once invited."
+        subdomain:
+          type: string
+          description: "Represents the subdomain at which this team's knowledge base can be accessed."
+        url:
+          type: string
+          description: "The fully qualified URL at which this team's knowledge base can be accessed."
+          readOnly: true
+          format: uri
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Unique identifier for the object."
+          readOnly: true
+          format: uuid
+        name:
+          type: string
+          description: "The name of this user, it is migrated from Slack or Gsuite when the SSO connection is made but can be changed if neccessary."
+        avatarUrl:
+          type: string
+          format: uri
+          description: "The URL for the image associated with this user, it will be displayed in the application UI and email notifications."
+        email:
+          type: string
+          description: "The email associated with this user, it is migrated from Slack or Gsuite when the SSO connection is made but can be changed if neccessary."
+          format: email
+        isAdmin:
+          type: boolean
+          description: "Whether this user has admin permissions."
+        isSuspended:
+          type: boolean
+          description: "Whether this user has been suspended."
+        lastActiveAt:
+          type: string
+          description: "The last time this user made an API request, this value is updated at most every 5 minutes."
+          readOnly: true
+          format: date
+        createdAt:
+          type: string
+          description: "The date and time that this user first signed in or was invited as a guest."
+          readOnly: true
+          format: date-time
+    Membership:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Unique identifier for the object."
+          readOnly: true
+        userId:
+          type: string
+          description: "Identifier for the associated user."
+          readOnly: true
+          format: uuid
+        collectionId:
+          type: string
+          description: "Identifier for the associated collection."
+          readOnly: true
+          format: uuid
+        permission:
+          type: string
+          enum:
+            - read
+            - read_write
+            - maintainer
+          description: "The permissions that this membership grants the user"
+          example: read_write
+
+    CollectionGroupMembership:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Unique identifier for the object."
+          readOnly: true
+        groupId:
+          type: string
+          description: "Identifier for the associated group."
+          readOnly: true
+          format: uuid
+        collectionId:
+          type: string
+          description: "Identifier for the associated collection."
+          readOnly: true
+          format: uuid
+        permission:
+          type: string
+          enum:
+            - read
+            - read_write
+            - maintainer
+          description: "The permissions that this membership grants the users in the group"
+          example: read_write
+
+  responses:
+    NotFound:
+      description: "The specified resource was not found."
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Validation:
+      description: "The request failed one or more validations."
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: "The current API key is not authorized to perform this action."
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthenticated:
+      description: "The API key is missing or otherwise invalid."
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+            
+  securitySchemes:
+    http:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

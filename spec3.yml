@@ -75,15 +75,15 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Collection'
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Collection'
                   pagination:
                     $ref: '#/components/schemas/Pagination'
         401:
           $ref: '#/components/responses/Unauthenticated'
         403:
           $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
   
   /collections.create:
     summary: "Create a collection"
@@ -1235,6 +1235,67 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
 
+  /revisions.info:
+    summary: "Retrieve a revision object"
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: "Unique identifier for the revision."
+                  format: uuid
+              required: 
+                - id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Revision'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+  
+  /revisions.list:
+    summary: "List all revisions"
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Pagination'
+                - $ref: '#/components/schemas/Sorting'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Revision'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+
 components:
   schemas:
     Pagination:
@@ -1445,6 +1506,34 @@ components:
           description: "Unique identifier for the object."
           readOnly: true
           format: uuid
+    Revision:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Unique identifier for the object."
+          readOnly: true
+          format: uuid
+        documentId:
+          type: string
+          description: "Identifier for the associated document."
+          readOnly: true
+          format: uuid
+        title:
+          type: string
+          description: "Title of the document."
+          readOnly: true
+        text:
+          type: string
+          description: "Body of the document, may contain markdown formatting"
+          readOnly: true
+        createdAt:
+          type: string
+          format: date-time
+          description: "Date and time when this revision was created"
+          readOnly: true
+        createdBy:
+          $ref: '#/components/schemas/User'
     Team:
       type: object
       properties:

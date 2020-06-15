@@ -118,6 +118,10 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/Collection'
+                  policies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Policy'
         400:
           $ref: '#/components/responses/Validation'
         401:
@@ -158,6 +162,10 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/Collection'
+                  policies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Policy'
         400:
           $ref: '#/components/responses/Validation'
         401:
@@ -1295,6 +1303,178 @@ paths:
           $ref: '#/components/responses/Unauthenticated'
         403:
           $ref: '#/components/responses/Unauthorized'
+
+  /groups.info:
+    summary: "Retrieve a group object"
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: "Unique identifier for the group."
+                  format: uuid
+              required: 
+                - id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Group'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  /groups.list:
+    summary: "List all groups"
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Pagination'
+                - $ref: '#/components/schemas/Sorting'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Group'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+
+  /groups.create:
+    summary: "Create a group"
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Designers"
+              required: 
+                - name
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Group'
+                  policies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Policy'
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+  
+  /groups.update:
+    summary: "Update a group"
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                name:
+                  type: string
+                  example: "Designers"
+              required: 
+                - id
+                - name
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Group'
+                  policies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Policy'
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  /groups.delete:
+    summary: "Delete a group"
+    description: "Deleting a group will cause all of its members to lose access to any collections the group has previously been added to. This action can’t be undone so please be careful."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+              required: 
+                - id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
 
 components:
   schemas:

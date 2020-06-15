@@ -76,6 +76,8 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/Collection'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
         401:
           $ref: '#/components/responses/Unauthenticated'
         403:
@@ -300,14 +302,14 @@ paths:
                         type: array
                         items:
                           $ref: '#/components/schemas/Membership'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
         400:
           $ref: '#/components/responses/Validation'
         401:
           $ref: '#/components/responses/Unauthenticated'
         403:
           $ref: '#/components/responses/Unauthorized'
-        404:
-          $ref: '#/components/responses/NotFound'
 
   /collections.add_group:
     summary: "Add a group to a collection"
@@ -392,6 +394,63 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
 
+  /collections.group_memberships:
+    summary: "List all collection group members"
+    description: "This method allows you to list a collections group memberships. This is the list of groups that have been given access to the collection."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Pagination'
+                - type: object
+                  properties:
+                    id:
+                      type: string
+                      description: "Identifier for the collection"
+                      format: uuid
+                    query:
+                      type: string
+                      description: "Filter memberships by group names"
+                      example: "developers"
+                    permission:
+                      type: string
+                      description: "Filter memberships by permissions"
+                      enum:
+                        - read
+                        - read_write
+                        - maintainer
+                  required:
+                    - id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      groups:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Group'
+                      collectionGroupMemberships:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/CollectionGroupMembership'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+
   /collections.delete:
     summary: "Delete a collection"
     description: "Delete a collection and all of its documents. This action can’t be undone so please be careful."
@@ -454,6 +513,350 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         404:
           $ref: '#/components/responses/NotFound'
+
+  /documents.info:
+    summary: "Retrieve a document object"
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: "Unique identifier for the document. Either the UUID or the urlId is acceptable."
+                shareId:
+                  type: string
+                  format: uuid
+                  description: "Unique identifier for a document share, a shareId may be used in place of a document UUID"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Document'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  /documents.list:
+    summary: "List all documents"
+    description: "This method will last all published documents and draft documents belonging to the current user."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Pagination'
+                - $ref: '#/components/schemas/Sorting'
+                - type: object
+                  properties:
+                    collectionId:
+                      type: string
+                      format: uuid
+                    userId:
+                      type: string
+                      format: uuid
+                    backlinkDocumentId:
+                      type: string
+                      format: uuid
+                    parentDocumentId:
+                      type: string
+                      format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Document'
+                  policies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Policy'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+
+  /documents.drafts:
+    summary: "List all draft documents"
+    description: "This method will last all draft documents belonging to the current user."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Pagination'
+                - $ref: '#/components/schemas/Sorting'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Document'
+                  policies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Policy'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+
+  /documents.search:
+    summary: "Search all documents"
+    description: "This methods allows you to search your teams documents with keywords. Note that search results will be restricted to those accessible by the current access token."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Pagination'
+                - type: object
+                  properties:
+                    query:
+                      type: string
+                      example: "hiring"
+                    userId:
+                      type: string
+                      description: "Any documents that have not been edited by the user identifier will be filtered out"
+                      format: uuid
+                    collectionId:
+                      type: string
+                      description: "A collection to search within"
+                      format: uuid
+                    includeArchived:
+                      type: boolean
+                    includeDrafts:
+                      type: boolean
+                    dateFilter:
+                      type: string
+                      description: "Any documents that have not been updated within the specified period will be filtered out"
+                      example: "month"
+                      enum:
+                        - day
+                        - week
+                        - month
+                        - year
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        context:
+                          type: string
+                          description: "A short snippet of context from the document that includes the search query."
+                          example: "At Acme Inc our hiring practices are inclusive"
+                        ranking:
+                          type: number
+                          description: "The ranking used to order search results based on relevance."
+                          format: float
+                          example: 1.1844109
+                        document:
+                          $ref: '#/components/schemas/Document'
+                  policies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Policy'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+
+  /documents.create:
+    summary: "Create a document"
+    description: "This method allows you to create or publish a new document. By default a document is set to the collection root. If you want to create a nested/child document, you should pass parentDocumentId to set the parent document."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "Welcome to Acme Inc"
+                text:
+                  type: string
+                  description: "The body of the document, may contain markdown formatting."
+                  example: "…"
+                collectionId:
+                  type: string
+                  format: uuid
+                parentDocumentId:
+                  type: string
+                  format: uuid
+                publish: 
+                  type: boolean
+                  description: "Whether this document should be immediately published and made visible to other team members."
+              required: 
+                - title
+                - collectionId
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Document'
+                  policies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Policy'
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+
+  /documents.update:
+    summary: "Update a document"
+    description: "This method allows you to modify an already created document"
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: "Unique identifier for the document. Either the UUID or the urlId is acceptable."
+                title:
+                  type: string
+                  description: "The title of the document."
+                text:
+                  type: string
+                  description: "The body of the document, may contain markdown formatting."
+                  example: "…"
+                append: 
+                  type: boolean
+                  description: "If true the text field will be appended to the end of the existing document, rather than the default behavior of replacing it. This is potentially useful for things like logging into a document."
+                publish: 
+                  type: boolean
+                  description: "Whether this document should be published and made visible to other team members, if a draft"
+                done: 
+                  type: boolean
+                  description: "Whether the editing session has finished, this will trigger any notifications. This property will soon be deprecated."
+              required: 
+                - id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Document'
+                  policies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Policy'
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  /documents.move:
+    summary: "Move a document"
+    description: "Move a document to a new location or collection. If no parent document is provided, the document will be moved to the collection root."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: "Unique identifier for the document. Either the UUID or the urlId is acceptable."
+                collectionId:
+                  type: string
+                  format: uuid
+                parentDocumentId:
+                  type: string
+                  format: uuid
+              required: 
+                - id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      documents:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Document'
+                      collections:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Collection'
+                  policies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Policy'
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
 components:
   schemas:
     Pagination:
@@ -464,6 +867,18 @@ components:
         limit:
           type: number
           example: 25
+    Sorting:
+      type: object
+      properties:
+        sort:
+          type: string
+          example: "updatedAt"
+        direction:
+          type: string
+          example: "DESC"
+          enum:
+            - ASC
+            - DESC
     NavigationNode:
       type: object
       properties:
@@ -550,16 +965,20 @@ components:
         title:
           type: string
           description: "The title of the document."
+          example: "🎉 Welcome to Acme Inc"
         emoji:
           type: string
           description: "An emoji associated with the document."
+          example: 🎉
           readOnly: true
         text:
           type: string
           description: "The text content of the document, contains markdown formatting"
+          example: "…"
         urlId:
           type: string
-          description: "A short unique ID that appears in the document path"
+          description: "A short unique ID that can be used to identify the document as an alternative to the UUID"
+          example: "hDYep1TPAM"
         collaborators:
           type: array
           items:
@@ -613,6 +1032,33 @@ components:
           example: false
         error:
           type: string
+    Group:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Unique identifier for the object."
+          readOnly: true
+          format: uuid
+        name:
+          type: string
+          description: "The name of this group."
+          example: "Engineering"
+        memberCount:
+          type: number
+          description: "The number of users that are members of the group"
+          example: 11
+          readOnly: true
+        createdAt:
+          type: string
+          description: "The date and time that this object was created"
+          readOnly: true
+          format: date-time
+        updatedAt:
+          type: string
+          description: "The date and time that this object was last changed"
+          readOnly: true
+          format: date-time
     Share:
       type: object
       properties:
@@ -721,6 +1167,48 @@ components:
             - maintainer
           description: "The permissions that this membership grants the user"
           example: read_write
+
+    Policy:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Unique identifier for the object this policy references."
+          format: uuid
+          readOnly: true
+        abilities:
+          type: object
+          properties:
+            create:
+              type: boolean
+            read:
+              type: boolean
+            update:
+              type: boolean
+            delete:
+              type: boolean
+            restore:
+              type: boolean
+            star:
+              type: boolean
+            unstar:
+              type: boolean
+            share:
+              type: boolean
+            download:
+              type: boolean
+            pin:
+              type: boolean
+            unpin:
+              type: boolean
+            move:
+              type: boolean
+            archive:
+              type: boolean
+            unarchive:
+              type: boolean
+            createChildDocument:
+              type: boolean
 
     CollectionGroupMembership:
       type: object

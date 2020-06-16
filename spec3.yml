@@ -177,7 +177,7 @@ paths:
   
   /collections.add_user:
     summary: "Add a collection member"
-    description: "This method allows you to add a user membefship to the specified collection."
+    description: "This method allows you to add a user membership to the specified collection."
     post:
       requestBody:
         content:
@@ -224,7 +224,7 @@ paths:
   
   /collections.remove_user:
     summary: "Remove a collection member"
-    description: "This method allows you to remove a user membefship to the specified collection."
+    description: "This method allows you to remove a user from the specified collection."
     post:
       requestBody:
         content:
@@ -1476,6 +1476,147 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
 
+  /groups.memberships:
+    summary: "List all group members"
+    description: "List and filter all the members in a group."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Pagination'
+                - type: object
+                  properties:
+                    query:
+                      type: string
+                      description: "Filter memberships by user names"
+                      example: "jenny"
+                  required:
+                    - id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/User'
+                      groupMemberships:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/GroupMembership'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+
+  /groups.add_user:
+    summary: "Add a group member"
+    description: "This method allows you to add a user to the specified group."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                userId:
+                  type: string
+                  format: uuid
+              required: 
+                - id
+                - userId
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/User'
+                      groups:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Group'
+                      groupMemberships:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Membership'
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+  
+  /groups.remove_user:
+    summary: "Remove a group member"
+    description: "This method allows you to remove a user from the group."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: "Identifier for the collection"
+                  format: uuid
+                userId:
+                  type: string
+                  format: uuid
+              required: 
+                - id
+                - userId
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      groups:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Group'
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
 components:
   schemas:
     Pagination:
@@ -1765,6 +1906,7 @@ components:
         name:
           type: string
           description: "The name of this user, it is migrated from Slack or Gsuite when the SSO connection is made but can be changed if neccessary."
+          example: "Jane Doe"
         avatarUrl:
           type: string
           format: uri
@@ -1856,6 +1998,26 @@ components:
               type: boolean
             createChildDocument:
               type: boolean
+
+    GroupMembership:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Unique identifier for the object."
+          readOnly: true
+        groupId:
+          type: string
+          description: "Identifier for the associated group."
+          readOnly: true
+          format: uuid
+        userId:
+          type: string
+          description: "Identifier for the associated user."
+          readOnly: true
+          format: uuid
+        user:
+          $ref: '#/components/schemas/User'
 
     CollectionGroupMembership:
       type: object

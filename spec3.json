@@ -19,6 +19,48 @@
       "http": []
     }
   ],
+  "tags": [
+    {
+      "name": "Attachments",
+      "description": "`Attachments` represent a file uploaded to cloud storage. They are created \nbefore the upload happens from the client and store all the meta information\nsuch as file type, size, and location.\n"
+    },
+    {
+      "name": "Auth",
+      "description": "`Auth` represents the current API Keys authentication details. It can be \nused to check that a token is still valid and load the IDs for the current\nuser and team.\n"
+    },
+    {
+      "name": "Collections",
+      "description": "`Collections` represent grouping of documents in the knowledge base, they \noffer a way to structure information in a nested hierarchy and a level\nat which read and write permissions can be granted to individual users or\ngroups of users.\n"
+    },
+    {
+      "name": "Documents",
+      "description": "`Documents` are what everything else revolves around. A document represents\na single page of information and always returns the latest version of the\ncontent. Documents are stored in [Markdown](https://spec.commonmark.org/)\nformatting.\n"
+    },
+    {
+      "name": "Events",
+      "description": "`Events` represent an artifact of an action. Whether it is creating a user,\nediting a document, changing permissions, or any other action – an event\nis created that can be used as an audit trail or activity stream.\n"
+    },
+    {
+      "name": "Groups",
+      "description": "`Groups` represent a list of users that logically belong together, for \nexample there might be groups for each department in your organization.\nGroups can be granted access to collections with read or write permissions.\n"
+    },
+    {
+      "name": "Revisions",
+      "description": "`Revisions` represent a snapshop of a document at a point in time. They \nare used to keep tracking of editing and collaboration history – a document\ncan also be restored to a previous revision if neccessary.\n"
+    },
+    {
+      "name": "Shares",
+      "description": "`Shares` represent authorization to view a document without being a member\nof the team. Shares are created in order to give access to documents publicly.\nEach user that shares a document will have a unique share object.\n"
+    },
+    {
+      "name": "Users",
+      "description": "`Users` represent an individual with access to the knowledge base. Users\nare created automatically when signing in with SSO or when a user is\ninvited via guest access.\n"
+    },
+    {
+      "name": "Views",
+      "description": "`Views` represent a compressed record of an individual users views of a\ndocument. Individual views are not recorded but a first, last and total \nis kept per user.\n"
+    }
+  ],
   "paths": {
     "/attachments.create": {
       "post": {

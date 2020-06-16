@@ -10,13 +10,66 @@ servers:
     description: Production
 security: 
   - http: []
+tags:
+  - name: Attachments
+    description: |
+      `Attachments` represent a file uploaded to cloud storage. They are created 
+      before the upload happens from the client and store all the meta information
+      such as file type, size, and location.
+  - name: Auth
+    description: |
+      `Auth` represents the current API Keys authentication details. It can be 
+      used to check that a token is still valid and load the IDs for the current
+      user and team.
+  - name: Collections
+    description: |
+      `Collections` represent grouping of documents in the knowledge base, they 
+      offer a way to structure information in a nested hierarchy and a level
+      at which read and write permissions can be granted to individual users or
+      groups of users.
+  - name: Documents
+    description: |
+      `Documents` are what everything else revolves around. A document represents
+      a single page of information and always returns the latest version of the
+      content. Documents are stored in [Markdown](https://spec.commonmark.org/)
+      formatting.
+  - name: Events
+    description: |
+      `Events` represent an artifact of an action. Whether it is creating a user,
+      editing a document, changing permissions, or any other action – an event
+      is created that can be used as an audit trail or activity stream.
+  - name: Groups
+    description: |
+      `Groups` represent a list of users that logically belong together, for 
+      example there might be groups for each department in your organization.
+      Groups can be granted access to collections with read or write permissions.
+  - name: Revisions
+    description: |
+      `Revisions` represent a snapshop of a document at a point in time. They 
+      are used to keep tracking of editing and collaboration history – a document
+      can also be restored to a previous revision if neccessary.
+  - name: Shares
+    description: |
+      `Shares` represent authorization to view a document without being a member
+      of the team. Shares are created in order to give access to documents publicly.
+      Each user that shares a document will have a unique share object.
+  - name: Users
+    description: |
+      `Users` represent an individual with access to the knowledge base. Users
+      are created automatically when signing in with SSO or when a user is
+      invited via guest access.
+  - name: Views
+    description: |
+      `Views` represent a compressed record of an individual users views of a
+      document. Individual views are not recorded but a first, last and total 
+      is kept per user.
 paths:
   /attachments.create:
     post:
       tags: 
         - Attachments
       summary: "Create an attachment"
-      description: "An attachment is a database record which maps to a file in storage. Creating an attachment object returns the inputs needed to generate a signed url and upload the file from the client."  
+      description: "Creating an attachment object creates a database record and returns the inputs needed to generate a signed url and upload the file from the client to cloud storage."  
       requestBody:
         content:
           application/json:

@@ -3,6 +3,8 @@ info:
   title: Outline API
   description: Programmatic interface for the Outline knowledge base
   version: 0.1.0
+  contact:
+    email: hello@getoutline.com
 servers:
   - url: 'https://www.getoutline.com/api'
     description: Production
@@ -11,6 +13,8 @@ security:
 paths:
   /attachments.create:
     post:
+      tags: 
+        - Attachments
       summary: "Create an attachment"
       description: "An attachment is a database record which maps to a file in storage. Creating an attachment object returns the inputs needed to generate a signed url and upload the file from the client."  
       requestBody:
@@ -66,6 +70,8 @@ paths:
 
   /attachments.redirect:
     post:
+      tags: 
+        - Attachments
       summary: "Retrieve an attachment"
       description: "Load an attachment from where it is stored based on the id. If the attachment is private then a temporary, signed url with embedded credentials is generated on demand."
       requestBody:
@@ -86,6 +92,8 @@ paths:
 
   /auth.info:
     post:
+      tags: 
+        - Auth
       summary: "Retrieve auth"
       description: "Retrieve auth object for the current API key"
       responses:
@@ -103,6 +111,8 @@ paths:
   
   /collections.info:
     post:
+      tags: 
+        - Collections
       summary: "Retrieve a collection"
       requestBody:
         content:
@@ -135,6 +145,8 @@ paths:
   
   /collections.list:
     post:
+      tags: 
+        - Collections
       summary: "List all collections"
       requestBody:
         content:
@@ -162,6 +174,8 @@ paths:
   
   /collections.create:
     post:
+      tags: 
+        - Collections
       summary: "Create a collection"
       requestBody:
         content:
@@ -206,6 +220,8 @@ paths:
   
   /collections.update:
     post:
+      tags: 
+        - Collections
       summary: "Update a collection"
       requestBody:
         content:
@@ -252,6 +268,8 @@ paths:
   
   /collections.add_user:
     post:
+      tags: 
+        - Collections
       summary: "Add a collection user"
       description: "This method allows you to add a user membership to the specified collection."
       requestBody:
@@ -299,6 +317,8 @@ paths:
   
   /collections.remove_user:
     post:
+      tags: 
+        - Collections
       summary: "Remove a collection user"
       description: "This method allows you to remove a user from the specified collection."
       requestBody:
@@ -339,6 +359,8 @@ paths:
 
   /collections.memberships:
     post:
+      tags: 
+        - Collections
       summary: "List all collection memberships"
       description: "This method allows you to list a collections individual memberships. It's important to note that memberships returned from this endpoint do not include group memberships."
       requestBody:
@@ -396,6 +418,8 @@ paths:
 
   /collections.add_group:
     post:
+      tags: 
+        - Collections
       summary: "Add a group to a collection"
       description: "This method allows you to give all members in a group access to a collection."
       requestBody:
@@ -439,6 +463,8 @@ paths:
 
   /collections.remove_group:
     post:
+      tags: 
+        - Collections
       summary: "Remove a collection group"
       description: "This method allows you to revoke all members in a group access to a collection. Note that members of the group may still retain access through other groups or individual memberships."
       requestBody:
@@ -479,6 +505,8 @@ paths:
 
   /collections.group_memberships:
     post:
+      tags: 
+        - Collections
       summary: "List all collection group members"
       description: "This method allows you to list a collections group memberships. This is the list of groups that have been given access to the collection."
       requestBody:
@@ -536,6 +564,8 @@ paths:
 
   /collections.delete:
     post:
+      tags: 
+        - Collections
       summary: "Delete a collection"
       description: "Delete a collection and all of its documents. This action can’t be undone so please be careful."
       requestBody:
@@ -569,6 +599,8 @@ paths:
 
   /collections.export:
     post:
+      tags: 
+        - Collections
       summary: "Export a collection"
       description: "Returns a zip file of all the collections documents in markdown format. If documents are nested then they will be nested in folders inside the zip file."
       requestBody:
@@ -599,6 +631,8 @@ paths:
 
   /documents.info:
     post:
+      tags: 
+        - Documents
       summary: "Retrieve a document"
       requestBody:
         content:
@@ -632,6 +666,8 @@ paths:
 
   /documents.list:
     post:
+      tags: 
+        - Documents
       summary: "List all documents"
       description: "This method will last all published documents and draft documents belonging to the current user."
       requestBody:
@@ -680,6 +716,8 @@ paths:
 
   /documents.drafts:
     post:
+      tags: 
+        - Documents
       summary: "List all draft documents"
       description: "This method will list all draft documents belonging to the current user."
       requestBody:
@@ -714,6 +752,8 @@ paths:
 
   /documents.viewed:
     post:
+      tags: 
+        - Documents
       summary: "List all recently viewed documents"
       description: "This method will list all documents recently viewed by the current user."
       requestBody:
@@ -748,6 +788,8 @@ paths:
 
   /documents.starred:
     post:
+      tags: 
+        - Documents
       summary: "List all starred documents"
       description: "This method will list all documents starred by the current user."
       requestBody:
@@ -782,6 +824,8 @@ paths:
 
   /documents.pinned:
     post:
+      tags: 
+        - Documents
       summary: "List all pinned documents"
       description: "This method will list all documents pinned in a collection."
       requestBody:
@@ -823,6 +867,8 @@ paths:
 
   /documents.search:
     post:
+      tags: 
+        - Documents
       summary: "Search all documents"
       description: "This methods allows you to search your teams documents with keywords. Note that search results will be restricted to those accessible by the current access token."
       requestBody:
@@ -894,6 +940,8 @@ paths:
 
   /documents.create:
     post:
+      tags: 
+        - Documents
       summary: "Create a document"
       description: "This method allows you to create or publish a new document. By default a document is set to the collection root. If you want to create a nested/child document, you should pass parentDocumentId to set the parent document."
       requestBody:
@@ -944,6 +992,8 @@ paths:
 
   /documents.update:
     post:
+      tags: 
+        - Documents
       summary: "Update a document"
       description: "This method allows you to modify an already created document"
       requestBody:
@@ -999,6 +1049,8 @@ paths:
 
   /documents.star:
     post:
+      tags: 
+        - Documents
       summary: "Star a document"
       description: "Starring a document gives it extra priority in the UI and makes it easier to find important information later."
       requestBody:
@@ -1034,6 +1086,8 @@ paths:
 
   /documents.unstar:
     post:
+      tags: 
+        - Documents
       summary: "Unstar a document"
       description: "Starring a document gives it extra priority in the UI and makes it easier to find important information later."
       requestBody:
@@ -1069,6 +1123,8 @@ paths:
 
   /documents.pin:
     post:
+      tags: 
+        - Documents
       summary: "Pin a document"
       description: "Pinning a document highlights it on the collection page for everyone on the team."
       requestBody:
@@ -1108,6 +1164,8 @@ paths:
 
   /documents.unpin:
     post:
+      tags: 
+        - Documents
       summary: "Unpin a document"
       description: "Pinning a document highlights it on the collection page for everyone on the team."
       requestBody:
@@ -1147,6 +1205,8 @@ paths:
 
   /documents.move:
     post:
+      tags: 
+        - Documents
       summary: "Move a document"
       description: "Move a document to a new location or collection. If no parent document is provided, the document will be moved to the collection root."
       requestBody:
@@ -1201,6 +1261,8 @@ paths:
 
   /documents.archive:
     post:
+      tags: 
+        - Documents
       summary: "Archive a document"
       description: "Archiving a document allows outdated information to be moved out of sight whilst retaining the ability to optionally search and restore it later."
       requestBody:
@@ -1241,6 +1303,8 @@ paths:
 
   /documents.restore:
     post:
+      tags: 
+        - Documents
       summary: "Restore a document"
       description: "If a document has been archived or deleted, it can be restored. Optionally a revision can be passed to restore the document to a previous point in time."
       requestBody:
@@ -1284,6 +1348,8 @@ paths:
 
   /documents.delete:
     post:
+      tags: 
+        - Documents
       summary: "Delete a document"
       description: "Deleting a document moves it to the trash. If not restored within 30 days it is permenantly deleted."
       requestBody:
@@ -1320,6 +1386,8 @@ paths:
 
   /events.list:
     post:
+      tags: 
+        - Events
       summary: "List all events"
       description: "Events are an audit trail of important events that happen in the knowledge base."
       requestBody:
@@ -1355,6 +1423,8 @@ paths:
 
   /groups.info:
     post:
+      tags: 
+        - Groups
       summary: "Retrieve a group"
       requestBody:
         content:
@@ -1387,6 +1457,8 @@ paths:
 
   /groups.list:
     post:
+      tags: 
+        - Groups
       summary: "List all groups"
       requestBody:
         content:
@@ -1416,6 +1488,8 @@ paths:
 
   /groups.create:
     post:
+      tags: 
+        - Groups
       summary: "Create a group"
       requestBody:
         content:
@@ -1451,6 +1525,8 @@ paths:
   
   /groups.update:
     post:
+      tags: 
+        - Groups
       summary: "Update a group"
       requestBody:
         content:
@@ -1492,6 +1568,8 @@ paths:
 
   /groups.delete:
     post:
+      tags: 
+        - Groups
       summary: "Delete a group"
       description: "Deleting a group will cause all of its members to lose access to any collections the group has previously been added to. This action can’t be undone so please be careful."
       requestBody:
@@ -1527,6 +1605,8 @@ paths:
 
   /groups.memberships:
     post:
+      tags: 
+        - Groups
       summary: "List all group members"
       description: "List and filter all the members in a group."
       requestBody:
@@ -1573,6 +1653,8 @@ paths:
 
   /groups.add_user:
     post:
+      tags: 
+        - Groups
       summary: "Add a group member"
       description: "This method allows you to add a user to the specified group."
       requestBody:
@@ -1624,6 +1706,8 @@ paths:
   
   /groups.remove_user:
     post:
+      tags: 
+        - Groups
       summary: "Remove a group member"
       description: "This method allows you to remove a user from the group."
       requestBody:
@@ -1668,6 +1752,8 @@ paths:
 
   /revisions.info:
     post:
+      tags: 
+        - Revisions
       summary: "Retrieve a revision"
       requestBody:
         content:
@@ -1700,6 +1786,8 @@ paths:
   
   /revisions.list:
     post:
+      tags: 
+        - Revisions
       summary: "List all revisions"
       requestBody:
         content:
@@ -1729,6 +1817,8 @@ paths:
 
   /shares.info:
     post:
+      tags: 
+        - Shares
       summary: "Retrieve a share object"
       requestBody:
         content:
@@ -1761,6 +1851,8 @@ paths:
 
   /shares.list:
     post:
+      tags: 
+        - Shares
       summary: "List all shares"
       requestBody:
         content:
@@ -1790,6 +1882,8 @@ paths:
 
   /shares.create:
     post:
+      tags: 
+        - Shares
       summary: "Create a share"
       description: "Creates a new share link that can be used by anyone to access a document. If you request multiple shares for the same document with the same API key the same share object will be returned."
       requestBody:
@@ -1822,6 +1916,8 @@ paths:
 
   /shares.revoke:
     post:
+      tags: 
+        - Shares
       summary: "Revoke a share"
       description: "Makes the share link inactive so that it can no longer be used to access the document."
       requestBody:
@@ -1857,6 +1953,8 @@ paths:
 
   /users.info:
     post:
+      tags: 
+        - Users
       summary: "Retrieve a user"
       requestBody:
         content:
@@ -1889,6 +1987,8 @@ paths:
 
   /users.list:
     post:
+      tags: 
+        - Users
       summary: "List all users"
       description: "List and filter all the users in the team"
       requestBody:
@@ -1925,6 +2025,8 @@ paths:
 
   /users.update:
     post:
+      tags: 
+        - Users
       summary: "Update a user"
       description: "Update a users name or avatar. No `id` is required as it is only possible to update the current user at this time."
       requestBody:
@@ -1957,6 +2059,8 @@ paths:
 
   /users.promote:
     post:
+      tags: 
+        - Users
       summary: "Promote a user"
       description: "Promote a user to be a team admin. This endpoint is only available for admin users."
       requestBody:
@@ -1990,6 +2094,8 @@ paths:
 
   /users.demote:
     post:
+      tags: 
+        - Users
       summary: "Demote a user"
       description: "Demote a team admin to regular user permissions. This endpoint is only available for admin users."
       requestBody:
@@ -2023,6 +2129,8 @@ paths:
 
   /users.suspend:
     post:
+      tags: 
+        - Users
       summary: "Suspend a user"
       description: "Suspending a user prevents the user from signing in. Users that are suspended are also not counted against billing totals in the hosted version."
       requestBody:
@@ -2056,6 +2164,8 @@ paths:
 
   /users.activate:
     post:
+      tags: 
+        - Users
       summary: "Activate a user"
       description: "Activating a previously suspended user allows them to signin again. Users that are activated will cause billing totals to be re-calculated in the hosted version."
       requestBody:
@@ -2089,6 +2199,8 @@ paths:
 
   /users.delete:
     post:
+      tags: 
+        - Users
       summary: "Delete a user"
       description: "Deleting a user removes the object entirely. In almost every circumstance it is preferable to suspend a user, as a deleted user can be recreated by signing in with SSO again."
       requestBody:
@@ -2123,6 +2235,8 @@ paths:
 
   /views.list:
     post:
+      tags: 
+        - Views
       summary: "List all views"
       description: "List all users that have viewed a document and the overall view count."
       requestBody:
@@ -2155,6 +2269,8 @@ paths:
 
   /views.create:
     post:
+      tags: 
+        - Views
       summary: "Create a view"
       description: "Creates a new view for a document. This is documented in the interests of thoroughness however it is recommended that views are not created from outside of the Outline UI."
       requestBody:

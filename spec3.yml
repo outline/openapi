@@ -2,9 +2,11 @@ openapi: 3.0.0
 info:
   title: Outline API
   description: |
+    # Introduction
+
     The Outline API is structured in an RPC style. It enables you to
-    programatically interact with all aspects of Outline’s data – in
-    fact, the main application is built on exactly the same API.
+    programatically interact with all aspects of Outline’s data – in fact, the
+    main application is built on exactly the same API.
 
     # Making requests
 

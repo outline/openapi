@@ -1617,6 +1617,134 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
 
+  /shares.info:
+    summary: "Retrieve a share object"
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: "Unique identifier for the share."
+                  format: uuid
+              required: 
+                - id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Share'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  /shares.list:
+    summary: "List all shares"
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Pagination'
+                - $ref: '#/components/schemas/Sorting'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Share'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+
+  /shares.create:
+    summary: "Create a share"
+    description: "Creates a new share link that can be used by anyone to access a document. If you request multiple shares for the same document with the same API key the same share object will be returned."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                documentId:
+                  type: string
+                  format: uuid
+              required: 
+                - documentId
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Share'
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+
+  /shares.revoke:
+    summary: "Revoke a share"
+    description: "Makes the share link inactive so that it can no longer be used to access the document."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+              required: 
+                - id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
 components:
   schemas:
     Pagination:
@@ -1827,6 +1955,33 @@ components:
           description: "Unique identifier for the object."
           readOnly: true
           format: uuid
+        documentTitle:
+          type: string
+          description: "Title of the shared document."
+          example: "React best practices"
+          readOnly: true
+        documentUrl:
+          type: string
+          format: uri
+          description: "URL of the original document."
+          readOnly: true
+        url:
+          type: string
+          format: uri
+          description: "URL of the publicly shared document."
+          readOnly: true
+        createdAt:
+          type: string
+          format: date-time
+          description: "Date and time when this share was created"
+          readOnly: true
+        createdBy:
+          $ref: '#/components/schemas/User'
+        updatedAt:
+          type: string
+          format: date-time
+          description: "Date and time when this share was edited"
+          readOnly: true
     Revision:
       type: object
       properties:

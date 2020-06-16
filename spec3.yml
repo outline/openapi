@@ -9,6 +9,81 @@ servers:
 security: 
   - http: []
 paths:
+  /attachments.create:
+    summary: "Create an attachment"
+    description: "An attachment is a database record which maps to a file in storage. Creating an attachment object returns the inputs needed to generate a signed url and upload the file from the client."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "image.png"
+                documentId:
+                  type: string
+                  description: "Identifier for the associated document, if any."
+                  format: uuid
+                contentType:
+                  type: string
+                  example: "image/png"
+                size:
+                  type: number
+                  description: "Size of the file attachment in bytes."
+              required: 
+                - name
+                - contentType
+                - size
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      maxUploadSize:
+                        type: number
+                      uploadUrl:
+                        type: string
+                        format: uri
+                      form:
+                        type: object
+                      attachment:
+                        $ref: '#/components/schemas/Attachment'
+                      
+        400:
+          $ref: '#/components/responses/Validation'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+
+  /attachments.redirect:
+    summary: "Retrieve an attachment"
+    description: "Load an attachment from where it is stored based on the id. If the attachment is private then a temporary, signed url with embedded credentials is generated on demand."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: "Unique identifier for the attachment."
+                  format: uuid
+              required: 
+                - id
+      responses:
+        302:
+          description: The url for the attachment
+
   /auth.info:
     summary: "Retrieve auth"
     description: "Retrieve auth object for the current API key"
@@ -1848,6 +1923,38 @@ paths:
         403:
           $ref: '#/components/responses/Unauthorized'
 
+  /users.update:
+    summary: "Update a user"
+    description: "Update a users name or avatar. No `id` is required as it is only possible to update the current user at this time."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                avatarUrl:
+                  type: string
+                  format: uri
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/User'
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
   /users.promote:
     summary: "Promote a user"
     description: "Promote a user to be a team admin. This endpoint is only available for admin users."
@@ -1947,7 +2054,6 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
 
-
   /users.activate:
     summary: "Activate a user"
     description: "Activating a previously suspended user allows them to signin again. Users that are activated will cause billing totals to be re-calculated in the hosted version."
@@ -1981,6 +2087,39 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
 
+  /users.delete:
+    summary: "Delete a user"
+    description: "Deleting a user removes the object entirely. In almost every circumstance it is preferable to suspend a user, as a deleted user can be recreated by signing in with SSO again."
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: "Unique identifier for the user."
+                  format: uuid
+              required: 
+                - id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        401:
+          $ref: '#/components/responses/Unauthenticated'
+        403:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
 
   /views.list:
     summary: "List all views"
@@ -2046,6 +2185,24 @@ paths:
 
 components:
   schemas:
+    Attachment:
+      type: object
+      properties:
+        contentType:
+          type: string
+          example: "image/png"
+        size:
+          type: number
+        name:
+          type: string
+        url:
+          type: string
+          format: uri
+        documentId:
+          type: string
+          description: "Identifier for the associated document, if any."
+          format: uuid
+      
     Pagination:
       type: object
       properties:

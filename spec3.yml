@@ -8,6 +8,10 @@ info:
     programatically interact with all aspects of Outline’s data – in fact, the
     main application is built on exactly the same API.
 
+    The API structure is available as an 
+    [openapi specification](https://github.com/outline/openapi) if that’s your 
+    jam – it can be used to generate clients for most programming languages.
+
     # Making requests
 
     Outline’s API follows simple RPC style conventions where each API endpoint is

@@ -257,7 +257,7 @@ paths:
       tags: 
         - Auth
       summary: "Retrieve auth"
-      description: "Retrieve auth object for the current API key"
+      description: "Retrieve authentication details for the current API key"
       responses:
         200:
           description: OK
@@ -271,6 +271,44 @@ paths:
         401:
           $ref: '#/components/responses/Unauthenticated'
   
+  /auth.config:
+    post:
+      tags: 
+        - Auth
+      summary: "Retrieve auth config"
+      description: "Retrieve authentication options"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: "Acme Inc"
+                      hostname:
+                        type: string
+                        example: "acme-inc"
+                      services:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: "slack"
+                            name:
+                              type: string
+                              example: "Slack"
+                            authUrl:
+                              type: string
+                              example: "https://acme-inc.getoutline.com/auth/slack"
+
   /collections.info:
     post:
       tags: 

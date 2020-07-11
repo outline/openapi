@@ -231,7 +231,7 @@
                         },
                         "hostname": {
                           "type": "string",
-                          "example": "acme-inc"
+                          "example": "acme-inc.getoutline.com"
                         },
                         "services": {
                           "type": "array",

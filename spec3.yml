@@ -15,7 +15,7 @@ info:
     # Making requests
 
     Outline’s API follows simple RPC style conventions where each API endpoint is
-    a method on `https://www.getoutline.com/api/method`. Both `GET` and `POST` 
+    a method on `https://app.getoutline.com/api/method`. Both `GET` and `POST` 
     methods are supported but it’s recommended that you make all call using POST.
     Only HTTPS is supported and all response payloads are JSON.
 
@@ -24,7 +24,7 @@ info:
     Content-Type: application/json header, here’s an example using CURL:
 
     ```
-    curl https://www.getoutline.com/api/documents.info
+    curl https://app.getoutline.com/api/documents.info
     -X POST
     -H 'authorization: Bearer MY_API_KEY'
     -H 'content-type: application/json'
@@ -35,7 +35,7 @@ info:
     Or, with JavaScript:
 
     ```javascript
-    const response = await fetch("https://www.getoutline.com/api/documents.info", {
+    const response = await fetch("https://app.getoutline.com/api/documents.info", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -51,7 +51,7 @@ info:
     # Authentication
 
     To access API endpoints, you must provide a valid API key. You can create new
-    API keys in your [account settings](https://www.getoutline.com/settings). Be
+    API keys in your [account settings](https://app.getoutline.com/settings). Be
     careful when handling your keys as they give access to all of your documents,
     you should treat them like passwords and they should never be committed to
     source control.
@@ -115,7 +115,7 @@ info:
   contact:
     email: hello@getoutline.com
 servers:
-  - url: 'https://www.getoutline.com/api'
+  - url: 'https://app.getoutline.com/api'
     description: Production
 security: 
   - http: []

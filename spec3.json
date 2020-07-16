@@ -1116,6 +1116,61 @@
         }
       }
     },
+    "/documents.export": {
+      "post": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Export a document as markdown",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the document. Either the UUID or the urlId is acceptable."
+                  },
+                  "shareId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unique identifier for a document share, a shareId may be used in place of a document UUID"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "description": "The document content in Markdown formatting"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
     "/documents.list": {
       "post": {
         "tags": [

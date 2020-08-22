@@ -885,7 +885,7 @@ paths:
       tags:
         - Documents
       summary: List all documents
-      description: This method will last all published documents and draft documents belonging to the current user.
+      description: This method will list all published documents and draft documents belonging to the current user.
       requestBody:
         content:
           application/json:
@@ -898,6 +898,7 @@ paths:
                     collectionId:
                       type: string
                       format: uuid
+                      description: Optionally filter to a specific collection
                     userId:
                       type: string
                       format: uuid
@@ -907,6 +908,9 @@ paths:
                     parentDocumentId:
                       type: string
                       format: uuid
+                    template:
+                      type: boolean
+                      description: Optionally filter to only templates
       responses:
         '200':
           description: OK
@@ -1173,6 +1177,12 @@ paths:
                 parentDocumentId:
                   type: string
                   format: uuid
+                templateId:
+                  type: string
+                  format: uuid
+                template:
+                  type: boolean
+                  description: Whether this document should be considered to be a template.
                 publish:
                   type: boolean
                   description: Whether this document should be immediately published and made visible to other team members.
@@ -1255,6 +1265,43 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+  /documents.templatize:
+    post:
+      tags:
+        - Documents
+      summary: Create a template from a document
+      description: 'This method allows you to createa new template using an existing document as the basis'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+              required:
+                - id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Document'
+                  policies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Policy'
+        '400':
+          $ref: '#/components/responses/Validation'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
   /documents.star:
     post:
       tags:
@@ -2018,8 +2065,10 @@ paths:
                   type: string
                   description: Unique identifier for the share.
                   format: uuid
-              required:
-                - id
+                documentId:
+                  type: string
+                  description: Unique identifier for a document. One of id or documentId must be provided.
+                  format: uuid
       responses:
         '200':
           description: OK
@@ -2071,7 +2120,7 @@ paths:
       tags:
         - Shares
       summary: Create a share
-      description: Creates a new share link that can be used by anyone to access a document. If you request multiple shares for the same document with the same API key the same share object will be returned.
+      description: Creates a new share link that can be used by to access a document. If you request multiple shares for the same the ocument with the same API key the same share object will be returned. By default all shares are unpublished.
       requestBody:
         content:
           application/json:
@@ -2083,6 +2132,42 @@ paths:
                   format: uuid
               required:
                 - documentId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Share'
+        '400':
+          $ref: '#/components/responses/Validation'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+  /shares.update:
+    post:
+      tags:
+        - Shares
+      summary: Update a share
+      description: Allows changing an existing shares published status, which removes authentication and makes it available to anyone with the link.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                published:
+                  type: boolean
+              required:
+                - id
+                - published
       responses:
         '200':
           description: OK
@@ -2619,6 +2704,13 @@ components:
         pinned:
           type: boolean
           description: Whether this document is pinned in the collection
+        template:
+          type: boolean
+          description: Whether this document is a template
+        templateId:
+          type: string
+          description: Unique identifier for the template this document was created from, if any
+          format: uuid
         starred:
           type: boolean
           description: Whether this document is starred by the current user

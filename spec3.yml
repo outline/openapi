@@ -845,6 +845,47 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+  /documents.import:
+    post:
+      tags:
+        - Documents
+      summary: Import a file as a document
+      description: This method allows you to create a new document by importing an existing file. By default a document is set to the collection root. If you want to create a nested/child document, you should pass parentDocumentId to set the parent document.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: object
+                  description: Only plain text, markdown, docx, and html format are supported.
+                collectionId:
+                  type: string
+                  format: uuid
+                parentDocumentId:
+                  type: string
+                  format: uuid
+                template:
+                  type: boolean
+                publish:
+                  type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Document'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
   /documents.export:
     post:
       tags:

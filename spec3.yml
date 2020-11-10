@@ -987,6 +987,21 @@ paths:
               allOf:
                 - $ref: '#/components/schemas/Pagination'
                 - $ref: '#/components/schemas/Sorting'
+                - type: object
+                  properties:
+                    collectionId:
+                      type: string
+                      description: A collection to search within
+                      format: uuid
+                    dateFilter:
+                      type: string
+                      description: Any documents that have not been updated within the specified period will be filtered out
+                      example: month
+                      enum:
+                        - day
+                        - week
+                        - month
+                        - year
       responses:
         '200':
           description: OK
@@ -2960,7 +2975,7 @@ components:
         googleConnected:
           type: boolean
           readOnly: true
-          description: Whether this team has authentication with GSuite enabled.
+          description: Whether this team has authentication with Google Workspace enabled.
         sharing:
           type: boolean
           description: Whether this team has share links globally enabled. If this value is false then all sharing UI and APIs are disabled.
@@ -2969,7 +2984,7 @@ components:
           description: Whether this team has embeds in documents globally enabled. It can be disabled to reduce potential data leakage to third parties.
         guestSignin:
           type: boolean
-          description: Whether this team has guest signin enabled. Guests can signin with an email address and are not required to have a Gsuite/Slack SSO account once invited.
+          description: Whether this team has guest signin enabled. Guests can signin with an email address and are not required to have a Google Workspace/Slack SSO account once invited.
         subdomain:
           type: string
           description: Represents the subdomain at which this team's knowledge base can be accessed.
@@ -2988,7 +3003,7 @@ components:
           format: uuid
         name:
           type: string
-          description: 'The name of this user, it is migrated from Slack or Gsuite when the SSO connection is made but can be changed if neccessary.'
+          description: 'The name of this user, it is migrated from Slack or Google Workspace when the SSO connection is made but can be changed if neccessary.'
           example: Jane Doe
         avatarUrl:
           type: string
@@ -2996,7 +3011,7 @@ components:
           description: 'The URL for the image associated with this user, it will be displayed in the application UI and email notifications.'
         email:
           type: string
-          description: 'The email associated with this user, it is migrated from Slack or Gsuite when the SSO connection is made but can be changed if neccessary.'
+          description: 'The email associated with this user, it is migrated from Slack or Google Workspace when the SSO connection is made but can be changed if neccessary.'
           format: email
         isAdmin:
           type: boolean

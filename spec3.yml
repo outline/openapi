@@ -2742,6 +2742,27 @@ paths:
           $ref: '#/components/responses/Unauthenticated'
         '403':
           $ref: '#/components/responses/Unauthorized'
+  /fileOperations.redirect:
+    post:
+      tags:
+        - FileOperations
+      summary: Retrieve the data associated with fileOperation
+      description: 'Use fileOperation id to retrieve the data associated with it. The URL is temporary and signed with embedded credentials is generated on demand.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Unique identifier for the attachment.
+                  format: uuid
+              required:
+                - id
+      responses:
+        '302':
+          description: The url for the data associated with fileOperation
 components:
   schemas:
     Attachment:

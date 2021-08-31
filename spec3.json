@@ -41,6 +41,10 @@
       "description": "`Events` represent an artifact of an action. Whether it is creating a user,\nediting a document, changing permissions, or any other action – an event\nis created that can be used as an audit trail or activity stream.\n"
     },
     {
+      "name": "FileOperations",
+      "description": "`FileOperations` represent the operations that involve files. Whether it \nis importing markdown files or exporting collections, it is a fileOperation. \nUtilize FileOperation to keep track of your exports or imports."
+    },
+    {
       "name": "Groups",
       "description": "`Groups` represent a list of users that logically belong together, for \nexample there might be groups for each department in your organization.\nGroups can be granted access to collections with read or write permissions.\n"
     },
@@ -2580,6 +2584,163 @@
         }
       }
     },
+    "/fileOperations.info": {
+      "post": {
+        "tags": [
+          "FileOperations"
+        ],
+        "summary": "Retrieve a fileOperation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the collection.",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/FileOperation"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/fileOperations.list": {
+      "post": {
+        "tags": [
+          "FileOperations"
+        ],
+        "summary": "List all fileOperations",
+        "description": "List all fileOperations that have been performed of a type.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Pagination"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Sorting"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "description": "The type of fileOperation",
+                        "example": "export",
+                        "enum": [
+                          "export",
+                          "import"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/FileOperation"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/fileOperations.redirect": {
+      "post": {
+        "tags": [
+          "FileOperations"
+        ],
+        "summary": "Retrieve the data associated with fileOperation",
+        "description": "Use fileOperation id to retrieve the data associated with it. The URL is temporary and signed with embedded credentials is generated on demand.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the attachment.",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "302": {
+            "description": "The url for the data associated with fileOperation"
+          }
+        }
+      }
+    },
     "/groups.info": {
       "post": {
         "tags": [
@@ -4347,6 +4508,66 @@
           },
           "error": {
             "type": "string"
+          }
+        }
+      },
+      "FileOperation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the fileOperation.",
+            "readOnly": true,
+            "format": "uuid"
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of fileOperation",
+            "readOnly": true,
+            "example": "export",
+            "enum": [
+              "export",
+              "import"
+            ]
+          },
+          "state": {
+            "type": "string",
+            "description": "The state of fileOperation",
+            "readOnly": true,
+            "example": "creating",
+            "enum": [
+              "creating",
+              "uploading",
+              "complete",
+              "error",
+              "expired"
+            ]
+          },
+          "collection": {
+            "description": "The collection data if a collection export was requested",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Collection"
+              },
+              {
+                "nullable": true
+              }
+            ]
+          },
+          "size": {
+            "type": "number",
+            "description": "The size of fileOperation in Bytes",
+            "readOnly": true,
+            "example": 2048
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "The date and time that this fileOperation was created",
+            "readOnly": true,
+            "format": "date-time"
           }
         }
       },

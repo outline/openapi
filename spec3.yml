@@ -114,7 +114,7 @@ info:
   contact:
     email: hello@getoutline.com
 servers:
-  - url: 'https://app.getoutline.com/api'
+  - url: "https://app.getoutline.com/api"
     description: Production
 security:
   - http: []
@@ -146,6 +146,11 @@ tags:
       `Events` represent an artifact of an action. Whether it is creating a user,
       editing a document, changing permissions, or any other action – an event
       is created that can be used as an audit trail or activity stream.
+  - name: FileOperations
+    description: |
+      `FileOperations` represent background jobs for importing or exporting files.
+      You can query the file operation to find the state of progress and any
+      resulting output.
   - name: Groups
     description: |
       `Groups` represent a list of users that logically belong together, for 
@@ -189,7 +194,7 @@ paths:
                   example: image.png
                 documentId:
                   type: string
-                  description: 'Identifier for the associated document, if any.'
+                  description: "Identifier for the associated document, if any."
                   format: uuid
                 contentType:
                   type: string
@@ -202,7 +207,7 @@ paths:
                 - contentType
                 - size
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -220,19 +225,19 @@ paths:
                       form:
                         type: object
                       attachment:
-                        $ref: '#/components/schemas/Attachment'
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                        $ref: "#/components/schemas/Attachment"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /attachments.redirect:
     post:
       tags:
         - Attachments
       summary: Retrieve an attachment
-      description: 'Load an attachment from where it is stored based on the id. If the attachment is private then a temporary, signed url with embedded credentials is generated on demand.'
+      description: "Load an attachment from where it is stored based on the id. If the attachment is private then a temporary, signed url with embedded credentials is generated on demand."
       requestBody:
         content:
           application/json:
@@ -246,7 +251,7 @@ paths:
               required:
                 - id
       responses:
-        '302':
+        "302":
           description: The url for the attachment
   /attachments.delete:
     post:
@@ -267,7 +272,7 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -277,14 +282,14 @@ paths:
                   success:
                     type: boolean
                     example: true
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /auth.info:
     post:
       tags:
@@ -292,7 +297,7 @@ paths:
       summary: Retrieve auth
       description: Retrieve authentication details for the current API key
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -300,9 +305,9 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Auth'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
+                    $ref: "#/components/schemas/Auth"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
   /auth.config:
     post:
       tags:
@@ -310,7 +315,7 @@ paths:
       summary: Retrieve auth config
       description: Retrieve authentication options
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -339,7 +344,7 @@ paths:
                               example: Slack
                             authUrl:
                               type: string
-                              example: 'https://acme-inc.getoutline.com/auth/slack'
+                              example: "https://acme-inc.getoutline.com/auth/slack"
   /collections.info:
     post:
       tags:
@@ -358,7 +363,7 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -366,13 +371,13 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Collection'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                    $ref: "#/components/schemas/Collection"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /collections.list:
     post:
       tags:
@@ -382,9 +387,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pagination'
+              $ref: "#/components/schemas/Pagination"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -394,13 +399,13 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Collection'
+                      $ref: "#/components/schemas/Collection"
                   pagination:
-                    $ref: '#/components/schemas/Pagination'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                    $ref: "#/components/schemas/Pagination"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /collections.create:
     post:
       tags:
@@ -417,17 +422,17 @@ paths:
                   example: Human Resources
                 description:
                   type: string
-                  example: ''
+                  example: ""
                 color:
                   type: string
-                  example: '#123123'
+                  example: "#123123"
                 private:
                   type: boolean
                   example: false
               required:
                 - name
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -435,17 +440,17 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Collection'
+                    $ref: "#/components/schemas/Collection"
                   policies:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Policy'
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                      $ref: "#/components/schemas/Policy"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /collections.update:
     post:
       tags:
@@ -465,14 +470,14 @@ paths:
                   example: Human Resources
                 description:
                   type: string
-                  example: ''
+                  example: ""
                 color:
                   type: string
-                  example: '#123123'
+                  example: "#123123"
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -480,19 +485,19 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Collection'
+                    $ref: "#/components/schemas/Collection"
                   policies:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Policy'
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                      $ref: "#/components/schemas/Policy"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /collections.add_user:
     post:
       tags:
@@ -515,7 +520,7 @@ paths:
                 - id
                 - userId
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -528,19 +533,19 @@ paths:
                       users:
                         type: array
                         items:
-                          $ref: '#/components/schemas/User'
+                          $ref: "#/components/schemas/User"
                       memberships:
                         type: array
                         items:
-                          $ref: '#/components/schemas/Membership'
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                          $ref: "#/components/schemas/Membership"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /collections.remove_user:
     post:
       tags:
@@ -564,7 +569,7 @@ paths:
                 - id
                 - userId
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -574,14 +579,14 @@ paths:
                   success:
                     type: boolean
                     example: true
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /collections.memberships:
     post:
       tags:
@@ -593,7 +598,7 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/Pagination'
+                - $ref: "#/components/schemas/Pagination"
                 - type: object
                   properties:
                     id:
@@ -614,7 +619,7 @@ paths:
                   required:
                     - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -627,19 +632,19 @@ paths:
                       users:
                         type: array
                         items:
-                          $ref: '#/components/schemas/User'
+                          $ref: "#/components/schemas/User"
                       memberships:
                         type: array
                         items:
-                          $ref: '#/components/schemas/Membership'
+                          $ref: "#/components/schemas/Membership"
                   pagination:
-                    $ref: '#/components/schemas/Pagination'
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                    $ref: "#/components/schemas/Pagination"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /collections.add_group:
     post:
       tags:
@@ -662,7 +667,7 @@ paths:
                 - id
                 - groupId
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -675,15 +680,15 @@ paths:
                       collectionGroupMemberships:
                         type: array
                         items:
-                          $ref: '#/components/schemas/CollectionGroupMembership'
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                          $ref: "#/components/schemas/CollectionGroupMembership"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /collections.remove_group:
     post:
       tags:
@@ -707,7 +712,7 @@ paths:
                 - id
                 - groupId
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -717,14 +722,14 @@ paths:
                   success:
                     type: boolean
                     example: true
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /collections.group_memberships:
     post:
       tags:
@@ -736,7 +741,7 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/Pagination'
+                - $ref: "#/components/schemas/Pagination"
                 - type: object
                   properties:
                     id:
@@ -757,7 +762,7 @@ paths:
                   required:
                     - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -770,19 +775,19 @@ paths:
                       groups:
                         type: array
                         items:
-                          $ref: '#/components/schemas/Group'
+                          $ref: "#/components/schemas/Group"
                       collectionGroupMemberships:
                         type: array
                         items:
-                          $ref: '#/components/schemas/CollectionGroupMembership'
+                          $ref: "#/components/schemas/CollectionGroupMembership"
                   pagination:
-                    $ref: '#/components/schemas/Pagination'
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                    $ref: "#/components/schemas/Pagination"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /collections.delete:
     post:
       tags:
@@ -801,7 +806,7 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -811,18 +816,20 @@ paths:
                   success:
                     type: boolean
                     example: true
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /collections.export:
     post:
       tags:
         - Collections
       summary: Export a collection
-      description: Returns a zip file of all the collections documents in markdown format. If documents are nested then they will be nested in folders inside the zip file.
+      description:
+        Triggers a bulk export of the collection in markdown format and their attachments. If documents are nested then they will be nested in folders inside the zip file. The endpoint returns a `FileOperation`
+        that can be queried to track the progress of the export and get the url for the final file.
       requestBody:
         content:
           application/json:
@@ -835,19 +842,53 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            application/octet-stream:
+            application/json:
               schema:
-                type: string
-                format: binary
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      fileOperation:
+                        $ref: "#/components/schemas/FileOperation"
+
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /collections.export_all:
+    post:
+      tags:
+        - Collections
+      summary: Export all collections
+      description:
+        Triggers a bulk export of all documents in markdown format and their attachments. If documents are nested then they will be nested in folders inside the zip file. The endpoint returns a `FileOperation`
+        that can be queried to track the progress of the export and get the url for the final file.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      fileOperation:
+                        $ref: "#/components/schemas/FileOperation"
+
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /documents.info:
     post:
       tags:
@@ -865,9 +906,9 @@ paths:
                 shareId:
                   type: string
                   format: uuid
-                  description: 'Unique identifier for a document share, a shareId may be used in place of a document UUID'
+                  description: "Unique identifier for a document share, a shareId may be used in place of a document UUID"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -875,13 +916,13 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Document'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                    $ref: "#/components/schemas/Document"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /documents.import:
     post:
       tags:
@@ -908,7 +949,7 @@ paths:
                 publish:
                   type: boolean
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -916,13 +957,13 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Document'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                    $ref: "#/components/schemas/Document"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /documents.export:
     post:
       tags:
@@ -940,9 +981,9 @@ paths:
                 shareId:
                   type: string
                   format: uuid
-                  description: 'Unique identifier for a document share, a shareId may be used in place of a document UUID'
+                  description: "Unique identifier for a document share, a shareId may be used in place of a document UUID"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -952,12 +993,12 @@ paths:
                   data:
                     type: string
                     description: The document content in Markdown formatting
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /documents.list:
     post:
       tags:
@@ -969,8 +1010,8 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/Pagination'
-                - $ref: '#/components/schemas/Sorting'
+                - $ref: "#/components/schemas/Pagination"
+                - $ref: "#/components/schemas/Sorting"
                 - type: object
                   properties:
                     collectionId:
@@ -990,7 +1031,7 @@ paths:
                       type: boolean
                       description: Optionally filter to only templates
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1000,17 +1041,17 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Document'
+                      $ref: "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Policy'
+                      $ref: "#/components/schemas/Policy"
                   pagination:
-                    $ref: '#/components/schemas/Pagination'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                    $ref: "#/components/schemas/Pagination"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /documents.drafts:
     post:
       tags:
@@ -1022,8 +1063,8 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/Pagination'
-                - $ref: '#/components/schemas/Sorting'
+                - $ref: "#/components/schemas/Pagination"
+                - $ref: "#/components/schemas/Sorting"
                 - type: object
                   properties:
                     collectionId:
@@ -1040,7 +1081,7 @@ paths:
                         - month
                         - year
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1050,17 +1091,17 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Document'
+                      $ref: "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Policy'
+                      $ref: "#/components/schemas/Policy"
                   pagination:
-                    $ref: '#/components/schemas/Pagination'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                    $ref: "#/components/schemas/Pagination"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /documents.viewed:
     post:
       tags:
@@ -1072,10 +1113,10 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/Pagination'
-                - $ref: '#/components/schemas/Sorting'
+                - $ref: "#/components/schemas/Pagination"
+                - $ref: "#/components/schemas/Sorting"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1085,17 +1126,17 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Document'
+                      $ref: "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Policy'
+                      $ref: "#/components/schemas/Policy"
                   pagination:
-                    $ref: '#/components/schemas/Pagination'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                    $ref: "#/components/schemas/Pagination"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /documents.starred:
     post:
       tags:
@@ -1107,10 +1148,10 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/Pagination'
-                - $ref: '#/components/schemas/Sorting'
+                - $ref: "#/components/schemas/Pagination"
+                - $ref: "#/components/schemas/Sorting"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1120,17 +1161,17 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Document'
+                      $ref: "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Policy'
+                      $ref: "#/components/schemas/Policy"
                   pagination:
-                    $ref: '#/components/schemas/Pagination'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                    $ref: "#/components/schemas/Pagination"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /documents.pinned:
     post:
       tags:
@@ -1142,8 +1183,8 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/Pagination'
-                - $ref: '#/components/schemas/Sorting'
+                - $ref: "#/components/schemas/Pagination"
+                - $ref: "#/components/schemas/Sorting"
                 - type: object
                   properties:
                     collectionId:
@@ -1152,7 +1193,7 @@ paths:
                   required:
                     - collectionId
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1162,17 +1203,17 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Document'
+                      $ref: "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Policy'
+                      $ref: "#/components/schemas/Policy"
                   pagination:
-                    $ref: '#/components/schemas/Pagination'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                    $ref: "#/components/schemas/Pagination"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /documents.search:
     post:
       tags:
@@ -1184,7 +1225,7 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/Pagination'
+                - $ref: "#/components/schemas/Pagination"
                 - type: object
                   properties:
                     query:
@@ -1212,7 +1253,7 @@ paths:
                         - month
                         - year
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1234,23 +1275,23 @@ paths:
                           format: float
                           example: 1.1844109
                         document:
-                          $ref: '#/components/schemas/Document'
+                          $ref: "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Policy'
+                      $ref: "#/components/schemas/Policy"
                   pagination:
-                    $ref: '#/components/schemas/Pagination'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                    $ref: "#/components/schemas/Pagination"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /documents.create:
     post:
       tags:
         - Documents
       summary: Create a document
-      description: 'This method allows you to create or publish a new document. By default a document is set to the collection root. If you want to create a nested/child document, you should pass parentDocumentId to set the parent document.'
+      description: "This method allows you to create or publish a new document. By default a document is set to the collection root. If you want to create a nested/child document, you should pass parentDocumentId to set the parent document."
       requestBody:
         content:
           application/json:
@@ -1262,7 +1303,7 @@ paths:
                   example: Welcome to Acme Inc
                 text:
                   type: string
-                  description: 'The body of the document, may contain markdown formatting.'
+                  description: "The body of the document, may contain markdown formatting."
                   example: …
                 collectionId:
                   type: string
@@ -1283,7 +1324,7 @@ paths:
                 - title
                 - collectionId
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1291,17 +1332,17 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Document'
+                    $ref: "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Policy'
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                      $ref: "#/components/schemas/Policy"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /documents.update:
     post:
       tags:
@@ -1323,21 +1364,21 @@ paths:
                   description: The title of the document.
                 text:
                   type: string
-                  description: 'The body of the document, may contain markdown formatting.'
+                  description: "The body of the document, may contain markdown formatting."
                   example: …
                 append:
                   type: boolean
-                  description: 'If true the text field will be appended to the end of the existing document, rather than the default behavior of replacing it. This is potentially useful for things like logging into a document.'
+                  description: "If true the text field will be appended to the end of the existing document, rather than the default behavior of replacing it. This is potentially useful for things like logging into a document."
                 publish:
                   type: boolean
-                  description: 'Whether this document should be published and made visible to other team members, if a draft'
+                  description: "Whether this document should be published and made visible to other team members, if a draft"
                 done:
                   type: boolean
-                  description: 'Whether the editing session has finished, this will trigger any notifications. This property will soon be deprecated.'
+                  description: "Whether the editing session has finished, this will trigger any notifications. This property will soon be deprecated."
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1345,25 +1386,25 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Document'
+                    $ref: "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Policy'
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                      $ref: "#/components/schemas/Policy"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /documents.templatize:
     post:
       tags:
         - Documents
       summary: Create a template from a document
-      description: 'This method allows you to createa new template using an existing document as the basis'
+      description: "This method allows you to createa new template using an existing document as the basis"
       requestBody:
         content:
           application/json:
@@ -1376,7 +1417,7 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1384,17 +1425,17 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Document'
+                    $ref: "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Policy'
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                      $ref: "#/components/schemas/Policy"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /documents.star:
     post:
       tags:
@@ -1414,7 +1455,7 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1423,14 +1464,14 @@ paths:
                 properties:
                   success:
                     type: boolean
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /documents.unstar:
     post:
       tags:
@@ -1450,7 +1491,7 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1459,14 +1500,14 @@ paths:
                 properties:
                   success:
                     type: boolean
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /documents.pin:
     post:
       tags:
@@ -1486,7 +1527,7 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1494,19 +1535,19 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Document'
+                    $ref: "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Policy'
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                      $ref: "#/components/schemas/Policy"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /documents.unpin:
     post:
       tags:
@@ -1526,7 +1567,7 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1534,25 +1575,25 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Document'
+                    $ref: "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Policy'
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                      $ref: "#/components/schemas/Policy"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /documents.move:
     post:
       tags:
         - Documents
       summary: Move a document
-      description: 'Move a document to a new location or collection. If no parent document is provided, the document will be moved to the collection root.'
+      description: "Move a document to a new location or collection. If no parent document is provided, the document will be moved to the collection root."
       requestBody:
         content:
           application/json:
@@ -1572,7 +1613,7 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1585,23 +1626,23 @@ paths:
                       documents:
                         type: array
                         items:
-                          $ref: '#/components/schemas/Document'
+                          $ref: "#/components/schemas/Document"
                       collections:
                         type: array
                         items:
-                          $ref: '#/components/schemas/Collection'
+                          $ref: "#/components/schemas/Collection"
                   policies:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Policy'
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                      $ref: "#/components/schemas/Policy"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /documents.archive:
     post:
       tags:
@@ -1621,7 +1662,7 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1629,25 +1670,25 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Document'
+                    $ref: "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Policy'
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                      $ref: "#/components/schemas/Policy"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /documents.restore:
     post:
       tags:
         - Documents
       summary: Restore a document
-      description: 'If a document has been archived or deleted, it can be restored. Optionally a revision can be passed to restore the document to a previous point in time.'
+      description: "If a document has been archived or deleted, it can be restored. Optionally a revision can be passed to restore the document to a previous point in time."
       requestBody:
         content:
           application/json:
@@ -1665,7 +1706,7 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1673,19 +1714,19 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Document'
+                    $ref: "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Policy'
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                      $ref: "#/components/schemas/Policy"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /documents.delete:
     post:
       tags:
@@ -1705,7 +1746,7 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1715,14 +1756,14 @@ paths:
                   success:
                     type: boolean
                     example: true
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /events.list:
     post:
       tags:
@@ -1734,8 +1775,8 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/Pagination'
-                - $ref: '#/components/schemas/Sorting'
+                - $ref: "#/components/schemas/Pagination"
+                - $ref: "#/components/schemas/Sorting"
                 - type: object
                   properties:
                     name:
@@ -1753,7 +1794,7 @@ paths:
                       type: boolean
                       description: Whether to return detailed events suitable for an audit log. Without this flag less detailed event types will be returned.
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1763,13 +1804,109 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Event'
+                      $ref: "#/components/schemas/Event"
                   pagination:
-                    $ref: '#/components/schemas/Pagination'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                    $ref: "#/components/schemas/Pagination"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+  /fileOperations.info:
+    post:
+      tags:
+        - FileOperations
+      summary: Retrieve a file operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Unique identifier for the file operation.
+                  format: uuid
+              required:
+                - id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/FileOperation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /fileOperations.redirect:
+    post:
+      tags:
+        - FileOperations
+      summary:
+        Redirect to the resulting file output of an operation, if any. This
+        endpoint can be used to download an export, for example.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Unique identifier for the file operation.
+                  format: uuid
+              required:
+                - id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /fileOperations.list:
+    post:
+      tags:
+        - FileOperations
+      summary: List all file operations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/Pagination"
+                - $ref: "#/components/schemas/Sorting"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/FileOperation"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /groups.info:
     post:
       tags:
@@ -1788,7 +1925,7 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1796,13 +1933,13 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Group'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                    $ref: "#/components/schemas/Group"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /groups.list:
     post:
       tags:
@@ -1813,10 +1950,10 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/Pagination'
-                - $ref: '#/components/schemas/Sorting'
+                - $ref: "#/components/schemas/Pagination"
+                - $ref: "#/components/schemas/Sorting"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1826,13 +1963,13 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Group'
+                      $ref: "#/components/schemas/Group"
                   pagination:
-                    $ref: '#/components/schemas/Pagination'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                    $ref: "#/components/schemas/Pagination"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /groups.create:
     post:
       tags:
@@ -1850,7 +1987,7 @@ paths:
               required:
                 - name
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1858,17 +1995,17 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Group'
+                    $ref: "#/components/schemas/Group"
                   policies:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Policy'
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                      $ref: "#/components/schemas/Policy"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /groups.update:
     post:
       tags:
@@ -1890,7 +2027,7 @@ paths:
                 - id
                 - name
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1898,19 +2035,19 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Group'
+                    $ref: "#/components/schemas/Group"
                   policies:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Policy'
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                      $ref: "#/components/schemas/Policy"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /groups.delete:
     post:
       tags:
@@ -1929,7 +2066,7 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1939,14 +2076,14 @@ paths:
                   success:
                     type: boolean
                     example: true
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /groups.memberships:
     post:
       tags:
@@ -1958,7 +2095,7 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/Pagination'
+                - $ref: "#/components/schemas/Pagination"
                 - type: object
                   properties:
                     query:
@@ -1968,7 +2105,7 @@ paths:
                   required:
                     - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1981,19 +2118,19 @@ paths:
                       users:
                         type: array
                         items:
-                          $ref: '#/components/schemas/User'
+                          $ref: "#/components/schemas/User"
                       groupMemberships:
                         type: array
                         items:
-                          $ref: '#/components/schemas/GroupMembership'
+                          $ref: "#/components/schemas/GroupMembership"
                   pagination:
-                    $ref: '#/components/schemas/Pagination'
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                    $ref: "#/components/schemas/Pagination"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /groups.add_user:
     post:
       tags:
@@ -2016,7 +2153,7 @@ paths:
                 - id
                 - userId
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2029,23 +2166,23 @@ paths:
                       users:
                         type: array
                         items:
-                          $ref: '#/components/schemas/User'
+                          $ref: "#/components/schemas/User"
                       groups:
                         type: array
                         items:
-                          $ref: '#/components/schemas/Group'
+                          $ref: "#/components/schemas/Group"
                       groupMemberships:
                         type: array
                         items:
-                          $ref: '#/components/schemas/Membership'
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                          $ref: "#/components/schemas/Membership"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /groups.remove_user:
     post:
       tags:
@@ -2069,7 +2206,7 @@ paths:
                 - id
                 - userId
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2082,15 +2219,15 @@ paths:
                       groups:
                         type: array
                         items:
-                          $ref: '#/components/schemas/Group'
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                          $ref: "#/components/schemas/Group"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /revisions.info:
     post:
       tags:
@@ -2109,7 +2246,7 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2117,13 +2254,13 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Revision'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                    $ref: "#/components/schemas/Revision"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /revisions.list:
     post:
       tags:
@@ -2134,10 +2271,10 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/Pagination'
-                - $ref: '#/components/schemas/Sorting'
+                - $ref: "#/components/schemas/Pagination"
+                - $ref: "#/components/schemas/Sorting"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2147,13 +2284,13 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Revision'
+                      $ref: "#/components/schemas/Revision"
                   pagination:
-                    $ref: '#/components/schemas/Pagination'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                    $ref: "#/components/schemas/Pagination"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /shares.info:
     post:
       tags:
@@ -2174,7 +2311,7 @@ paths:
                   description: Unique identifier for a document. One of id or documentId must be provided.
                   format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2182,13 +2319,13 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Share'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                    $ref: "#/components/schemas/Share"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /shares.list:
     post:
       tags:
@@ -2199,10 +2336,10 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/Pagination'
-                - $ref: '#/components/schemas/Sorting'
+                - $ref: "#/components/schemas/Pagination"
+                - $ref: "#/components/schemas/Sorting"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2212,13 +2349,13 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Share'
+                      $ref: "#/components/schemas/Share"
                   pagination:
-                    $ref: '#/components/schemas/Pagination'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                    $ref: "#/components/schemas/Pagination"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /shares.create:
     post:
       tags:
@@ -2237,7 +2374,7 @@ paths:
               required:
                 - documentId
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2245,13 +2382,13 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Share'
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                    $ref: "#/components/schemas/Share"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /shares.update:
     post:
       tags:
@@ -2273,7 +2410,7 @@ paths:
                 - id
                 - published
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2281,13 +2418,13 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Share'
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                    $ref: "#/components/schemas/Share"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /shares.revoke:
     post:
       tags:
@@ -2306,7 +2443,7 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2316,14 +2453,14 @@ paths:
                   success:
                     type: boolean
                     example: true
-        '400':
-          $ref: '#/components/responses/Validation'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /users.info:
     post:
       tags:
@@ -2342,7 +2479,7 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2350,13 +2487,13 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/User'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                    $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /users.list:
     post:
       tags:
@@ -2368,8 +2505,8 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/Pagination'
-                - $ref: '#/components/schemas/Sorting'
+                - $ref: "#/components/schemas/Pagination"
+                - $ref: "#/components/schemas/Sorting"
                 - type: object
                   properties:
                     query:
@@ -2379,7 +2516,7 @@ paths:
                       type: boolean
                       example: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2389,11 +2526,11 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/User'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                      $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /users.update:
     post:
       tags:
@@ -2412,7 +2549,7 @@ paths:
                   type: string
                   format: uri
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2420,13 +2557,13 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/User'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                    $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /users.promote:
     post:
       tags:
@@ -2446,7 +2583,7 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2454,13 +2591,13 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/User'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                    $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /users.demote:
     post:
       tags:
@@ -2480,7 +2617,7 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2488,13 +2625,13 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/User'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                    $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /users.suspend:
     post:
       tags:
@@ -2514,7 +2651,7 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2522,13 +2659,13 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/User'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                    $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /users.activate:
     post:
       tags:
@@ -2548,7 +2685,7 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2556,19 +2693,19 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/User'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+                    $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /users.delete:
     post:
       tags:
         - Users
       summary: Delete a user
-      description: 'Deleting a user removes the object entirely. In almost every circumstance it is preferable to suspend a user, as a deleted user can be recreated by signing in with SSO again.'
+      description: "Deleting a user removes the object entirely. In almost every circumstance it is preferable to suspend a user, as a deleted user can be recreated by signing in with SSO again."
       requestBody:
         content:
           application/json:
@@ -2582,7 +2719,7 @@ paths:
               required:
                 - id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2592,12 +2729,12 @@ paths:
                   success:
                     type: boolean
                     example: true
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /views.list:
     post:
       tags:
@@ -2616,7 +2753,7 @@ paths:
               required:
                 - documentId
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2626,11 +2763,11 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/View'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                      $ref: "#/components/schemas/View"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /views.create:
     post:
       tags:
@@ -2649,7 +2786,7 @@ paths:
               required:
                 - documentId
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -2657,11 +2794,11 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/View'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
+                    $ref: "#/components/schemas/View"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
 components:
   schemas:
     Attachment:
@@ -2679,7 +2816,7 @@ components:
           format: uri
         documentId:
           type: string
-          description: 'Identifier for the associated document, if any.'
+          description: "Identifier for the associated document, if any."
           format: uuid
     Pagination:
       type: object
@@ -2715,14 +2852,14 @@ components:
         children:
           type: array
           items:
-            $ref: '#/components/schemas/NavigationNode'
+            $ref: "#/components/schemas/NavigationNode"
     Auth:
       type: object
       properties:
         user:
-          $ref: '#/components/schemas/User'
+          $ref: "#/components/schemas/User"
         team:
-          $ref: '#/components/schemas/Team'
+          $ref: "#/components/schemas/Team"
     Collection:
       type: object
       properties:
@@ -2737,17 +2874,17 @@ components:
           example: Human Resources
         description:
           type: string
-          description: 'A description of the collection, may contain markdown formatting'
-          example: ''
+          description: "A description of the collection, may contain markdown formatting"
+          example: ""
         documents:
           type: array
           items:
-            $ref: '#/components/schemas/NavigationNode'
+            $ref: "#/components/schemas/NavigationNode"
           example: []
         color:
           type: string
-          description: 'A color representing the collection, this is used to help make collections more identifiable in the UI. It should be in HEX format including the #'
-          example: '#123123'
+          description: "A color representing the collection, this is used to help make collections more identifiable in the UI. It should be in HEX format including the #"
+          example: "#123123"
         private:
           type: boolean
           description: Whether this collection is considered to be private. Private collections are only visible to those with a user or group membership.
@@ -2782,7 +2919,7 @@ components:
           format: uuid
         parentDocumentId:
           type: string
-          description: 'Identifier for the document this is a child of, if any.'
+          description: "Identifier for the document this is a child of, if any."
           format: uuid
         title:
           type: string
@@ -2795,7 +2932,7 @@ components:
           readOnly: true
         text:
           type: string
-          description: 'The text content of the document, contains markdown formatting'
+          description: "The text content of the document, contains markdown formatting"
           example: …
         urlId:
           type: string
@@ -2804,7 +2941,7 @@ components:
         collaborators:
           type: array
           items:
-            $ref: '#/components/schemas/User'
+            $ref: "#/components/schemas/User"
         pinned:
           type: boolean
           description: Whether this document is pinned in the collection
@@ -2828,14 +2965,14 @@ components:
           readOnly: true
           format: date-time
         createdBy:
-          $ref: '#/components/schemas/User'
+          $ref: "#/components/schemas/User"
         updatedAt:
           type: string
           description: The date and time that this object was last changed
           readOnly: true
           format: date-time
         updatedBy:
-          $ref: '#/components/schemas/User'
+          $ref: "#/components/schemas/User"
         publishedAt:
           type: string
           nullable: true
@@ -2883,12 +3020,12 @@ components:
         collectionId:
           type: string
           format: uuid
-          description: 'Identifier for the associated collection, if any'
+          description: "Identifier for the associated collection, if any"
           readOnly: true
         documentId:
           type: string
           format: uuid
-          description: 'Identifier for the associated document, if any'
+          description: "Identifier for the associated document, if any"
           readOnly: true
         createdAt:
           type: string
@@ -2902,7 +3039,7 @@ components:
           description: Additional unstructured data associated with the event
           readOnly: true
         actor:
-          $ref: '#/components/schemas/User'
+          $ref: "#/components/schemas/User"
     Error:
       type: object
       properties:
@@ -2911,6 +3048,42 @@ components:
           example: false
         error:
           type: string
+    FileOperation:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the object.
+          readOnly: true
+          format: uuid
+        type:
+          type: string
+          example: "export"
+          description: The type of file operation.
+          readOnly: true
+          enum:
+            - import
+            - export
+        state:
+          type: string
+          description: The state of the file operation.
+          example: "complete"
+          readOnly: true
+          enum:
+            - creating
+            - uploading
+            - complete
+            - error
+            - expired
+        collection:
+          $ref: "#/components/schemas/Collection"
+        user:
+          $ref: "#/components/schemas/User"
+        createdAt:
+          type: string
+          description: The date and time that this object was created
+          readOnly: true
+          format: date-time
     Group:
       type: object
       properties:
@@ -2967,7 +3140,7 @@ components:
           description: Date and time when this share was created
           readOnly: true
         createdBy:
-          $ref: '#/components/schemas/User'
+          $ref: "#/components/schemas/User"
         updatedAt:
           type: string
           format: date-time
@@ -2992,7 +3165,7 @@ components:
           readOnly: true
         text:
           type: string
-          description: 'Body of the document, may contain markdown formatting'
+          description: "Body of the document, may contain markdown formatting"
           readOnly: true
         createdAt:
           type: string
@@ -3000,7 +3173,7 @@ components:
           description: Date and time when this revision was created
           readOnly: true
         createdBy:
-          $ref: '#/components/schemas/User'
+          $ref: "#/components/schemas/User"
     Team:
       type: object
       properties:
@@ -3011,11 +3184,11 @@ components:
           format: uuid
         name:
           type: string
-          description: 'The name of this team, it is usually auto-generated when the first SSO connection is made but can be changed if neccessary.'
+          description: "The name of this team, it is usually auto-generated when the first SSO connection is made but can be changed if neccessary."
         avatarUrl:
           type: string
           format: uri
-          description: 'The URL for the image associated with this team, it will be displayed in the team switcher and in the top left of the knowledge base along with the name.'
+          description: "The URL for the image associated with this team, it will be displayed in the team switcher and in the top left of the knowledge base along with the name."
         slackConnected:
           type: boolean
           readOnly: true
@@ -3051,15 +3224,15 @@ components:
           format: uuid
         name:
           type: string
-          description: 'The name of this user, it is migrated from Slack or Google Workspace when the SSO connection is made but can be changed if neccessary.'
+          description: "The name of this user, it is migrated from Slack or Google Workspace when the SSO connection is made but can be changed if neccessary."
           example: Jane Doe
         avatarUrl:
           type: string
           format: uri
-          description: 'The URL for the image associated with this user, it will be displayed in the application UI and email notifications.'
+          description: "The URL for the image associated with this user, it will be displayed in the application UI and email notifications."
         email:
           type: string
-          description: 'The email associated with this user, it is migrated from Slack or Google Workspace when the SSO connection is made but can be changed if neccessary.'
+          description: "The email associated with this user, it is migrated from Slack or Google Workspace when the SSO connection is made but can be changed if neccessary."
           format: email
         isAdmin:
           type: boolean
@@ -3069,7 +3242,7 @@ components:
           description: Whether this user has been suspended.
         lastActiveAt:
           type: string
-          description: 'The last time this user made an API request, this value is updated at most every 5 minutes.'
+          description: "The last time this user made an API request, this value is updated at most every 5 minutes."
           readOnly: true
           format: date
         createdAt:
@@ -3161,7 +3334,7 @@ components:
           readOnly: true
           format: uuid
         user:
-          $ref: '#/components/schemas/User'
+          $ref: "#/components/schemas/User"
     CollectionGroupMembership:
       type: object
       properties:
@@ -3215,32 +3388,32 @@ components:
           example: 22
           readOnly: true
         user:
-          $ref: '#/components/schemas/User'
+          $ref: "#/components/schemas/User"
   responses:
     NotFound:
       description: The specified resource was not found.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
     Validation:
       description: The request failed one or more validations.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
     Unauthorized:
       description: The current API key is not authorized to perform this action.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
     Unauthenticated:
       description: The API key is missing or otherwise invalid.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
   securitySchemes:
     http:
       type: http

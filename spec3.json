@@ -41,6 +41,10 @@
       "description": "`Events` represent an artifact of an action. Whether it is creating a user,\nediting a document, changing permissions, or any other action – an event\nis created that can be used as an audit trail or activity stream.\n"
     },
     {
+      "name": "FileOperations",
+      "description": "`FileOperations` represent background jobs for importing or exporting files.\nYou can query the file operation to find the state of progress and any\nresulting output.\n"
+    },
+    {
       "name": "Groups",
       "description": "`Groups` represent a list of users that logically belong together, for \nexample there might be groups for each department in your organization.\nGroups can be granted access to collections with read or write permissions.\n"
     },
@@ -1077,7 +1081,7 @@
           "Collections"
         ],
         "summary": "Export a collection",
-        "description": "Returns a zip file of all the collections documents in markdown format. If documents are nested then they will be nested in folders inside the zip file.",
+        "description": "Triggers a bulk export of the collection in markdown format and their attachments. If documents are nested then they will be nested in folders inside the zip file. The endpoint returns a `FileOperation` that can be queried to track the progress of the export and get the url for the final file.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1100,10 +1104,59 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "fileOperation": {
+                          "$ref": "#/components/schemas/FileOperation"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/collections.export_all": {
+      "post": {
+        "tags": [
+          "Collections"
+        ],
+        "summary": "Export all collections",
+        "description": "Triggers a bulk export of all documents in markdown format and their attachments. If documents are nested then they will be nested in folders inside the zip file. The endpoint returns a `FileOperation` that can be queried to track the progress of the export and get the url for the final file.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "fileOperation": {
+                          "$ref": "#/components/schemas/FileOperation"
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -2561,6 +2614,161 @@
                       "type": "array",
                       "items": {
                         "$ref": "#/components/schemas/Event"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/fileOperations.info": {
+      "post": {
+        "tags": [
+          "FileOperations"
+        ],
+        "summary": "Retrieve a file operation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the file operation.",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/FileOperation"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/fileOperations.redirect": {
+      "post": {
+        "tags": [
+          "FileOperations"
+        ],
+        "summary": "Redirect to the resulting file output of an operation, if any. This endpoint can be used to download an export, for example.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the file operation.",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/fileOperations.list": {
+      "post": {
+        "tags": [
+          "FileOperations"
+        ],
+        "summary": "List all file operations",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Pagination"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Sorting"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/FileOperation"
                       }
                     },
                     "pagination": {
@@ -4347,6 +4555,52 @@
           },
           "error": {
             "type": "string"
+          }
+        }
+      },
+      "FileOperation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the object.",
+            "readOnly": true,
+            "format": "uuid"
+          },
+          "type": {
+            "type": "string",
+            "example": "export",
+            "description": "The type of file operation.",
+            "readOnly": true,
+            "enum": [
+              "import",
+              "export"
+            ]
+          },
+          "state": {
+            "type": "string",
+            "description": "The state of the file operation.",
+            "example": "complete",
+            "readOnly": true,
+            "enum": [
+              "creating",
+              "uploading",
+              "complete",
+              "error",
+              "expired"
+            ]
+          },
+          "collection": {
+            "$ref": "#/components/schemas/Collection"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "The date and time that this object was created",
+            "readOnly": true,
+            "format": "date-time"
           }
         }
       },

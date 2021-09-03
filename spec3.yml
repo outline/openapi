@@ -1937,6 +1937,17 @@ paths:
               allOf:
                 - $ref: "#/components/schemas/Pagination"
                 - $ref: "#/components/schemas/Sorting"
+                - type: object
+                  properties:
+                    type:
+                      type: string
+                      description: The type of fileOperation
+                      example: export
+                      enum:
+                        - export
+                        - import
+                  required:
+                    - type
       responses:
         "200":
           description: OK
@@ -3139,9 +3150,16 @@ components:
             - error
             - expired
         collection:
-          $ref: "#/components/schemas/Collection"
+          allOf:
+            - nullable: true
+            - $ref: "#/components/schemas/Collection"
         user:
           $ref: "#/components/schemas/User"
+        size:
+          type: number
+          description: The size of the resulting file in bytes
+          readOnly: true
+          example: 2048
         createdAt:
           type: string
           description: The date and time that this object was created

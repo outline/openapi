@@ -1896,9 +1896,8 @@ paths:
     post:
       tags:
         - FileOperations
-      summary:
-        Redirect to the resulting file output of an operation, if any. This
-        endpoint can be used to download an export, for example.
+      summary: Retrieve the file
+      description: Load the resulting file from where it is stored based on the id. A temporary, signed url with embedded credentials is generated on demand.
       requestBody:
         content:
           application/json:

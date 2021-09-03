@@ -1588,6 +1588,46 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "404":
           $ref: "#/components/responses/NotFound"
+  /documents.unpublish:
+    post:
+      tags:
+        - Documents
+      summary: Unpublish a document
+      description: Unpublishing a document moves it back to a draft status and out of the collection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: hDYep1TPAM
+                  description: Unique identifier for the document. Either the UUID or the urlId is acceptable.
+              required:
+                - id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Document"
+                  policies:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Policy"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /documents.move:
     post:
       tags:
@@ -1743,6 +1783,10 @@ paths:
                   type: string
                   example: hDYep1TPAM
                   description: Unique identifier for the document. Either the UUID or the urlId is acceptable.
+                permanent:
+                  type: boolean
+                  example: false
+                  description: If set to true the document will be destroyed with no way to recover rather than moved to the trash.
               required:
                 - id
       responses:
@@ -1786,6 +1830,10 @@ paths:
                       type: string
                       format: uuid
                       description: Filter to events performed by the selected user
+                    documentId:
+                      type: string
+                      format: uuid
+                      description: Filter to events performed in the selected document
                     collectionId:
                       type: string
                       format: uuid
@@ -2512,9 +2560,16 @@ paths:
                     query:
                       type: string
                       example: jane
-                    includeSuspended:
-                      type: boolean
-                      example: false
+                    filter:
+                      type: string
+                      example: "all"
+                      enum:
+                        - invited
+                        - viewers
+                        - admins
+                        - active
+                        - all
+                        - suspended
       responses:
         "200":
           description: OK
@@ -2527,6 +2582,8 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/User"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
         "401":
           $ref: "#/components/responses/Unauthenticated"
         "403":
@@ -2614,6 +2671,12 @@ paths:
                   type: string
                   description: Unique identifier for the user.
                   format: uuid
+                to:
+                  type: string
+                  description: Which role to demote to
+                  enum:
+                    - viewer
+                    - member
               required:
                 - id
       responses:
@@ -3134,6 +3197,14 @@ components:
           format: uri
           description: URL of the publicly shared document.
           readOnly: true
+        published:
+          type: boolean
+          example: false
+          description: If true the share can be loaded without a user account.
+        includeChildDocuments:
+          type: boolean
+          example: true
+          description: If to also give permission to view documents nested beneath this one.
         createdAt:
           type: string
           format: date-time
@@ -3145,6 +3216,11 @@ components:
           type: string
           format: date-time
           description: Date and time when this share was edited
+          readOnly: true
+        lastAccessedAt:
+          type: string
+          format: date-time
+          description: Date and time when this share was last viewed
           readOnly: true
     Revision:
       type: object

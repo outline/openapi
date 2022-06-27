@@ -2262,7 +2262,7 @@ paths:
       tags:
         - Shares
       summary: Create a share
-      description: Creates a new share link that can be used by to access a document. If you request multiple shares for the same the ocument with the same API key the same share object will be returned. By default all shares are unpublished.
+      description: Creates a new share link that can be used by to access a document. If you request multiple shares for the same document with the same API key, the same share object will be returned. By default all shares are unpublished.
       requestBody:
         content:
           application/json:
@@ -2366,7 +2366,7 @@ paths:
     post:
       tags:
         - Users
-      summary: Invite one or more users
+      summary: Invite users
       requestBody:
         content:
           application/json:
@@ -2387,8 +2387,14 @@ paths:
               schema:
                 type: object
                 properties:
-                  data:
-                    $ref: "#/components/schemas/User"
+                  sent:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Invite"
+                  users:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/User"
         "401":
           $ref: "#/components/responses/Unauthenticated"
         "403":
@@ -2823,6 +2829,21 @@ components:
           type: string
           description: "A description of the collection, may contain markdown formatting"
           example: ""
+        sort:
+          type: object
+          description: The sort of documents in the collection. Note that not all API responses respect this and it is left as a frontend concern to implement.
+          properties:
+            field:
+              type: string
+            direction:
+              type: string
+              enum:
+                - asc
+                - desc
+        index:
+          type: string
+          description: The position of the collection in the sidebar
+          example: P
         documents:
           type: array
           items:
@@ -2832,10 +2853,14 @@ components:
           type: string
           description: "A color representing the collection, this is used to help make collections more identifiable in the UI. It should be in HEX format including the #"
           example: "#123123"
-        private:
-          type: boolean
-          description: Whether this collection is considered to be private. Private collections are only visible to those with a user or group membership.
-          example: false
+        icon:
+          type: string
+          description: "A string that represents an icon in the outline-icons package"
+        permission:
+          type: string
+          enum:
+            - read
+            - read_write
         createdAt:
           type: string
           description: The date and time that this object was created
@@ -2951,7 +2976,7 @@ components:
           readOnly: true
         modelId:
           type: string
-          description: Identifier for the object this event is associated with when it is not one of document or collection
+          description: Identifier for the object this event is associated with when it is not one of document, collection, or user.
           format: uuid
           readOnly: true
         actorId:
@@ -3218,12 +3243,15 @@ components:
           type: string
           description: "The email associated with this user, it is migrated from Slack or Google Workspace when the SSO connection is made but can be changed if neccessary."
           format: email
+          readOnly: true
         isAdmin:
           type: boolean
           description: Whether this user has admin permissions.
+          readOnly: true
         isSuspended:
           type: boolean
           description: Whether this user has been suspended.
+          readOnly: true
         lastActiveAt:
           type: string
           description: "The last time this user made an API request, this value is updated at most every 5 minutes."

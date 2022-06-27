@@ -169,8 +169,8 @@ tags:
   - name: Users
     description: |
       `Users` represent an individual with access to the knowledge base. Users
-      are created automatically when signing in with SSO or when a user is
-      invited via guest access.
+      can be created automatically when signing in with SSO or when a user is
+      invited via email.
   - name: Views
     description: |
       `Views` represent a compressed record of an individual users views of a
@@ -1137,83 +1137,6 @@ paths:
           $ref: "#/components/responses/Unauthenticated"
         "403":
           $ref: "#/components/responses/Unauthorized"
-  /documents.starred:
-    post:
-      tags:
-        - Documents
-      summary: List all starred documents
-      description: This method will list all documents starred by the current user.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              allOf:
-                - $ref: "#/components/schemas/Pagination"
-                - $ref: "#/components/schemas/Sorting"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Document"
-                  policies:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Policy"
-                  pagination:
-                    $ref: "#/components/schemas/Pagination"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-  /documents.pinned:
-    post:
-      tags:
-        - Documents
-      summary: List all pinned documents
-      description: This method will list all documents pinned in a collection.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              allOf:
-                - $ref: "#/components/schemas/Pagination"
-                - $ref: "#/components/schemas/Sorting"
-                - type: object
-                  properties:
-                    collectionId:
-                      type: string
-                      format: uuid
-                  required:
-                    - collectionId
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Document"
-                  policies:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Policy"
-                  pagination:
-                    $ref: "#/components/schemas/Pagination"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
   /documents.search:
     post:
       tags:
@@ -1500,86 +1423,6 @@ paths:
                 properties:
                   success:
                     type: boolean
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-  /documents.pin:
-    post:
-      tags:
-        - Documents
-      summary: Pin a document
-      description: Pinning a document highlights it on the collection page for everyone on the team.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: string
-                  example: hDYep1TPAM
-                  description: Unique identifier for the document. Either the UUID or the urlId is acceptable.
-              required:
-                - id
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: "#/components/schemas/Document"
-                  policies:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Policy"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-  /documents.unpin:
-    post:
-      tags:
-        - Documents
-      summary: Unpin a document
-      description: Pinning a document highlights it on the collection page for everyone on the team.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: string
-                  example: hDYep1TPAM
-                  description: Unique identifier for the document. Either the UUID or the urlId is acceptable.
-              required:
-                - id
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: "#/components/schemas/Document"
-                  policies:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Policy"
         "400":
           $ref: "#/components/responses/Validation"
         "401":
@@ -2519,6 +2362,37 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "404":
           $ref: "#/components/responses/NotFound"
+  /users.invite:
+    post:
+      tags:
+        - Users
+      summary: Invite one or more users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                invites:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Invite"
+              required:
+                - invites
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /users.info:
     post:
       tags:
@@ -2998,6 +2872,9 @@ components:
           type: string
           description: The title of the document.
           example: "\U0001F389 Welcome to Acme Inc"
+        fullWidth:
+          type: boolean
+          description: Whether this document should be displayed in a full-width view.
         emoji:
           type: string
           description: An emoji associated with the document.
@@ -3025,9 +2902,6 @@ components:
           type: string
           description: Unique identifier for the template this document was created from, if any
           format: uuid
-        starred:
-          type: boolean
-          description: Whether this document is starred by the current user
         revision:
           type: number
           description: A number that is auto incrementing with every revision of the document that is saved
@@ -3282,20 +3156,37 @@ components:
           type: string
           format: uri
           description: "The URL for the image associated with this team, it will be displayed in the team switcher and in the top left of the knowledge base along with the name."
-        slackConnected:
-          type: boolean
-          readOnly: true
-          description: Whether this team has authentication with Slack enabled.
-        googleConnected:
-          type: boolean
-          readOnly: true
-          description: Whether this team has authentication with Google Workspace enabled.
         sharing:
           type: boolean
           description: Whether this team has share links globally enabled. If this value is false then all sharing UI and APIs are disabled.
+        defaultCollectionId:
+          type: string
+          description: If set then the referenced collection is where users will be redirected to after signing in instead of the Home screen
+          format: uuid
+        defaultUserRole:
+          type: string
+          description: If set then this role will be used as the default for users that signup via SSO
+          enum:
+            - viewer
+            - member
+            - admin
+        memberCollectionCreate:
+          type: boolean
+          description: Whether members are allowed to create new collections. If false then only admins can create collections.
         documentEmbeds:
           type: boolean
           description: Whether this team has embeds in documents globally enabled. It can be disabled to reduce potential data leakage to third parties.
+        collaborativeEditing:
+          type: boolean
+          description: Whether this team has collaborative editing in documents globally enabled.
+        inviteRequired:
+          type: boolean
+          description: Whether an invite is required to join this team, if false users may join with a linked SSO provider.
+        allowedDomains:
+          type: array
+          items:
+            type: string
+            description: A hostname that user emails are restricted to
         guestSignin:
           type: boolean
           description: Whether this team has guest signin enabled. Guests can signin with an email address and are not required to have a Google Workspace/Slack SSO account once invited.
@@ -3343,6 +3234,21 @@ components:
           description: The date and time that this user first signed in or was invited as a guest.
           readOnly: true
           format: date-time
+    Invite:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The full name of the user being invited
+        email:
+          type: string
+          description: The email address to invite
+        role:
+          type: string
+          enum:
+            - member
+            - guest
+            - admin
     Membership:
       type: object
       properties:

@@ -68,9 +68,7 @@
   "paths": {
     "/attachments.create": {
       "post": {
-        "tags": [
-          "Attachments"
-        ],
+        "tags": ["Attachments"],
         "summary": "Create an attachment",
         "description": "Creating an attachment object creates a database record and returns the inputs needed to generate a signed url and upload the file from the client to cloud storage.",
         "requestBody": {
@@ -97,11 +95,7 @@
                     "description": "Size of the file attachment in bytes."
                   }
                 },
-                "required": [
-                  "name",
-                  "contentType",
-                  "size"
-                ]
+                "required": ["name", "contentType", "size"]
               }
             }
           }
@@ -151,9 +145,7 @@
     },
     "/attachments.redirect": {
       "post": {
-        "tags": [
-          "Attachments"
-        ],
+        "tags": ["Attachments"],
         "summary": "Retrieve an attachment",
         "description": "Load an attachment from where it is stored based on the id. If the attachment is private then a temporary, signed url with embedded credentials is generated on demand.",
         "requestBody": {
@@ -168,9 +160,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -184,9 +174,7 @@
     },
     "/attachments.delete": {
       "post": {
-        "tags": [
-          "Attachments"
-        ],
+        "tags": ["Attachments"],
         "summary": "Delete an attachment",
         "description": "Deleting an attachment is permanant. It will not delete references or links to the attachment that may exist in your documents.",
         "requestBody": {
@@ -201,9 +189,7 @@
                     "description": "Unique identifier for the attachment."
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -242,9 +228,7 @@
     },
     "/auth.info": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "Retrieve auth",
         "description": "Retrieve authentication details for the current API key",
         "responses": {
@@ -271,9 +255,7 @@
     },
     "/auth.config": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "Retrieve auth config",
         "description": "Retrieve authentication options",
         "responses": {
@@ -327,9 +309,7 @@
     },
     "/collections.info": {
       "post": {
-        "tags": [
-          "Collections"
-        ],
+        "tags": ["Collections"],
         "summary": "Retrieve a collection",
         "requestBody": {
           "content": {
@@ -343,9 +323,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -380,9 +358,7 @@
     },
     "/collections.list": {
       "post": {
-        "tags": [
-          "Collections"
-        ],
+        "tags": ["Collections"],
         "summary": "List all collections",
         "requestBody": {
           "content": {
@@ -426,9 +402,7 @@
     },
     "/collections.create": {
       "post": {
-        "tags": [
-          "Collections"
-        ],
+        "tags": ["Collections"],
         "summary": "Create a collection",
         "requestBody": {
           "content": {
@@ -453,9 +427,7 @@
                     "example": false
                   }
                 },
-                "required": [
-                  "name"
-                ]
+                "required": ["name"]
               }
             }
           }
@@ -496,9 +468,7 @@
     },
     "/collections.update": {
       "post": {
-        "tags": [
-          "Collections"
-        ],
+        "tags": ["Collections"],
         "summary": "Update a collection",
         "requestBody": {
           "content": {
@@ -523,9 +493,7 @@
                     "example": "#123123"
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -569,9 +537,7 @@
     },
     "/collections.add_user": {
       "post": {
-        "tags": [
-          "Collections"
-        ],
+        "tags": ["Collections"],
         "summary": "Add a collection user",
         "description": "This method allows you to add a user membership to the specified collection.",
         "requestBody": {
@@ -589,10 +555,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id",
-                  "userId"
-                ]
+                "required": ["id", "userId"]
               }
             }
           }
@@ -644,9 +607,7 @@
     },
     "/collections.remove_user": {
       "post": {
-        "tags": [
-          "Collections"
-        ],
+        "tags": ["Collections"],
         "summary": "Remove a collection user",
         "description": "This method allows you to remove a user from the specified collection.",
         "requestBody": {
@@ -665,10 +626,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id",
-                  "userId"
-                ]
+                "required": ["id", "userId"]
               }
             }
           }
@@ -707,9 +665,7 @@
     },
     "/collections.memberships": {
       "post": {
-        "tags": [
-          "Collections"
-        ],
+        "tags": ["Collections"],
         "summary": "List all collection memberships",
         "description": "This method allows you to list a collections individual memberships. It's important to note that memberships returned from this endpoint do not include group memberships.",
         "requestBody": {
@@ -736,16 +692,10 @@
                       "permission": {
                         "type": "string",
                         "description": "Filter memberships by permissions",
-                        "enum": [
-                          "read",
-                          "read_write",
-                          "maintainer"
-                        ]
+                        "enum": ["read", "read_write", "maintainer"]
                       }
                     },
-                    "required": [
-                      "id"
-                    ]
+                    "required": ["id"]
                   }
                 ]
               }
@@ -799,9 +749,7 @@
     },
     "/collections.add_group": {
       "post": {
-        "tags": [
-          "Collections"
-        ],
+        "tags": ["Collections"],
         "summary": "Add a group to a collection",
         "description": "This method allows you to give all members in a group access to a collection.",
         "requestBody": {
@@ -819,10 +767,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id",
-                  "groupId"
-                ]
+                "required": ["id", "groupId"]
               }
             }
           }
@@ -868,9 +813,7 @@
     },
     "/collections.remove_group": {
       "post": {
-        "tags": [
-          "Collections"
-        ],
+        "tags": ["Collections"],
         "summary": "Remove a collection group",
         "description": "This method allows you to revoke all members in a group access to a collection. Note that members of the group may still retain access through other groups or individual memberships.",
         "requestBody": {
@@ -889,10 +832,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id",
-                  "groupId"
-                ]
+                "required": ["id", "groupId"]
               }
             }
           }
@@ -931,9 +871,7 @@
     },
     "/collections.group_memberships": {
       "post": {
-        "tags": [
-          "Collections"
-        ],
+        "tags": ["Collections"],
         "summary": "List all collection group members",
         "description": "This method allows you to list a collections group memberships. This is the list of groups that have been given access to the collection.",
         "requestBody": {
@@ -960,16 +898,10 @@
                       "permission": {
                         "type": "string",
                         "description": "Filter memberships by permissions",
-                        "enum": [
-                          "read",
-                          "read_write",
-                          "maintainer"
-                        ]
+                        "enum": ["read", "read_write", "maintainer"]
                       }
                     },
-                    "required": [
-                      "id"
-                    ]
+                    "required": ["id"]
                   }
                 ]
               }
@@ -1023,9 +955,7 @@
     },
     "/collections.delete": {
       "post": {
-        "tags": [
-          "Collections"
-        ],
+        "tags": ["Collections"],
         "summary": "Delete a collection",
         "description": "Delete a collection and all of its documents. This action can’t be undone so please be careful.",
         "requestBody": {
@@ -1039,9 +969,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -1077,9 +1005,7 @@
     },
     "/collections.export": {
       "post": {
-        "tags": [
-          "Collections"
-        ],
+        "tags": ["Collections"],
         "summary": "Export a collection",
         "description": "Triggers a bulk export of the collection in markdown format and their attachments. If documents are nested then they will be nested in folders inside the zip file. The endpoint returns a `FileOperation` that can be queried to track the progress of the export and get the url for the final file.",
         "requestBody": {
@@ -1088,14 +1014,16 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "format": {
+                    "type": "string",
+                    "enum": ["outline-markdown", "json", "html"]
+                  },
                   "id": {
                     "type": "string",
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -1135,11 +1063,24 @@
     },
     "/collections.export_all": {
       "post": {
-        "tags": [
-          "Collections"
-        ],
+        "tags": ["Collections"],
         "summary": "Export all collections",
-        "description": "Triggers a bulk export of all documents in markdown format and their attachments. If documents are nested then they will be nested in folders inside the zip file. The endpoint returns a `FileOperation` that can be queried to track the progress of the export and get the url for the final file.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "format": {
+                    "type": "string",
+                    "enum": ["outline-markdown", "json", "html"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Triggers a bulk export of all documents in and their attachments. The endpoint returns a `FileOperation` that can be queried through the fileOperations endpoint to track the progress of the export and get the url for the final file.",
         "responses": {
           "200": {
             "description": "OK",
@@ -1175,9 +1116,7 @@
     },
     "/documents.info": {
       "post": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "Retrieve a document",
         "requestBody": {
           "content": {
@@ -1229,9 +1168,7 @@
     },
     "/documents.import": {
       "post": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "Import a file as a document",
         "description": "This method allows you to create a new document by importing an existing file. By default a document is set to the collection root. If you want to create a nested/child document, you should pass parentDocumentId to set the parent document.",
         "requestBody": {
@@ -1293,9 +1230,7 @@
     },
     "/documents.export": {
       "post": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "Export a document as markdown",
         "requestBody": {
           "content": {
@@ -1348,9 +1283,7 @@
     },
     "/documents.list": {
       "post": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "List all documents",
         "description": "This method will list all published documents and draft documents belonging to the current user.",
         "requestBody": {
@@ -1434,9 +1367,7 @@
     },
     "/documents.drafts": {
       "post": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "List all draft documents",
         "description": "This method will list all draft documents belonging to the current user.",
         "requestBody": {
@@ -1462,12 +1393,7 @@
                         "type": "string",
                         "description": "Any documents that have not been updated within the specified period will be filtered out",
                         "example": "month",
-                        "enum": [
-                          "day",
-                          "week",
-                          "month",
-                          "year"
-                        ]
+                        "enum": ["day", "week", "month", "year"]
                       }
                     }
                   }
@@ -1515,9 +1441,7 @@
     },
     "/documents.viewed": {
       "post": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "List all recently viewed documents",
         "description": "This method will list all documents recently viewed by the current user.",
         "requestBody": {
@@ -1575,9 +1499,7 @@
     },
     "/documents.search": {
       "post": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "Search all documents",
         "description": "This methods allows you to search your teams documents with keywords. Note that search results will be restricted to those accessible by the current access token.",
         "requestBody": {
@@ -1615,12 +1537,7 @@
                         "type": "string",
                         "description": "Any documents that have not been updated within the specified period will be filtered out",
                         "example": "month",
-                        "enum": [
-                          "day",
-                          "week",
-                          "month",
-                          "year"
-                        ]
+                        "enum": ["day", "week", "month", "year"]
                       }
                     }
                   }
@@ -1684,9 +1601,7 @@
     },
     "/documents.create": {
       "post": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "Create a document",
         "description": "This method allows you to create or publish a new document. By default a document is set to the collection root. If you want to create a nested/child document, you should pass parentDocumentId to set the parent document.",
         "requestBody": {
@@ -1725,10 +1640,7 @@
                     "description": "Whether this document should be immediately published and made visible to other team members."
                   }
                 },
-                "required": [
-                  "title",
-                  "collectionId"
-                ]
+                "required": ["title", "collectionId"]
               }
             }
           }
@@ -1769,9 +1681,7 @@
     },
     "/documents.update": {
       "post": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "Update a document",
         "description": "This method allows you to modify an already created document",
         "requestBody": {
@@ -1807,9 +1717,7 @@
                     "description": "Whether the editing session has finished, this will trigger any notifications. This property will soon be deprecated."
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -1853,9 +1761,7 @@
     },
     "/documents.templatize": {
       "post": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "Create a template from a document",
         "description": "This method allows you to createa new template using an existing document as the basis",
         "requestBody": {
@@ -1869,9 +1775,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -1912,9 +1816,7 @@
     },
     "/documents.star": {
       "post": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "Star a document",
         "description": "Starring a document gives it extra priority in the UI and makes it easier to find important information later.",
         "requestBody": {
@@ -1929,9 +1831,7 @@
                     "description": "Unique identifier for the document. Either the UUID or the urlId is acceptable."
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -1969,9 +1869,7 @@
     },
     "/documents.unstar": {
       "post": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "Unstar a document",
         "description": "Starring a document gives it extra priority in the UI and makes it easier to find important information later.",
         "requestBody": {
@@ -1986,9 +1884,7 @@
                     "description": "Unique identifier for the document. Either the UUID or the urlId is acceptable."
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -2026,9 +1922,7 @@
     },
     "/documents.unpublish": {
       "post": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "Unpublish a document",
         "description": "Unpublishing a document moves it back to a draft status and out of the collection.",
         "requestBody": {
@@ -2043,9 +1937,7 @@
                     "description": "Unique identifier for the document. Either the UUID or the urlId is acceptable."
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -2089,9 +1981,7 @@
     },
     "/documents.move": {
       "post": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "Move a document",
         "description": "Move a document to a new location or collection. If no parent document is provided, the document will be moved to the collection root.",
         "requestBody": {
@@ -2114,9 +2004,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -2174,9 +2062,7 @@
     },
     "/documents.archive": {
       "post": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "Archive a document",
         "description": "Archiving a document allows outdated information to be moved out of sight whilst retaining the ability to optionally search and restore it later.",
         "requestBody": {
@@ -2191,9 +2077,7 @@
                     "description": "Unique identifier for the document. Either the UUID or the urlId is acceptable."
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -2237,9 +2121,7 @@
     },
     "/documents.restore": {
       "post": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "Restore a document",
         "description": "If a document has been archived or deleted, it can be restored. Optionally a revision can be passed to restore the document to a previous point in time.",
         "requestBody": {
@@ -2259,9 +2141,7 @@
                     "description": "Identifier for the revision to restore to."
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -2305,9 +2185,7 @@
     },
     "/documents.delete": {
       "post": {
-        "tags": [
-          "Documents"
-        ],
+        "tags": ["Documents"],
         "summary": "Delete a document",
         "description": "Deleting a document moves it to the trash. If not restored within 30 days it is permenantly deleted.",
         "requestBody": {
@@ -2327,9 +2205,7 @@
                     "description": "If set to true the document will be destroyed with no way to recover rather than moved to the trash."
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -2368,9 +2244,7 @@
     },
     "/events.list": {
       "post": {
-        "tags": [
-          "Events"
-        ],
+        "tags": ["Events"],
         "summary": "List all events",
         "description": "Events are an audit trail of important events that happen in the knowledge base.",
         "requestBody": {
@@ -2450,9 +2324,7 @@
     },
     "/fileOperations.info": {
       "post": {
-        "tags": [
-          "FileOperations"
-        ],
+        "tags": ["FileOperations"],
         "summary": "Retrieve a file operation",
         "requestBody": {
           "content": {
@@ -2466,9 +2338,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -2503,9 +2373,7 @@
     },
     "/fileOperations.redirect": {
       "post": {
-        "tags": [
-          "FileOperations"
-        ],
+        "tags": ["FileOperations"],
         "summary": "Retrieve the file",
         "description": "Load the resulting file from where it is stored based on the id. A temporary, signed url with embedded credentials is generated on demand.",
         "requestBody": {
@@ -2520,9 +2388,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -2553,9 +2419,7 @@
     },
     "/fileOperations.list": {
       "post": {
-        "tags": [
-          "FileOperations"
-        ],
+        "tags": ["FileOperations"],
         "summary": "List all file operations",
         "requestBody": {
           "content": {
@@ -2575,15 +2439,10 @@
                         "type": "string",
                         "description": "The type of fileOperation",
                         "example": "export",
-                        "enum": [
-                          "export",
-                          "import"
-                        ]
+                        "enum": ["export", "import"]
                       }
                     },
-                    "required": [
-                      "type"
-                    ]
+                    "required": ["type"]
                   }
                 ]
               }
@@ -2623,9 +2482,7 @@
     },
     "/groups.info": {
       "post": {
-        "tags": [
-          "Groups"
-        ],
+        "tags": ["Groups"],
         "summary": "Retrieve a group",
         "requestBody": {
           "content": {
@@ -2639,9 +2496,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -2676,9 +2531,7 @@
     },
     "/groups.list": {
       "post": {
-        "tags": [
-          "Groups"
-        ],
+        "tags": ["Groups"],
         "summary": "List all groups",
         "requestBody": {
           "content": {
@@ -2729,9 +2582,7 @@
     },
     "/groups.create": {
       "post": {
-        "tags": [
-          "Groups"
-        ],
+        "tags": ["Groups"],
         "summary": "Create a group",
         "requestBody": {
           "content": {
@@ -2744,9 +2595,7 @@
                     "example": "Designers"
                   }
                 },
-                "required": [
-                  "name"
-                ]
+                "required": ["name"]
               }
             }
           }
@@ -2787,9 +2636,7 @@
     },
     "/groups.update": {
       "post": {
-        "tags": [
-          "Groups"
-        ],
+        "tags": ["Groups"],
         "summary": "Update a group",
         "requestBody": {
           "content": {
@@ -2806,10 +2653,7 @@
                     "example": "Designers"
                   }
                 },
-                "required": [
-                  "id",
-                  "name"
-                ]
+                "required": ["id", "name"]
               }
             }
           }
@@ -2853,9 +2697,7 @@
     },
     "/groups.delete": {
       "post": {
-        "tags": [
-          "Groups"
-        ],
+        "tags": ["Groups"],
         "summary": "Delete a group",
         "description": "Deleting a group will cause all of its members to lose access to any collections the group has previously been added to. This action can’t be undone so please be careful.",
         "requestBody": {
@@ -2869,9 +2711,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -2910,9 +2750,7 @@
     },
     "/groups.memberships": {
       "post": {
-        "tags": [
-          "Groups"
-        ],
+        "tags": ["Groups"],
         "summary": "List all group members",
         "description": "List and filter all the members in a group.",
         "requestBody": {
@@ -2932,9 +2770,7 @@
                         "example": "jenny"
                       }
                     },
-                    "required": [
-                      "id"
-                    ]
+                    "required": ["id"]
                   }
                 ]
               }
@@ -2988,9 +2824,7 @@
     },
     "/groups.add_user": {
       "post": {
-        "tags": [
-          "Groups"
-        ],
+        "tags": ["Groups"],
         "summary": "Add a group member",
         "description": "This method allows you to add a user to the specified group.",
         "requestBody": {
@@ -3008,10 +2842,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id",
-                  "userId"
-                ]
+                "required": ["id", "userId"]
               }
             }
           }
@@ -3069,9 +2900,7 @@
     },
     "/groups.remove_user": {
       "post": {
-        "tags": [
-          "Groups"
-        ],
+        "tags": ["Groups"],
         "summary": "Remove a group member",
         "description": "This method allows you to remove a user from the group.",
         "requestBody": {
@@ -3090,10 +2919,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id",
-                  "userId"
-                ]
+                "required": ["id", "userId"]
               }
             }
           }
@@ -3139,9 +2965,7 @@
     },
     "/revisions.info": {
       "post": {
-        "tags": [
-          "Revisions"
-        ],
+        "tags": ["Revisions"],
         "summary": "Retrieve a revision",
         "requestBody": {
           "content": {
@@ -3155,9 +2979,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -3192,9 +3014,7 @@
     },
     "/revisions.list": {
       "post": {
-        "tags": [
-          "Revisions"
-        ],
+        "tags": ["Revisions"],
         "summary": "List all revisions",
         "requestBody": {
           "content": {
@@ -3245,9 +3065,7 @@
     },
     "/shares.info": {
       "post": {
-        "tags": [
-          "Shares"
-        ],
+        "tags": ["Shares"],
         "summary": "Retrieve a share object",
         "requestBody": {
           "content": {
@@ -3300,9 +3118,7 @@
     },
     "/shares.list": {
       "post": {
-        "tags": [
-          "Shares"
-        ],
+        "tags": ["Shares"],
         "summary": "List all shares",
         "requestBody": {
           "content": {
@@ -3353,9 +3169,7 @@
     },
     "/shares.create": {
       "post": {
-        "tags": [
-          "Shares"
-        ],
+        "tags": ["Shares"],
         "summary": "Create a share",
         "description": "Creates a new share link that can be used by to access a document. If you request multiple shares for the same document with the same API key, the same share object will be returned. By default all shares are unpublished.",
         "requestBody": {
@@ -3369,9 +3183,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "documentId"
-                ]
+                "required": ["documentId"]
               }
             }
           }
@@ -3406,9 +3218,7 @@
     },
     "/shares.update": {
       "post": {
-        "tags": [
-          "Shares"
-        ],
+        "tags": ["Shares"],
         "summary": "Update a share",
         "description": "Allows changing an existing shares published status, which removes authentication and makes it available to anyone with the link.",
         "requestBody": {
@@ -3425,10 +3235,7 @@
                     "type": "boolean"
                   }
                 },
-                "required": [
-                  "id",
-                  "published"
-                ]
+                "required": ["id", "published"]
               }
             }
           }
@@ -3463,9 +3270,7 @@
     },
     "/shares.revoke": {
       "post": {
-        "tags": [
-          "Shares"
-        ],
+        "tags": ["Shares"],
         "summary": "Revoke a share",
         "description": "Makes the share link inactive so that it can no longer be used to access the document.",
         "requestBody": {
@@ -3479,9 +3284,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -3520,9 +3323,7 @@
     },
     "/users.invite": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Invite users",
         "requestBody": {
           "content": {
@@ -3537,9 +3338,7 @@
                     }
                   }
                 },
-                "required": [
-                  "invites"
-                ]
+                "required": ["invites"]
               }
             }
           }
@@ -3580,9 +3379,7 @@
     },
     "/users.info": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Retrieve a user",
         "requestBody": {
           "content": {
@@ -3596,9 +3393,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -3633,9 +3428,7 @@
     },
     "/users.list": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "List all users",
         "description": "List and filter all the users in the team",
         "requestBody": {
@@ -3708,9 +3501,7 @@
     },
     "/users.update": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Update a user",
         "description": "Update a users name or avatar. No `id` is required as it is only possible to update the current user at this time.",
         "requestBody": {
@@ -3761,9 +3552,7 @@
     },
     "/users.promote": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Promote a user",
         "description": "Promote a user to be a team admin. This endpoint is only available for admin users.",
         "requestBody": {
@@ -3778,9 +3567,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -3815,9 +3602,7 @@
     },
     "/users.demote": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Demote a user",
         "description": "Demote a team admin to regular user permissions. This endpoint is only available for admin users.",
         "requestBody": {
@@ -3834,15 +3619,10 @@
                   "to": {
                     "type": "string",
                     "description": "Which role to demote to",
-                    "enum": [
-                      "viewer",
-                      "member"
-                    ]
+                    "enum": ["viewer", "member"]
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -3877,9 +3657,7 @@
     },
     "/users.suspend": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Suspend a user",
         "description": "Suspending a user prevents the user from signing in. Users that are suspended are also not counted against billing totals in the hosted version.",
         "requestBody": {
@@ -3894,9 +3672,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -3931,9 +3707,7 @@
     },
     "/users.activate": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Activate a user",
         "description": "Activating a previously suspended user allows them to signin again. Users that are activated will cause billing totals to be re-calculated in the hosted version.",
         "requestBody": {
@@ -3948,9 +3722,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -3985,9 +3757,7 @@
     },
     "/users.delete": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Delete a user",
         "description": "Deleting a user removes the object entirely. In almost every circumstance it is preferable to suspend a user, as a deleted user can be recreated by signing in with SSO again.",
         "requestBody": {
@@ -4002,9 +3772,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             }
           }
@@ -4040,9 +3808,7 @@
     },
     "/views.list": {
       "post": {
-        "tags": [
-          "Views"
-        ],
+        "tags": ["Views"],
         "summary": "List all views",
         "description": "List all users that have viewed a document and the overall view count.",
         "requestBody": {
@@ -4056,9 +3822,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "documentId"
-                ]
+                "required": ["documentId"]
               }
             }
           }
@@ -4093,9 +3857,7 @@
     },
     "/views.create": {
       "post": {
-        "tags": [
-          "Views"
-        ],
+        "tags": ["Views"],
         "summary": "Create a view",
         "description": "Creates a new view for a document. This is documented in the interests of thoroughness however it is recommended that views are not created from outside of the Outline UI.",
         "requestBody": {
@@ -4109,9 +3871,7 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "documentId"
-                ]
+                "required": ["documentId"]
               }
             }
           }
@@ -4190,10 +3950,7 @@
           "direction": {
             "type": "string",
             "example": "DESC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         }
       },
@@ -4258,10 +4015,7 @@
               },
               "direction": {
                 "type": "string",
-                "enum": [
-                  "asc",
-                  "desc"
-                ]
+                "enum": ["asc", "desc"]
               }
             }
           },
@@ -4288,10 +4042,7 @@
           },
           "permission": {
             "type": "string",
-            "enum": [
-              "read",
-              "read_write"
-            ]
+            "enum": ["read", "read_write"]
           },
           "createdAt": {
             "type": "string",
@@ -4511,23 +4262,14 @@
             "example": "export",
             "description": "The type of file operation.",
             "readOnly": true,
-            "enum": [
-              "import",
-              "export"
-            ]
+            "enum": ["import", "export"]
           },
           "state": {
             "type": "string",
             "description": "The state of the file operation.",
             "example": "complete",
             "readOnly": true,
-            "enum": [
-              "creating",
-              "uploading",
-              "complete",
-              "error",
-              "expired"
-            ]
+            "enum": ["creating", "uploading", "complete", "error", "expired"]
           },
           "collection": {
             "allOf": [
@@ -4716,11 +4458,7 @@
           "defaultUserRole": {
             "type": "string",
             "description": "If set then this role will be used as the default for users that signup via SSO",
-            "enum": [
-              "viewer",
-              "member",
-              "admin"
-            ]
+            "enum": ["viewer", "member", "admin"]
           },
           "memberCollectionCreate": {
             "type": "boolean",
@@ -4823,11 +4561,7 @@
           },
           "role": {
             "type": "string",
-            "enum": [
-              "member",
-              "guest",
-              "admin"
-            ]
+            "enum": ["member", "guest", "admin"]
           }
         }
       },
@@ -4853,11 +4587,7 @@
           },
           "permission": {
             "type": "string",
-            "enum": [
-              "read",
-              "read_write",
-              "maintainer"
-            ],
+            "enum": ["read", "read_write", "maintainer"],
             "description": "The permissions that this membership grants the user",
             "example": "read_write"
           }
@@ -4971,11 +4701,7 @@
           },
           "permission": {
             "type": "string",
-            "enum": [
-              "read",
-              "read_write",
-              "maintainer"
-            ],
+            "enum": ["read", "read_write", "maintainer"],
             "description": "The permissions that this membership grants the users in the group",
             "example": "read_write"
           }

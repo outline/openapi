@@ -836,6 +836,12 @@ paths:
             schema:
               type: object
               properties:
+                format:
+                  type: string
+                  enum:
+                    - outline-markdown
+                    - json
+                    - html
                 id:
                   type: string
                   format: uuid
@@ -866,9 +872,19 @@ paths:
       tags:
         - Collections
       summary: Export all collections
-      description:
-        Triggers a bulk export of all documents in markdown format and their attachments. If documents are nested then they will be nested in folders inside the zip file. The endpoint returns a `FileOperation`
-        that can be queried to track the progress of the export and get the url for the final file.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                format:
+                  type: string
+                  enum:
+                    - outline-markdown
+                    - json
+                    - html
+      description: Triggers a bulk export of all documents in and their attachments. The endpoint returns a `FileOperation` that can be queried through the fileOperations endpoint to track the progress of the export and get the url for the final file.
       responses:
         "200":
           description: OK

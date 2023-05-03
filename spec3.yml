@@ -2856,11 +2856,6 @@ components:
           type: string
           description: The position of the collection in the sidebar
           example: P
-        documents:
-          type: array
-          items:
-            $ref: "#/components/schemas/NavigationNode"
-          example: []
         color:
           type: string
           description: "A color representing the collection, this is used to help make collections more identifiable in the UI. It should be in HEX format including the #"

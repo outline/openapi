@@ -24,11 +24,11 @@ info:
     Content-Type: application/json header, here’s an example using CURL:
 
     ```
-    curl https://app.getoutline.com/api/documents.info
-    -X POST
-    -H 'authorization: Bearer MY_API_KEY'
-    -H 'content-type: application/json'
-    -H 'accept: application/json'
+    curl https://app.getoutline.com/api/documents.info \
+    -X 'POST' \
+    -H 'authorization: Bearer MY_API_KEY' \
+    -H 'content-type: application/json' \
+    -H 'accept: application/json' \
     -d '{"id": "outline-api-NTpezNwhUP"}'
     ```
 
@@ -176,6 +176,7 @@ tags:
       `Views` represent a compressed record of an individual users views of a
       document. Individual views are not recorded but a first, last and total 
       is kept per user.
+
 paths:
   /attachments.create:
     post:
@@ -459,6 +460,8 @@ paths:
                 description:
                   type: string
                   example: ""
+                permission:
+                  $ref: "#/components/schemas/Permission"
                 color:
                   type: string
                   example: "#123123"
@@ -504,6 +507,8 @@ paths:
                 name:
                   type: string
                   example: Human Resources
+                permission:
+                  $ref: "#/components/schemas/Permission"
                 description:
                   type: string
                   example: ""
@@ -552,6 +557,8 @@ paths:
                 userId:
                   type: string
                   format: uuid
+                permission:
+                  $ref: "#/components/schemas/Permission"
               required:
                 - id
                 - userId
@@ -646,12 +653,7 @@ paths:
                       description: Filter memberships by user names
                       example: jenny
                     permission:
-                      type: string
-                      description: Filter memberships by permissions
-                      enum:
-                        - read
-                        - read_write
-                        - maintainer
+                      $ref: "#/components/schemas/Permission"
                   required:
                     - id
       responses:
@@ -699,6 +701,8 @@ paths:
                 groupId:
                   type: string
                   format: uuid
+                permission:
+                  $ref: "#/components/schemas/Permission"
               required:
                 - id
                 - groupId
@@ -789,12 +793,7 @@ paths:
                       description: Filter memberships by group names
                       example: developers
                     permission:
-                      type: string
-                      description: Filter memberships by permissions
-                      enum:
-                        - read
-                        - read_write
-                        - maintainer
+                      $ref: "#/components/schemas/Permission"
                   required:
                     - id
       responses:
@@ -2802,6 +2801,11 @@ paths:
           $ref: "#/components/responses/Unauthorized"
 components:
   schemas:
+    Permission:
+      type: string
+      enum:
+        - read
+        - read_write
     Attachment:
       type: object
       properties:
@@ -2900,10 +2904,7 @@ components:
           type: string
           description: "A string that represents an icon in the outline-icons package"
         permission:
-          type: string
-          enum:
-            - read
-            - read_write
+          $ref: "#/components/schemas/Permission"
         createdAt:
           type: string
           description: The date and time that this object was created
@@ -3338,13 +3339,7 @@ components:
           readOnly: true
           format: uuid
         permission:
-          type: string
-          enum:
-            - read
-            - read_write
-            - maintainer
-          description: The permissions that this membership grants the user
-          example: read_write
+          $ref: "#/components/schemas/Permission"
     Policy:
       type: object
       properties:
@@ -3423,13 +3418,7 @@ components:
           readOnly: true
           format: uuid
         permission:
-          type: string
-          enum:
-            - read
-            - read_write
-            - maintainer
-          description: The permissions that this membership grants the users in the group
-          example: read_write
+          $ref: "#/components/schemas/Permission"
     View:
       type: object
       properties:

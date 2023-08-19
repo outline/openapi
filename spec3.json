@@ -4590,7 +4590,7 @@
             "type": "string",
             "description": "The last time this user made an API request, this value is updated at most every 5 minutes.",
             "readOnly": true,
-            "format": "date"
+            "format": "date-time"
           },
           "createdAt": {
             "type": "string",

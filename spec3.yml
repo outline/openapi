@@ -2046,6 +2046,10 @@ paths:
                 - $ref: "#/components/schemas/Pagination"
                 - type: object
                   properties:
+                    id: 
+                      type: string
+                      description: Groupd id
+                      example: a32c2ee6-fbde-4654-841b-0eabdc71b812
                     query:
                       type: string
                       description: Filter memberships by user names
@@ -2497,6 +2501,10 @@ paths:
                     query:
                       type: string
                       example: jane
+                    emails[]:
+                      type : string
+                      description: Array of emails 
+                      example: jane.crandall@mail.com
                     filter:
                       type: string
                       example: "all"

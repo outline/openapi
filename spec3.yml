@@ -2048,7 +2048,7 @@ paths:
                   properties:
                     id: 
                       type: string
-                      description: Groupd id
+                      description: Group id
                       example: a32c2ee6-fbde-4654-841b-0eabdc71b812
                     query:
                       type: string

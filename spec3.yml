@@ -2501,10 +2501,14 @@ paths:
                     query:
                       type: string
                       example: jane
-                    emails[]:
-                      type : string
-                      description: Array of emails 
-                      example: jane.crandall@mail.com
+                    emails:
+                      type: array
+                      items: 
+                        type: string
+                        description: Array of emails 
+                        example: [
+                          "jane.crandall@mail.com", 
+                          "prudence.crandall@mail.com"]
                     filter:
                       type: string
                       example: "all"

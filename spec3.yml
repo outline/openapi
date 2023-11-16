@@ -40,7 +40,7 @@ info:
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: 'Bearer MY_API_KEY'
+        Authorization: "Bearer MY_API_KEY"
       }
     })
 

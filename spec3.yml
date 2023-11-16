@@ -8,14 +8,14 @@ info:
     programatically interact with all aspects of Outline’s data – in fact, the
     main application is built on exactly the same API.
 
-    The API structure is available as an 
-    [openapi specification](https://github.com/outline/openapi) if that’s your 
+    The API structure is available as an
+    [openapi specification](https://github.com/outline/openapi) if that’s your
     jam – it can be used to generate clients for most programming languages.
 
     # Making requests
 
     Outline’s API follows simple RPC style conventions where each API endpoint is
-    a method on `https://app.getoutline.com/api/method`. Both `GET` and `POST` 
+    a method on `https://app.getoutline.com/api/method`. Both `GET` and `POST`
     methods are supported but it’s recommended that you make all call using POST.
     Only HTTPS is supported and all response payloads are JSON.
 
@@ -40,7 +40,7 @@ info:
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: 'Bearer MY_API_KEY'
+        Authorization: "Bearer MY_API_KEY"
       }
     })
 
@@ -57,7 +57,7 @@ info:
     source control.
 
     To authenticate with API, you can supply the API key as a header
-    (`Authorization: Bearer YOUR_API_KEY`) or as part of the payload using `token` 
+    (`Authorization: Bearer YOUR_API_KEY`) or as part of the payload using `token`
     parameter. Header based authentication is highly recommended so that your keys
     don’t accidentally leak into logs.
 
@@ -73,7 +73,7 @@ info:
     ```
     {
       "ok": false,
-      "error: "Not Found"
+      "error": "Not Found"
     }
     ```
 
@@ -121,17 +121,17 @@ security:
 tags:
   - name: Attachments
     description: |
-      `Attachments` represent a file uploaded to cloud storage. They are created 
+      `Attachments` represent a file uploaded to cloud storage. They are created
       before the upload happens from the client and store all the meta information
       such as file type, size, and location.
   - name: Auth
     description: |
-      `Auth` represents the current API Keys authentication details. It can be 
+      `Auth` represents the current API Keys authentication details. It can be
       used to check that a token is still valid and load the IDs for the current
       user and team.
   - name: Collections
     description: |
-      `Collections` represent grouping of documents in the knowledge base, they 
+      `Collections` represent grouping of documents in the knowledge base, they
       offer a way to structure information in a nested hierarchy and a level
       at which read and write permissions can be granted to individual users or
       groups of users.
@@ -153,12 +153,12 @@ tags:
       resulting output.
   - name: Groups
     description: |
-      `Groups` represent a list of users that logically belong together, for 
+      `Groups` represent a list of users that logically belong together, for
       example there might be groups for each department in your organization.
       Groups can be granted access to collections with read or write permissions.
   - name: Revisions
     description: |
-      `Revisions` represent a snapshop of a document at a point in time. They 
+      `Revisions` represent a snapshop of a document at a point in time. They
       are used to keep tracking of editing and collaboration history – a document
       can also be restored to a previous revision if neccessary.
   - name: Shares
@@ -174,7 +174,7 @@ tags:
   - name: Views
     description: |
       `Views` represent a compressed record of an individual users views of a
-      document. Individual views are not recorded but a first, last and total 
+      document. Individual views are not recorded but a first, last and total
       is kept per user.
 
 paths:
@@ -2046,7 +2046,7 @@ paths:
                 - $ref: "#/components/schemas/Pagination"
                 - type: object
                   properties:
-                    id: 
+                    id:
                       type: string
                       description: Group id
                       example: a32c2ee6-fbde-4654-841b-0eabdc71b812
@@ -2503,11 +2503,11 @@ paths:
                       example: jane
                     emails:
                       type: array
-                      items: 
+                      items:
                         type: string
-                        description: Array of emails 
+                        description: Array of emails
                         example: [
-                          "jane.crandall@mail.com", 
+                          "jane.crandall@mail.com",
                           "prudence.crandall@mail.com"]
                     filter:
                       type: string

@@ -135,6 +135,10 @@ tags:
       offer a way to structure information in a nested hierarchy and a level
       at which read and write permissions can be granted to individual users or
       groups of users.
+  - name: Comments
+    description: |
+      `Comments` represent a comment either on a selection of text in a document
+      or on the document itself.
   - name: Documents
     description: |
       `Documents` are what everything else revolves around. A document represents
@@ -940,6 +944,164 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "404":
           $ref: "#/components/responses/NotFound"
+  /comments.create:
+    post:
+      tags:
+        - Comments
+      summary: Create a comment
+      description: Create a comment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                documentId:
+                  type: string
+                  format: uuid
+                parentCommentId:
+                  type: string
+                  format: uuid
+                data:
+                  type: object
+
+              required:
+                - documentId
+                - data
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Comment"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /comments.update:
+    post:
+      tags:
+        - Comments
+      summary: Update a comment
+      description: Update a comment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                data:
+                  type: object
+              required:
+                - id
+                - data
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Comment"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /comments.delete:
+    post:
+      tags:
+        - Comments
+      summary: Delete a comment
+      description: Delete a comment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+              required:
+                - id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /comments.list:
+    post:
+      tags:
+        - Comments
+      summary: List all comments
+      description: This method will list all comments matching the given properties.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/Pagination"
+                - $ref: "#/components/schemas/Sorting"
+                - type: object
+                  properties:
+                    documentId:
+                      type: string
+                      format: uuid
+                      description: Filter to a specific document
+                    collectionId:
+                      type: string
+                      format: uuid
+                      description: Filter to a specific collection
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Document"
+                  policies:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Policy"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /documents.info:
     post:
       tags:
@@ -2506,9 +2668,7 @@ paths:
                       items:
                         type: string
                         description: Array of emails
-                        example: [
-                          "jane.crandall@mail.com",
-                          "prudence.crandall@mail.com"]
+                        example: ["jane.crandall@mail.com", "prudence.crandall@mail.com"]
                     filter:
                       type: string
                       example: "all"
@@ -2933,6 +3093,39 @@ components:
           description: The date and time that this object was deleted
           readOnly: true
           format: date-time
+    Comment:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the object.
+          readOnly: true
+          format: uuid
+        data:
+          type: object
+          description: The editor data representing this comment.
+        documentId:
+          type: string
+          description: "Identifier for the document this is related to."
+          format: uuid
+        parentCommentId:
+          type: string
+          description: "Identifier for the comment this is a child of, if any."
+          format: uuid
+        createdAt:
+          type: string
+          description: The date and time that this object was created
+          readOnly: true
+          format: date-time
+        createdBy:
+          $ref: "#/components/schemas/User"
+        updatedAt:
+          type: string
+          description: The date and time that this object was last changed
+          readOnly: true
+          format: date-time
+        updatedBy:
+          $ref: "#/components/schemas/User"
     Document:
       type: object
       properties:
@@ -2960,7 +3153,6 @@ components:
           type: string
           description: An emoji associated with the document.
           example: "\U0001F389"
-          readOnly: true
         text:
           type: string
           description: "The text content of the document, contains markdown formatting"

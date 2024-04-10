@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Outline API",
-    "description": "# Introduction\n\nThe Outline API is structured in an RPC style. It enables you to\nprogramatically interact with all aspects of Outline’s data – in fact, the\nmain application is built on exactly the same API.\n\nThe API structure is available as an\n[openapi specification](https://github.com/outline/openapi) if that’s your\njam – it can be used to generate clients for most programming languages.\n\n# Making requests\n\nOutline’s API follows simple RPC style conventions where each API endpoint is\na method on `https://app.getoutline.com/api/method`. Both `GET` and `POST`\nmethods are supported but it’s recommended that you make all call using POST.\nOnly HTTPS is supported and all response payloads are JSON.\n\nWhen making `POST` requests, request parameters are parsed depending on\nContent-Type header. To make a call using JSON payload, you must pass\nContent-Type: application/json header, here’s an example using CURL:\n\n```\ncurl https://app.getoutline.com/api/documents.info \\\n-X 'POST' \\\n-H 'authorization: Bearer MY_API_KEY' \\\n-H 'content-type: application/json' \\\n-H 'accept: application/json' \\\n-d '{\"id\": \"outline-api-NTpezNwhUP\"}'\n```\n\nOr, with JavaScript:\n\n```javascript\nconst response = await fetch(\"https://app.getoutline.com/api/documents.info\", {\n  method: \"POST\",\n  headers: {\n    Accept: \"application/json\",\n    \"Content-Type\": \"application/json\",\n    Authorization: \"Bearer MY_API_KEY\"\n  }\n})\n\nconst body = await response.json();\nconst document = body.data;\n```\n\n# Authentication\n\nTo access API endpoints, you must provide a valid API key. You can create new\nAPI keys in your [account settings](https://app.getoutline.com/settings). Be\ncareful when handling your keys as they give access to all of your documents,\nyou should treat them like passwords and they should never be committed to\nsource control.\n\nTo authenticate with API, you can supply the API key as a header\n(`Authorization: Bearer YOUR_API_KEY`) or as part of the payload using `token`\nparameter. Header based authentication is highly recommended so that your keys\ndon’t accidentally leak into logs.\n\nSome API endpoints allow unauthenticated requests for public resources and\nthey can be called without an API key.\n\n# Errors\n\nAll successful API requests will be returned with a 200 or 201 status code\nand `ok: true` in the response payload. If there’s an error while making the\nrequest, the appropriate status code is returned with the error message:\n\n```\n{\n  \"ok\": false,\n  \"error\": \"Not Found\"\n}\n```\n\n# Pagination\n\nMost top-level API resources have support for \"list\" API methods. For instance,\nyou can list users, documents, and collections. These list methods share\ncommon parameters, taking both `limit` and `offset`.\n\nResponses will echo these parameters in the root `pagination` key, and also\ninclude a `nextPath` key which can be used as a handy shortcut to fetch the\nnext page of results. For example:\n\n```\n{\n  ok: true,\n  status: 200,\n  data: […],\n  pagination: {\n    limit: 25,\n    offset: 0,\n    nextPath: \"/api/documents.list?limit=25&offset=25\"\n  }\n}\n```\n\n# Policies\n\nMany API resources have associated \"policies\", these objects describe the\ncurrent API keys authorized actions related to an individual resource. It\nshould be noted that the policy \"id\" is identical to the resource it is\nrelated to, policies themselves do not have unique identifiers.\n\nFor most usecases of the API, policies can be safely ignored. Calling\nunauthorized methods will result in the appropriate response code – these are\nused in the main Outline UI to adjust which elements are visible.\n",
+    "description": "# Introduction\n\nThe Outline API is structured in an RPC style. It enables you to\nprogramatically interact with all aspects of Outline’s data – in fact, the\nmain application is built on exactly the same API.\n\nThe API structure is available as an\n[openapi specification](https://github.com/outline/openapi) if that’s your\njam – it can be used to generate clients for most programming languages.\n\n# Making requests\n\nOutline’s API follows simple RPC style conventions where each API endpoint is\na method on `https://app.getoutline.com/api/method`. Both `GET` and `POST`\nmethods are supported but it’s recommended that you make all call using POST.\nOnly HTTPS is supported and all response payloads are JSON.\n\nWhen making `POST` requests, request parameters are parsed depending on\nContent-Type header. To make a call using JSON payload, you must pass\nContent-Type: application/json header, here’s an example using CURL:\n\n```\ncurl https://app.getoutline.com/api/documents.info \\\n-X 'POST' \\\n-H 'authorization: Bearer MY_API_KEY' \\\n-H 'content-type: application/json' \\\n-H 'accept: application/json' \\\n-d '{\"id\": \"outline-api-NTpezNwhUP\"}'\n```\n\nOr, with JavaScript:\n\n```javascript\nconst response = await fetch(\"https://app.getoutline.com/api/documents.info\", {\n  method: \"POST\",\n  headers: {\n    Accept: \"application/json\",\n    \"Content-Type\": \"application/json\",\n    Authorization: \"Bearer MY_API_KEY\"\n  }\n})\n\nconst body = await response.json();\nconst document = body.data;\n```\n\n# Authentication\n\nTo access API endpoints, you must provide a valid API key. You can create new\nAPI keys in your [account settings](https://app.getoutline.com/settings). Be\ncareful when handling your keys as they give access to all of your documents,\nyou should treat them like passwords and they should never be committed to\nsource control.\n\nTo authenticate with API, you can supply the API key as a header\n(`Authorization: Bearer YOUR_API_KEY`) or as part of the payload using `token`\nparameter. Header based authentication is highly recommended so that your keys\ndon’t accidentally leak into logs.\n\nSome API endpoints allow unauthenticated requests for public resources and\nthey can be called without an API key.\n\n# Errors\n\nAll successful API requests will be returned with a 200 or 201 status code\nand `ok: true` in the response payload. If there’s an error while making the\nrequest, the appropriate status code is returned with the error message:\n\n```\n{\n  \"ok\": false,\n  \"error\": \"Not Found\"\n}\n```\n\n# Pagination\n\nMost top-level API resources have support for \"list\" API methods. For instance,\nyou can list users, documents, and collections. These list methods share\ncommon parameters, taking both `limit` and `offset`.\n\nResponses will echo these parameters in the root `pagination` key, and also\ninclude a `nextPath` key which can be used as a handy shortcut to fetch the\nnext page of results. For example:\n\n```\n{\n  ok: true,\n  status: 200,\n  data: […],\n  pagination: {\n    limit: 25,\n    offset: 0,\n    nextPath: \"/api/documents.list?limit=25&offset=25\"\n  }\n}\n```\n\n# Policies\n\nMost API resources have associated \"policies\", these objects describe the\ncurrent API keys authorized actions related to an individual resource. It\nshould be noted that the policy \"id\" is identical to the resource it is\nrelated to, policies themselves do not have unique identifiers.\n\nFor most usecases of the API, policies can be safely ignored. Calling\nunauthorized methods will result in the appropriate response code – these can\nbe used in an interface to adjust which elements are visible.\n",
     "version": "0.1.0",
     "contact": {
       "email": "hello@getoutline.com"
@@ -2666,6 +2666,56 @@
         }
       }
     },
+    "/fileOperations.delete": {
+      "post": {
+        "tags": ["FileOperations"],
+        "summary": "Delete a file operation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the file operation.",
+                    "format": "uuid"
+                  }
+                },
+                "required": ["id"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
     "/fileOperations.redirect": {
       "post": {
         "tags": ["FileOperations"],
@@ -3759,8 +3809,11 @@
                       },
                       "filter": {
                         "type": "string",
-                        "example": "all",
-                        "enum": ["invited", "viewers", "admins", "active", "all", "suspended"]
+                        "description": "The status to filter by",
+                        "enum": ["all", "invited", "active", "suspended"]
+                      },
+                      "role": {
+                        "$ref": "#/components/schemas/UserRole"
                       }
                     }
                   }
@@ -3804,7 +3857,7 @@
       "post": {
         "tags": ["Users"],
         "summary": "Update a user",
-        "description": "Update a users name or avatar. No `id` is required as it is only possible to update the current user at this time.",
+        "description": "Update a users name or avatar. If no `id` is passed then the user associated with the authentication will be updated by default.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3813,6 +3866,10 @@
                 "properties": {
                   "name": {
                     "type": "string"
+                  },
+                  "language": {
+                    "type": "string",
+                    "format": "BCP47"
                   },
                   "avatarUrl": {
                     "type": "string",
@@ -3851,61 +3908,11 @@
         }
       }
     },
-    "/users.promote": {
+    "/users.update_role": {
       "post": {
         "tags": ["Users"],
-        "summary": "Promote a user",
-        "description": "Promote a user to be a team admin. This endpoint is only available for admin users.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "description": "Unique identifier for the user.",
-                    "format": "uuid"
-                  }
-                },
-                "required": ["id"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/User"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          }
-        }
-      }
-    },
-    "/users.demote": {
-      "post": {
-        "tags": ["Users"],
-        "summary": "Demote a user",
-        "description": "Demote a team admin to regular user permissions. This endpoint is only available for admin users.",
+        "summary": "Change a users role",
+        "description": "Change the role of a user, only available to admin authorization.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3917,13 +3924,11 @@
                     "description": "Unique identifier for the user.",
                     "format": "uuid"
                   },
-                  "to": {
-                    "type": "string",
-                    "description": "Which role to demote to",
-                    "enum": ["viewer", "member"]
+                  "role": {
+                    "$ref": "#/components/schemas/UserRole"
                   }
                 },
-                "required": ["id"]
+                "required": ["id", "role"]
               }
             }
           }
@@ -4795,9 +4800,7 @@
             "format": "uuid"
           },
           "defaultUserRole": {
-            "type": "string",
-            "description": "If set then this role will be used as the default for users that signup via SSO",
-            "enum": ["viewer", "member", "admin"]
+            "$ref": "#/components/schemas/UserRole"
           },
           "memberCollectionCreate": {
             "type": "boolean",
@@ -4863,10 +4866,8 @@
             "format": "email",
             "readOnly": true
           },
-          "isAdmin": {
-            "type": "boolean",
-            "description": "Whether this user has admin permissions.",
-            "readOnly": true
+          "role": {
+            "$ref": "#/components/schemas/UserRole"
           },
           "isSuspended": {
             "type": "boolean",
@@ -4899,10 +4900,13 @@
             "description": "The email address to invite"
           },
           "role": {
-            "type": "string",
-            "enum": ["member", "guest", "admin"]
+            "$ref": "#/components/schemas/UserRole"
           }
         }
+      },
+      "UserRole": {
+        "type": "string",
+        "enum": ["admin", "member", "viewer", "guest"]
       },
       "Membership": {
         "type": "object",

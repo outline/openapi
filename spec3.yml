@@ -102,14 +102,14 @@ info:
 
     # Policies
 
-    Many API resources have associated "policies", these objects describe the
+    Most API resources have associated "policies", these objects describe the
     current API keys authorized actions related to an individual resource. It
     should be noted that the policy "id" is identical to the resource it is
     related to, policies themselves do not have unique identifiers.
 
     For most usecases of the API, policies can be safely ignored. Calling
-    unauthorized methods will result in the appropriate response code – these are
-    used in the main Outline UI to adjust which elements are visible.
+    unauthorized methods will result in the appropriate response code – these can
+    be used in an interface to adjust which elements are visible.
   version: 0.1.0
   contact:
     email: hello@getoutline.com
@@ -1944,6 +1944,40 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "404":
           $ref: "#/components/responses/NotFound"
+  /fileOperations.delete:
+    post:
+      tags:
+        - FileOperations
+      summary: Delete a file operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Unique identifier for the file operation.
+                  format: uuid
+              required:
+                - id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /fileOperations.redirect:
     post:
       tags:
@@ -2671,14 +2705,14 @@ paths:
                         example: ["jane.crandall@mail.com", "prudence.crandall@mail.com"]
                     filter:
                       type: string
-                      example: "all"
+                      description: The status to filter by
                       enum:
-                        - invited
-                        - viewers
-                        - admins
-                        - active
                         - all
+                        - invited
+                        - active
                         - suspended
+                    role:
+                      $ref: "#/components/schemas/UserRole"
       responses:
         "200":
           description: OK
@@ -2702,7 +2736,8 @@ paths:
       tags:
         - Users
       summary: Update a user
-      description: Update a users name or avatar. No `id` is required as it is only possible to update the current user at this time.
+      description: Update a users name or avatar. If no `id` is passed then the user
+        associated with the authentication will be updated by default.
       requestBody:
         content:
           application/json:
@@ -2711,6 +2746,9 @@ paths:
               properties:
                 name:
                   type: string
+                language:
+                  type: string
+                  format: BCP47
                 avatarUrl:
                   type: string
                   format: uri
@@ -2730,12 +2768,12 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "404":
           $ref: "#/components/responses/NotFound"
-  /users.promote:
+  /users.update_role:
     post:
       tags:
         - Users
-      summary: Promote a user
-      description: Promote a user to be a team admin. This endpoint is only available for admin users.
+      summary: Change a users role
+      description: Change the role of a user, only available to admin authorization.
       requestBody:
         content:
           application/json:
@@ -2746,48 +2784,11 @@ paths:
                   type: string
                   description: Unique identifier for the user.
                   format: uuid
+                role:
+                  $ref: "#/components/schemas/UserRole"
               required:
                 - id
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: "#/components/schemas/User"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-  /users.demote:
-    post:
-      tags:
-        - Users
-      summary: Demote a user
-      description: Demote a team admin to regular user permissions. This endpoint is only available for admin users.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: string
-                  description: Unique identifier for the user.
-                  format: uuid
-                to:
-                  type: string
-                  description: Which role to demote to
-                  enum:
-                    - viewer
-                    - member
-              required:
-                - id
+                - role
       responses:
         "200":
           description: OK
@@ -3437,12 +3438,7 @@ components:
           description: If set then the referenced collection is where users will be redirected to after signing in instead of the Home screen
           format: uuid
         defaultUserRole:
-          type: string
-          description: If set then this role will be used as the default for users that signup via SSO
-          enum:
-            - viewer
-            - member
-            - admin
+          $ref: "#/components/schemas/UserRole"
         memberCollectionCreate:
           type: boolean
           description: Whether members are allowed to create new collections. If false then only admins can create collections.
@@ -3492,10 +3488,8 @@ components:
           description: "The email associated with this user, it is migrated from Slack or Google Workspace when the SSO connection is made but can be changed if neccessary."
           format: email
           readOnly: true
-        isAdmin:
-          type: boolean
-          description: Whether this user has admin permissions.
-          readOnly: true
+        role:
+          $ref: "#/components/schemas/UserRole"
         isSuspended:
           type: boolean
           description: Whether this user has been suspended.
@@ -3520,11 +3514,14 @@ components:
           type: string
           description: The email address to invite
         role:
-          type: string
-          enum:
-            - member
-            - guest
-            - admin
+          $ref: "#/components/schemas/UserRole"
+    UserRole:
+      type: string
+      enum:
+        - admin
+        - member
+        - viewer
+        - guest
     Membership:
       type: object
       properties:

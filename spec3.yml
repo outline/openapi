@@ -1371,10 +1371,18 @@ paths:
                       type: string
                       description: A collection to search within
                       format: uuid
-                    includeArchived:
-                      type: boolean
-                    includeDrafts:
-                      type: boolean
+                    documentId:
+                      type: string
+                      description: A document to search within
+                      format: uuid
+                    statusFilter:
+                      type: string
+                      description: Any documents that are not in the specified status will be filtered out
+                      example: published
+                      enum:
+                        - draft
+                        - archived
+                        - published
                     dateFilter:
                       type: string
                       description: Any documents that have not been updated within the specified period will be filtered out

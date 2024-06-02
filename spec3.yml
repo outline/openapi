@@ -1868,6 +1868,185 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "404":
           $ref: "#/components/responses/NotFound"
+  /documents.users:
+    post:
+      tags:
+        - Documents
+      summary: List document users
+      description: All users with access to a document. To list only users with direct membership to the document use `documents.memberships`
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: hDYep1TPAM
+                  description: Unique identifier for the document. Either the UUID or the urlId is acceptable.
+                query:
+                  type: string
+                  description: If set, will filter the results by user name.
+              required:
+                - id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/User"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+                  policies:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Policy"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /documents.memberships:
+    post:
+      tags:
+        - Documents
+      summary: List document memberships
+      description: Users with direct membership to a document. To list all users with access to a document use `documents.users`.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: hDYep1TPAM
+                  description: Unique identifier for the document. Either the UUID or the urlId is acceptable.
+                query:
+                  type: string
+                  description: If set, will filter the results by user name
+              required:
+                - id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/User"
+                      memberships:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Membership"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /documents.add_user:
+    post:
+      tags:
+        - Documents
+      summary: Add a document user
+      description: This method allows you to add a user membership to the specified document.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Unique identifier for the document. Either the UUID or the urlId is acceptable.
+                userId:
+                  type: string
+                  format: uuid
+                permission:
+                  $ref: "#/components/schemas/Permission"
+              required:
+                - id
+                - userId
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/User"
+                      memberships:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Membership"
+  /documents.remove_user:
+    post:
+      tags:
+        - Documents
+      summary: Remove a document user
+      description: This method allows you to remove a user membership from the specified document.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Unique identifier for the document. Either the UUID or the urlId is acceptable.
+                userId:
+                  type: string
+                  format: uuid
+              required:
+                - id
+                - userId
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /events.list:
     post:
       tags:

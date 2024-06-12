@@ -2292,9 +2292,17 @@ paths:
                 type: object
                 properties:
                   data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Group"
+                    type: object
+                    properties:
+                      groups:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Group"
+                      groupMemberships:
+                        type: array
+                        description: "A preview of memberships in the group, note that this is not all memberships which can be queried from `groups.memberships`."
+                        items:
+                          $ref: "#/components/schemas/GroupMembership"
                   pagination:
                     $ref: "#/components/schemas/Pagination"
         "401":

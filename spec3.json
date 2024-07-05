@@ -4245,16 +4245,21 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "sent": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Invite"
-                      }
-                    },
-                    "users": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/User"
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "sent": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Invite"
+                          }
+                        },
+                        "users": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/User"
+                          }
+                        }
                       }
                     }
                   }

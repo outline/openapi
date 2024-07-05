@@ -3464,6 +3464,12 @@ components:
           example: false
         error:
           type: string
+        message:
+          type: string
+        status:
+          type: number
+        data:
+          type: object
     FileOperation:
       type: object
       properties:

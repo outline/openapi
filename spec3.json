@@ -5183,6 +5183,15 @@
           },
           "error": {
             "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "number"
+          },
+          "data": {
+            "type": "object"
           }
         }
       },

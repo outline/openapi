@@ -1346,6 +1346,71 @@ paths:
           $ref: "#/components/responses/Unauthenticated"
         "403":
           $ref: "#/components/responses/Unauthorized"
+  /documents.answerQuestion:
+    post:
+      tags:
+        - Documents
+      summary: Query documents with natural language
+      description: This method allows asking direct questions of your documents – where possible an answer will be provided. Search results will be restricted to those accessible by the current access token. Note that "AI answers" must be enabled for the workspace.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - type: object
+                  properties:
+                    query:
+                      type: string
+                      example: What is our holiday policy?
+                    userId:
+                      type: string
+                      description: Any documents that have not been edited by the user identifier will be filtered out
+                      format: uuid
+                    collectionId:
+                      type: string
+                      description: A collection to search within
+                      format: uuid
+                    documentId:
+                      type: string
+                      description: A document to search within
+                      format: uuid
+                    statusFilter:
+                      type: string
+                      description: Any documents that are not in the specified status will be filtered out
+                      enum:
+                        - draft
+                        - archived
+                        - published
+                    dateFilter:
+                      type: string
+                      description: Any documents that have not been updated within the specified period will be filtered out
+                      enum:
+                        - day
+                        - week
+                        - month
+                        - year
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  documents:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Document"
+                  policies:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Policy"
+                  search:
+                    $ref: "#/components/schemas/SearchResult"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
   /documents.search:
     post:
       tags:
@@ -3745,6 +3810,37 @@ components:
           format: uuid
         permission:
           $ref: "#/components/schemas/Permission"
+    SearchResult:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          format: uuid
+        query:
+          type: string
+          description: The user-provided search query
+          example: "What is our hiring policy?"
+          readOnly: true
+        answer:
+          type: string
+          description: An answer to the query, if possible
+          example: "Our hiring policy can be summarized as…"
+          readOnly: true
+        source:
+          type: string
+          example: "app"
+          description: The source of the query
+          readOnly: true
+          enum:
+            - api
+            - app
+        createdAt:
+          type: string
+          description: The date and time that this object was created
+          readOnly: true
+          format: date-time
+
     Policy:
       type: object
       properties:

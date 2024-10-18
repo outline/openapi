@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Outline API",
-    "description": "# Introduction\n\nThe Outline API is structured in an RPC style. It enables you to\nprogramatically interact with all aspects of Outline’s data – in fact, the\nmain application is built on exactly the same API.\n\nThe API structure is available as an\n[openapi specification](https://github.com/outline/openapi) if that’s your\njam – it can be used to generate clients for most programming languages.\n\n# Making requests\n\nOutline’s API follows simple RPC style conventions where each API endpoint is\na method on `https://app.getoutline.com/api/method`. Both `GET` and `POST`\nmethods are supported but it’s recommended that you make all call using POST.\nOnly HTTPS is supported and all response payloads are JSON.\n\nWhen making `POST` requests, request parameters are parsed depending on\nContent-Type header. To make a call using JSON payload, you must pass\nContent-Type: application/json header, here’s an example using CURL:\n\n```\ncurl https://app.getoutline.com/api/documents.info \\\n-X 'POST' \\\n-H 'authorization: Bearer MY_API_KEY' \\\n-H 'content-type: application/json' \\\n-H 'accept: application/json' \\\n-d '{\"id\": \"outline-api-NTpezNwhUP\"}'\n```\n\nOr, with JavaScript:\n\n```javascript\nconst response = await fetch(\"https://app.getoutline.com/api/documents.info\", {\n  method: \"POST\",\n  headers: {\n    Accept: \"application/json\",\n    \"Content-Type\": \"application/json\",\n    Authorization: \"Bearer MY_API_KEY\"\n  }\n})\n\nconst body = await response.json();\nconst document = body.data;\n```\n\n# Authentication\n\nTo access API endpoints, you must provide a valid API key. You can create new\nAPI keys in your [account settings](https://app.getoutline.com/settings). Be\ncareful when handling your keys as they give access to all of your documents,\nyou should treat them like passwords and they should never be committed to\nsource control.\n\nTo authenticate with API, you can supply the API key as a header\n(`Authorization: Bearer YOUR_API_KEY`) or as part of the payload using `token`\nparameter. Header based authentication is highly recommended so that your keys\ndon’t accidentally leak into logs.\n\nSome API endpoints allow unauthenticated requests for public resources and\nthey can be called without an API key.\n\n# Errors\n\nAll successful API requests will be returned with a 200 or 201 status code\nand `ok: true` in the response payload. If there’s an error while making the\nrequest, the appropriate status code is returned with the error message:\n\n```\n{\n  \"ok\": false,\n  \"error\": \"Not Found\"\n}\n```\n\n# Pagination\n\nMost top-level API resources have support for \"list\" API methods. For instance,\nyou can list users, documents, and collections. These list methods share\ncommon parameters, taking both `limit` and `offset`.\n\nResponses will echo these parameters in the root `pagination` key, and also\ninclude a `nextPath` key which can be used as a handy shortcut to fetch the\nnext page of results. For example:\n\n```\n{\n  ok: true,\n  status: 200,\n  data: […],\n  pagination: {\n    limit: 25,\n    offset: 0,\n    nextPath: \"/api/documents.list?limit=25&offset=25\"\n  }\n}\n```\n\n# Policies\n\nMost API resources have associated \"policies\", these objects describe the\ncurrent API keys authorized actions related to an individual resource. It\nshould be noted that the policy \"id\" is identical to the resource it is\nrelated to, policies themselves do not have unique identifiers.\n\nFor most usecases of the API, policies can be safely ignored. Calling\nunauthorized methods will result in the appropriate response code – these can\nbe used in an interface to adjust which elements are visible.\n",
+    "description": "# Introduction\n\nThe Outline API is structured in an RPC style. It enables you to\nprogramatically interact with all aspects of Outline’s data – in fact, the\nmain application is built on exactly the same API.\n\nThe API structure is available as an\n[openapi specification](https://github.com/outline/openapi) if that’s your\njam – it can be used to generate clients for most programming languages.\n\n# Making requests\n\nOutline’s API follows simple RPC style conventions where each API endpoint is\na method on `https://app.getoutline.com/api/method`. Both `GET` and `POST`\nmethods are supported but it’s recommended that you make all call using POST.\nOnly HTTPS is supported and all response payloads are JSON.\n\nWhen making `POST` requests, request parameters are parsed depending on\nContent-Type header. To make a call using JSON payload, you must pass\nContent-Type: application/json header, here’s an example using CURL:\n\n```\ncurl https://app.getoutline.com/api/documents.info \\\n-X 'POST' \\\n-H 'authorization: Bearer MY_API_KEY' \\\n-H 'content-type: application/json' \\\n-H 'accept: application/json' \\\n-d '{\"id\": \"outline-api-NTpezNwhUP\"}'\n```\n\nOr, with JavaScript:\n\n```javascript\nconst response = await fetch(\"https://app.getoutline.com/api/documents.info\", {\n  method: \"POST\",\n  headers: {\n    Accept: \"application/json\",\n    \"Content-Type\": \"application/json\",\n    Authorization: \"Bearer MY_API_KEY\"\n  }\n})\n\nconst body = await response.json();\nconst document = body.data;\n```\n\n# Authentication\n\nTo access API endpoints, you must provide a valid API key. You can create new\nAPI keys in your [account settings](https://app.getoutline.com/settings). Be\ncareful when handling your keys as they give access to all of your documents,\nyou should treat them like passwords and they should never be committed to\nsource control.\n\nTo authenticate with API, you can supply the API key as a header\n(`Authorization: Bearer YOUR_API_KEY`) or as part of the payload using `token`\nparameter. Header based authentication is highly recommended so that your keys\ndon’t accidentally leak into logs.\n\nSome API endpoints allow unauthenticated requests for public resources and\nthey can be called without an API key.\n\n# Errors\n\nAll successful API requests will be returned with a 200 or 201 status code\nand `ok: true` in the response payload. If there’s an error while making the\nrequest, the appropriate status code is returned with the error message:\n\n```\n{\n  \"ok\": false,\n  \"error\": \"Not Found\"\n}\n```\n\n# Pagination\n\nMost top-level API resources have support for \"list\" API methods. For instance,\nyou can list users, documents, and collections. These list methods share\ncommon parameters, taking both `limit` and `offset`.\n\nResponses will echo these parameters in the root `pagination` key, and also\ninclude a `nextPath` key which can be used as a handy shortcut to fetch the\nnext page of results. For example:\n\n```\n{\n  ok: true,\n  status: 200,\n  data: […],\n  pagination: {\n    limit: 25,\n    offset: 0,\n    nextPath: \"/api/documents.list?limit=25&offset=25\"\n  }\n}\n```\n\n# Rate limits\n\nLike most APIs, Outline has rate limits in place to prevent abuse. Endpoints\nthat mutate data are more restrictive than read-only endpoints. If you exceed\nthe rate limit for a given endpoint, you will receive a `429 Too Many Requests`\nstatus code.\n\nThe response will include a `Retry-After` header that indicates how many seconds\nyou should wait before making another request.\n\n# Policies\n\nMost API resources have associated \"policies\", these objects describe the\ncurrent API keys authorized actions related to an individual resource. It\nshould be noted that the policy \"id\" is identical to the resource it is\nrelated to, policies themselves do not have unique identifiers.\n\nFor most usecases of the API, policies can be safely ignored. Calling\nunauthorized methods will result in the appropriate response code – these can\nbe used in an interface to adjust which elements are visible.\n",
     "version": "0.1.0",
     "contact": {
       "email": "hello@getoutline.com"
@@ -149,6 +149,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -240,6 +243,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -269,6 +275,9 @@
           },
           "401": {
             "$ref": "#/components/responses/Unauthenticated"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -325,6 +334,9 @@
                 }
               }
             }
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -378,6 +390,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -435,6 +450,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -481,6 +499,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -554,6 +575,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -630,6 +654,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -708,6 +735,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -771,6 +801,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -857,6 +890,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -929,6 +965,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -992,6 +1031,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -1078,6 +1120,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -1132,6 +1177,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -1198,6 +1246,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -1257,6 +1308,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -1322,6 +1376,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -1379,6 +1436,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -1433,6 +1493,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -1508,6 +1571,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -1562,6 +1628,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -1626,6 +1695,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -1676,6 +1748,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -1762,6 +1837,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -1843,6 +1921,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -1903,6 +1984,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -2000,6 +2084,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -2118,6 +2205,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -2203,6 +2293,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -2287,6 +2380,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -2346,6 +2442,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -2403,6 +2502,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -2460,6 +2562,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -2523,6 +2628,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -2608,6 +2716,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -2671,6 +2782,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -2739,6 +2853,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -2802,6 +2919,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -2875,6 +2995,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -2953,6 +3076,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -3019,6 +3145,21 @@
                 }
               }
             }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -3081,6 +3222,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -3163,6 +3307,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -3216,6 +3363,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -3270,6 +3420,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -3320,6 +3473,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -3390,6 +3546,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -3443,6 +3602,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -3508,6 +3670,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -3566,6 +3731,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -3632,6 +3800,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -3689,6 +3860,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -3772,6 +3946,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -3853,6 +4030,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -3923,6 +4103,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -3976,6 +4159,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -4029,6 +4215,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -4084,6 +4273,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -4137,6 +4329,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -4190,6 +4385,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -4247,6 +4445,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -4304,6 +4505,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -4369,6 +4573,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -4422,6 +4629,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -4509,6 +4719,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -4566,6 +4779,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -4624,6 +4840,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -4678,6 +4897,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -4732,6 +4954,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -4787,6 +5012,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -4840,6 +5068,9 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -5879,6 +6110,70 @@
             }
           }
         }
+      },
+      "RateLimited": {
+        "description": "The request was rate limited.",
+        "headers": {
+          "Retry-After": {
+            "$ref": "#/components/headers/Retry-After"
+          },
+          "RateLimit-Limit": {
+            "$ref": "#/components/headers/RateLimit-Limit"
+          },
+          "RateLimit-Remaining": {
+            "$ref": "#/components/headers/RateLimit-Remaining"
+          },
+          "RateLimit-Reset": {
+            "$ref": "#/components/headers/RateLimit-Reset"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "error": {
+                  "type": "string",
+                  "example": "rate_limit_exceeded"
+                },
+                "status": {
+                  "type": "number",
+                  "example": 429
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "headers": {
+      "Retry-After": {
+        "schema": {
+          "type": "integer"
+        },
+        "description": "Seconds in the future to retry the request, if rate limited."
+      },
+      "RateLimit-Limit": {
+        "schema": {
+          "type": "integer"
+        },
+        "description": "The maximum requests available in the current duration."
+      },
+      "RateLimit-Remaining": {
+        "schema": {
+          "type": "integer"
+        },
+        "description": "How many requests are left in the current duration."
+      },
+      "RateLimit-Reset": {
+        "schema": {
+          "type": "string"
+        },
+        "description": "Timestamp in the future the duration will reset."
       }
     },
     "securitySchemes": {

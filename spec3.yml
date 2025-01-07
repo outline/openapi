@@ -1035,6 +1035,44 @@ paths:
           $ref: "#/components/responses/NotFound"
         "429":
           $ref: "#/components/responses/RateLimited"
+  /comments.info:
+    post:
+      tags:
+        - Comments
+      summary: Retrieve a comment
+      description: Retrieve a comment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                includeAnchorText:
+                  type: boolean
+                  description: Include the document text that the comment is anchored to, if any
+              required:
+                - id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Comment"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
   /comments.update:
     post:
       tags:
@@ -1132,6 +1170,9 @@ paths:
                       type: string
                       format: uuid
                       description: Filter to a specific collection
+                    includeAnchorText:
+                      type: boolean
+                      description: Include the document text that the comment is anchored to, if any
       responses:
         "200":
           description: OK
@@ -1143,7 +1184,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Document"
+                      $ref: "#/components/schemas/Comment"
                   policies:
                     type: array
                     items:
@@ -3554,6 +3595,10 @@ components:
           format: date-time
         updatedBy:
           $ref: "#/components/schemas/User"
+        anchorText:
+          type: string
+          description: "The document text that the comment is anchored to, only included if includeAnchorText=true."
+          readOnly: true
     Document:
       type: object
       properties:

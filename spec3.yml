@@ -180,6 +180,10 @@ tags:
       `Shares` represent authorization to view a document without being a member
       of the team. Shares are created in order to give access to documents publicly.
       Each user that shares a document will have a unique share object.
+  - name: Stars
+    description: |
+      `Stars` represent a favorited document or collection in the application sidebar.
+      Each user has their own collection of starred items.
   - name: Users
     description: |
       `Users` represent an individual with access to the knowledge base. Users
@@ -1758,82 +1762,6 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "429":
           $ref: "#/components/responses/RateLimited"
-  /documents.star:
-    post:
-      tags:
-        - Documents
-      summary: Star a document
-      description: Starring a document gives it extra priority in the UI and makes it easier to find important information later.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: string
-                  example: hDYep1TPAM
-                  description: Unique identifier for the document. Either the UUID or the urlId is acceptable.
-              required:
-                - id
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /documents.unstar:
-    post:
-      tags:
-        - Documents
-      summary: Unstar a document
-      description: Starring a document gives it extra priority in the UI and makes it easier to find important information later.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: string
-                  example: hDYep1TPAM
-                  description: Unique identifier for the document. Either the UUID or the urlId is acceptable.
-              required:
-                - id
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
   /documents.unpublish:
     post:
       tags:
@@ -3056,6 +2984,165 @@ paths:
           $ref: "#/components/responses/NotFound"
         "429":
           $ref: "#/components/responses/RateLimited"
+  /stars.create:
+    post:
+      tags:
+        - Stars
+      summary: Create a star
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                documentId:
+                  type: string
+                  format: uuid
+                collectionId:
+                  type: string
+                  format: uuid
+                index:
+                  type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Star"
+                  policies:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Policy"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  /stars.list:
+    post:
+      tags:
+        - Stars
+      summary: List all stars
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Pagination"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      stars:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Star"
+                      documents:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Document"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+                  policies:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Policy"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  /stars.update:
+    post:
+      tags:
+        - Stars
+      summary: Update a stars index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                index:
+                  type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Star"
+                  policies:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Policy"
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  /stars.delete:
+    post:
+      tags:
+        - Stars
+      summary: Delete a star
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        "400":
+          $ref: "#/components/responses/Validation"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
   /users.invite:
     post:
       tags:
@@ -3864,6 +3951,37 @@ components:
           type: string
           format: date-time
           description: Date and time when this share was last viewed
+          readOnly: true
+    Star:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the object.
+          readOnly: true
+          format: uuid
+        index:
+          type: string
+          description: Index of the star in the list of stars.
+        documentId:
+          type: string
+          description: Unique identifier for the starred document.
+          readOnly: true
+          format: uuid
+        collectionId:
+          type: string
+          description: Unique identifier for the starred collection.
+          readOnly: true
+          format: uuid
+        documentUrl:
+          type: string
+          format: uri
+          description: URL of the original document.
+          readOnly: true
+        createdAt:
+          type: string
+          format: date-time
+          description: Date and time when this star was created
           readOnly: true
     Revision:
       type: object

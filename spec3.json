@@ -1718,7 +1718,7 @@
                 "properties": {
                   "file": {
                     "type": "object",
-                    "description": "Only plain text, markdown, docx, and html format are supported."
+                    "description": "Plain text, markdown, docx, csv, tsv, and html format are supported."
                   },
                   "collectionId": {
                     "type": "string",

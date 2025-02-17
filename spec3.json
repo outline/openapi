@@ -5432,6 +5432,12 @@
             "readOnly": true,
             "format": "uuid"
           },
+          "urlId": {
+            "type": "string",
+            "description": "A short unique identifier that can be used to identify the collection instead of the UUID.",
+            "readOnly": true,
+            "example": "hDYep1TPAM"
+          },
           "name": {
             "type": "string",
             "description": "The name of the collection.",
@@ -5475,6 +5481,11 @@
           "permission": {
             "$ref": "#/components/schemas/Permission"
           },
+          "sharing": {
+            "type": "boolean",
+            "description": "Whether public document sharing is enabled in this collection",
+            "default": false
+          },
           "createdAt": {
             "type": "string",
             "description": "The date and time that this object was created",
@@ -5493,6 +5504,16 @@
             "description": "The date and time that this object was deleted",
             "readOnly": true,
             "format": "date-time"
+          },
+          "archivedAt": {
+            "type": "string",
+            "nullable": true,
+            "description": "The date and time that this object was archived",
+            "readOnly": true,
+            "format": "date-time"
+          },
+          "archivedBy": {
+            "$ref": "#/components/schemas/User"
           }
         }
       },

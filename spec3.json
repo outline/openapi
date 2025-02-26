@@ -1345,12 +1345,17 @@
                     "format": "uuid"
                   },
                   "data": {
-                    "type": "object"
+                    "type": "object",
+                    "description": "The body of the comment."
+                  },
+                  "text": {
+                    "type": "string",
+                    "description": "The body of the comment in markdown.",
+                    "example": "Sounds great"
                   }
                 },
                 "required": [
-                  "documentId",
-                  "data"
+                  "documentId"
                 ]
               }
             }
@@ -2299,8 +2304,7 @@
                   },
                   "text": {
                     "type": "string",
-                    "description": "The body of the document, may contain markdown formatting.",
-                    "example": "…"
+                    "description": "The body of the document in markdown"
                   },
                   "collectionId": {
                     "type": "string",
@@ -2392,8 +2396,7 @@
                   },
                   "text": {
                     "type": "string",
-                    "description": "The body of the document, may contain markdown formatting.",
-                    "example": "…"
+                    "description": "The body of the document in markdown."
                   },
                   "append": {
                     "type": "boolean",

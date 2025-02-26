@@ -1017,10 +1017,14 @@ paths:
                   format: uuid
                 data:
                   type: object
+                  description: The body of the comment.
+                text:
+                  type: string
+                  description: The body of the comment in markdown.
+                  example: Sounds great
 
               required:
                 - documentId
-                - data
       responses:
         "200":
           description: OK
@@ -1623,8 +1627,7 @@ paths:
                   example: Welcome to Acme Inc
                 text:
                   type: string
-                  description: "The body of the document, may contain markdown formatting."
-                  example: …
+                  description: The body of the document in markdown
                 collectionId:
                   type: string
                   format: uuid
@@ -1686,8 +1689,7 @@ paths:
                   description: The title of the document.
                 text:
                   type: string
-                  description: "The body of the document, may contain markdown formatting."
-                  example: …
+                  description: The body of the document in markdown.
                 append:
                   type: boolean
                   description: "If true the text field will be appended to the end of the existing document, rather than the default behavior of replacing it. This is potentially useful for things like logging into a document."

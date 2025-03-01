@@ -454,7 +454,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Pagination"
+              allOf:
+                - $ref: "#/components/schemas/Pagination"
+                - $ref: "#/components/schemas/Sorting"
+                - type: object
+                  properties:
+                    query:
+                      type: string
+                      description: If set, will filter the results by collection name.
+                    statusFilter:
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/CollectionStatus"
+                      description: An optional array of statuses to filter by.
       responses:
         "200":
           description: OK
@@ -469,6 +481,10 @@ paths:
                       $ref: "#/components/schemas/Collection"
                   pagination:
                     $ref: "#/components/schemas/Pagination"
+                  policies:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Policy"
         "401":
           $ref: "#/components/responses/Unauthenticated"
         "403":
@@ -4137,6 +4153,10 @@ components:
         - member
         - viewer
         - guest
+    CollectionStatus:
+      type: string
+      enum:
+        - archived
     Membership:
       type: object
       properties:

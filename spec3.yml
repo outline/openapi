@@ -3258,10 +3258,12 @@ paths:
                       example: jane
                     emails:
                       type: array
+                      description: Array of emails
                       items:
                         type: string
-                        description: Array of emails
-                        example: ["jane.crandall@mail.com", "prudence.crandall@mail.com"]
+                      example:
+                        - "jane.crandall@mail.com"
+                        - "prudence.crandall@mail.com"
                     filter:
                       type: string
                       description: The status to filter by

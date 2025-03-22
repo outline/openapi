@@ -4897,14 +4897,14 @@
                       },
                       "emails": {
                         "type": "array",
+                        "description": "Array of emails",
                         "items": {
-                          "type": "string",
-                          "description": "Array of emails",
-                          "example": [
-                            "jane.crandall@mail.com",
-                            "prudence.crandall@mail.com"
-                          ]
-                        }
+                          "type": "string"
+                        },
+                        "example": [
+                          "jane.crandall@mail.com",
+                          "prudence.crandall@mail.com"
+                        ]
                       },
                       "filter": {
                         "type": "string",

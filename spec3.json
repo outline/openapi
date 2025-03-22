@@ -783,7 +783,7 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "collectionsAdd_user"
+        "operationId": "collectionsAddUser"
       }
     },
     "/collections.remove_user": {
@@ -850,7 +850,7 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "collectionsRemove_user"
+        "operationId": "collectionsRemoveUser"
       }
     },
     "/collections.memberships": {
@@ -1016,7 +1016,7 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "collectionsAdd_group"
+        "operationId": "collectionsAddGroup"
       }
     },
     "/collections.remove_group": {
@@ -1083,7 +1083,7 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "collectionsRemove_group"
+        "operationId": "collectionsRemoveGroup"
       }
     },
     "/collections.group_memberships": {
@@ -1173,7 +1173,7 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "collectionsGroup_memberships"
+        "operationId": "collectionsGroupMemberships"
       }
     },
     "/collections.delete": {
@@ -1364,7 +1364,7 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "collectionsExport_all"
+        "operationId": "collectionsExportAll"
       }
     },
     "/comments.create": {
@@ -2221,7 +2221,7 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "documentsAnswerQuestion"
+        "operationId": "documentsAnswerquestion"
       }
     },
     "/documents.search": {
@@ -3184,7 +3184,7 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "documentsAdd_user"
+        "operationId": "documentsAddUser"
       }
     },
     "/documents.remove_user": {
@@ -3250,7 +3250,7 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "documentsRemove_user"
+        "operationId": "documentsRemoveUser"
       }
     },
     "/events.list": {
@@ -3393,7 +3393,7 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "fileOperationsInfo"
+        "operationId": "fileoperationsInfo"
       }
     },
     "/fileOperations.delete": {
@@ -3451,7 +3451,7 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "fileOperationsDelete"
+        "operationId": "fileoperationsDelete"
       }
     },
     "/fileOperations.redirect": {
@@ -3505,7 +3505,7 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "fileOperationsRedirect"
+        "operationId": "fileoperationsRedirect"
       }
     },
     "/fileOperations.list": {
@@ -3579,7 +3579,7 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "fileOperationsList"
+        "operationId": "fileoperationsList"
       }
     },
     "/groups.info": {
@@ -4070,7 +4070,7 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "groupsAdd_user"
+        "operationId": "groupsAddUser"
       }
     },
     "/groups.remove_user": {
@@ -4144,7 +4144,7 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "groupsRemove_user"
+        "operationId": "groupsRemoveUser"
       }
     },
     "/revisions.info": {
@@ -5151,7 +5151,7 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "usersUpdate_role"
+        "operationId": "usersUpdateRole"
       }
     },
     "/users.suspend": {

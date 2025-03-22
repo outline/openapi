@@ -76,10 +76,11 @@
   "paths": {
     "/attachments.create": {
       "post": {
-        "tags": [
-          "Attachments"
-        ],
-        "summary": "Create an attachment",
+      "tags": [
+        "Attachments"
+      ],
+      "operationId": "attachmentsCreate",
+      "summary": "Create an attachment",
         "description": "Creating an attachment object creates a database record and returns the inputs needed to generate a signed url and upload the file from the client to cloud storage.",
         "requestBody": {
           "content": {
@@ -162,10 +163,11 @@
     },
     "/attachments.redirect": {
       "post": {
-        "tags": [
-          "Attachments"
-        ],
-        "summary": "Retrieve an attachment",
+      "tags": [
+        "Attachments"
+      ],
+      "operationId": "attachmentsRedirect",
+      "summary": "Retrieve an attachment",
         "description": "Load an attachment from where it is stored based on the id. If the attachment is private then a temporary, signed url with embedded credentials is generated on demand.",
         "requestBody": {
           "content": {
@@ -195,10 +197,11 @@
     },
     "/attachments.delete": {
       "post": {
-        "tags": [
-          "Attachments"
-        ],
-        "summary": "Delete an attachment",
+      "tags": [
+        "Attachments"
+      ],
+      "operationId": "attachmentsDelete",
+      "summary": "Delete an attachment",
         "description": "Deleting an attachment is permanant. It will not delete references or links to the attachment that may exist in your documents.",
         "requestBody": {
           "content": {
@@ -256,10 +259,11 @@
     },
     "/auth.info": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
-        "summary": "Retrieve auth",
+      "tags": [
+        "Auth"
+      ],
+      "operationId": "authInfo",
+      "summary": "Retrieve auth",
         "description": "Retrieve authentication details for the current API key",
         "responses": {
           "200": {
@@ -288,10 +292,11 @@
     },
     "/auth.config": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
-        "summary": "Retrieve auth config",
+      "tags": [
+        "Auth"
+      ],
+      "operationId": "authConfig",
+      "summary": "Retrieve auth config",
         "description": "Retrieve authentication options",
         "responses": {
           "200": {
@@ -347,10 +352,11 @@
     },
     "/collections.info": {
       "post": {
-        "tags": [
-          "Collections"
-        ],
-        "summary": "Retrieve a collection",
+      "tags": [
+        "Collections"
+      ],
+      "operationId": "collectionsInfo",
+      "summary": "Retrieve a collection",
         "requestBody": {
           "content": {
             "application/json": {
@@ -403,10 +409,11 @@
     },
     "/collections.documents": {
       "post": {
-        "tags": [
-          "Collections"
-        ],
-        "summary": "Retrieve a collections document structure",
+      "tags": [
+        "Collections"
+      ],
+      "operationId": "collectionsDocuments",
+      "summary": "Retrieve a collections document structure",
         "requestBody": {
           "content": {
             "application/json": {
@@ -463,10 +470,11 @@
     },
     "/collections.list": {
       "post": {
-        "tags": [
-          "Collections"
-        ],
-        "summary": "List all collections",
+      "tags": [
+        "Collections"
+      ],
+      "operationId": "collectionsList",
+      "summary": "List all collections",
         "requestBody": {
           "content": {
             "application/json": {
@@ -541,10 +549,11 @@
     },
     "/collections.create": {
       "post": {
-        "tags": [
-          "Collections"
-        ],
-        "summary": "Create a collection",
+      "tags": [
+        "Collections"
+      ],
+      "operationId": "collectionsCreate",
+      "summary": "Create a collection",
         "requestBody": {
           "content": {
             "application/json": {

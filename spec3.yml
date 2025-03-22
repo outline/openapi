@@ -1,3 +1,4 @@
+---
 openapi: 3.0.0
 info:
   title: Outline API
@@ -124,84 +125,85 @@ info:
   contact:
     email: hello@getoutline.com
 servers:
-  - url: "https://app.getoutline.com/api"
-    description: Production
+- url: https://app.getoutline.com/api
+  description: Production
 security:
-  - http: []
+- http: []
 tags:
-  - name: Attachments
-    description: |
-      `Attachments` represent a file uploaded to cloud storage. They are created
-      before the upload happens from the client and store all the meta information
-      such as file type, size, and location.
-  - name: Auth
-    description: |
-      `Auth` represents the current API Keys authentication details. It can be
-      used to check that a token is still valid and load the IDs for the current
-      user and team.
-  - name: Collections
-    description: |
-      `Collections` represent grouping of documents in the knowledge base, they
-      offer a way to structure information in a nested hierarchy and a level
-      at which read and write permissions can be granted to individual users or
-      groups of users.
-  - name: Comments
-    description: |
-      `Comments` represent a comment either on a selection of text in a document
-      or on the document itself.
-  - name: Documents
-    description: |
-      `Documents` are what everything else revolves around. A document represents
-      a single page of information and always returns the latest version of the
-      content. Documents are stored in [Markdown](https://spec.commonmark.org/)
-      formatting.
-  - name: Events
-    description: |
-      `Events` represent an artifact of an action. Whether it is creating a user,
-      editing a document, changing permissions, or any other action – an event
-      is created that can be used as an audit trail or activity stream.
-  - name: FileOperations
-    description: |
-      `FileOperations` represent background jobs for importing or exporting files.
-      You can query the file operation to find the state of progress and any
-      resulting output.
-  - name: Groups
-    description: |
-      `Groups` represent a list of users that logically belong together, for
-      example there might be groups for each department in your organization.
-      Groups can be granted access to collections with read or write permissions.
-  - name: Revisions
-    description: |
-      `Revisions` represent a snapshop of a document at a point in time. They
-      are used to keep tracking of editing and collaboration history – a document
-      can also be restored to a previous revision if neccessary.
-  - name: Shares
-    description: |
-      `Shares` represent authorization to view a document without being a member
-      of the team. Shares are created in order to give access to documents publicly.
-      Each user that shares a document will have a unique share object.
-  - name: Stars
-    description: |
-      `Stars` represent a favorited document or collection in the application sidebar.
-      Each user has their own collection of starred items.
-  - name: Users
-    description: |
-      `Users` represent an individual with access to the knowledge base. Users
-      can be created automatically when signing in with SSO or when a user is
-      invited via email.
-  - name: Views
-    description: |
-      `Views` represent a compressed record of an individual users views of a
-      document. Individual views are not recorded but a first, last and total
-      is kept per user.
-
+- name: Attachments
+  description: |
+    `Attachments` represent a file uploaded to cloud storage. They are created
+    before the upload happens from the client and store all the meta information
+    such as file type, size, and location.
+- name: Auth
+  description: |
+    `Auth` represents the current API Keys authentication details. It can be
+    used to check that a token is still valid and load the IDs for the current
+    user and team.
+- name: Collections
+  description: |
+    `Collections` represent grouping of documents in the knowledge base, they
+    offer a way to structure information in a nested hierarchy and a level
+    at which read and write permissions can be granted to individual users or
+    groups of users.
+- name: Comments
+  description: |
+    `Comments` represent a comment either on a selection of text in a document
+    or on the document itself.
+- name: Documents
+  description: |
+    `Documents` are what everything else revolves around. A document represents
+    a single page of information and always returns the latest version of the
+    content. Documents are stored in [Markdown](https://spec.commonmark.org/)
+    formatting.
+- name: Events
+  description: |
+    `Events` represent an artifact of an action. Whether it is creating a user,
+    editing a document, changing permissions, or any other action – an event
+    is created that can be used as an audit trail or activity stream.
+- name: FileOperations
+  description: |
+    `FileOperations` represent background jobs for importing or exporting files.
+    You can query the file operation to find the state of progress and any
+    resulting output.
+- name: Groups
+  description: |
+    `Groups` represent a list of users that logically belong together, for
+    example there might be groups for each department in your organization.
+    Groups can be granted access to collections with read or write permissions.
+- name: Revisions
+  description: |
+    `Revisions` represent a snapshop of a document at a point in time. They
+    are used to keep tracking of editing and collaboration history – a document
+    can also be restored to a previous revision if neccessary.
+- name: Shares
+  description: |
+    `Shares` represent authorization to view a document without being a member
+    of the team. Shares are created in order to give access to documents publicly.
+    Each user that shares a document will have a unique share object.
+- name: Stars
+  description: |
+    `Stars` represent a favorited document or collection in the application sidebar.
+    Each user has their own collection of starred items.
+- name: Users
+  description: |
+    `Users` represent an individual with access to the knowledge base. Users
+    can be created automatically when signing in with SSO or when a user is
+    invited via email.
+- name: Views
+  description: |
+    `Views` represent a compressed record of an individual users views of a
+    document. Individual views are not recorded but a first, last and total
+    is kept per user.
 paths:
-  /attachments.create:
+  "/attachments.create":
     post:
       tags:
-        - Attachments
+      - Attachments
       summary: Create an attachment
-      description: Creating an attachment object creates a database record and returns the inputs needed to generate a signed url and upload the file from the client to cloud storage.
+      description: Creating an attachment object creates a database record and returns
+        the inputs needed to generate a signed url and upload the file from the client
+        to cloud storage.
       requestBody:
         content:
           application/json:
@@ -213,7 +215,7 @@ paths:
                   example: image.png
                 documentId:
                   type: string
-                  description: "Identifier for the associated document, if any."
+                  description: Identifier for the associated document, if any.
                   format: uuid
                 contentType:
                   type: string
@@ -222,11 +224,11 @@ paths:
                   type: number
                   description: Size of the file attachment in bytes.
               required:
-                - name
-                - contentType
-                - size
+              - name
+              - contentType
+              - size
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -244,21 +246,24 @@ paths:
                       form:
                         type: object
                       attachment:
-                        $ref: "#/components/schemas/Attachment"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /attachments.redirect:
+                        "$ref": "#/components/schemas/Attachment"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: attachmentsCreate
+  "/attachments.redirect":
     post:
       tags:
-        - Attachments
+      - Attachments
       summary: Retrieve an attachment
-      description: "Load an attachment from where it is stored based on the id. If the attachment is private then a temporary, signed url with embedded credentials is generated on demand."
+      description: Load an attachment from where it is stored based on the id. If
+        the attachment is private then a temporary, signed url with embedded credentials
+        is generated on demand.
       requestBody:
         content:
           application/json:
@@ -270,16 +275,18 @@ paths:
                   description: Unique identifier for the attachment.
                   format: uuid
               required:
-                - id
+              - id
       responses:
-        "302":
+        '302':
           description: The url for the attachment
-  /attachments.delete:
+      operationId: attachmentsRedirect
+  "/attachments.delete":
     post:
       tags:
-        - Attachments
+      - Attachments
       summary: Delete an attachment
-      description: Deleting an attachment is permanant. It will not delete references or links to the attachment that may exist in your documents.
+      description: Deleting an attachment is permanant. It will not delete references
+        or links to the attachment that may exist in your documents.
       requestBody:
         content:
           application/json:
@@ -291,9 +298,9 @@ paths:
                   format: uuid
                   description: Unique identifier for the attachment.
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -303,24 +310,25 @@ paths:
                   success:
                     type: boolean
                     example: true
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /auth.info:
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: attachmentsDelete
+  "/auth.info":
     post:
       tags:
-        - Auth
+      - Auth
       summary: Retrieve auth
       description: Retrieve authentication details for the current API key
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -328,19 +336,20 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Auth"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /auth.config:
+                    "$ref": "#/components/schemas/Auth"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: authInfo
+  "/auth.config":
     post:
       tags:
-        - Auth
+      - Auth
       summary: Retrieve auth config
       description: Retrieve authentication options
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -369,13 +378,14 @@ paths:
                               example: Slack
                             authUrl:
                               type: string
-                              example: "https://acme-inc.getoutline.com/auth/slack"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /collections.info:
+                              example: https://acme-inc.getoutline.com/auth/slack
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: authConfig
+  "/collections.info":
     post:
       tags:
-        - Collections
+      - Collections
       summary: Retrieve a collection
       requestBody:
         content:
@@ -388,9 +398,9 @@ paths:
                   description: Unique identifier for the collection.
                   format: uuid
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -398,19 +408,20 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Collection"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /collections.documents:
+                    "$ref": "#/components/schemas/Collection"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: collectionsInfo
+  "/collections.documents":
     post:
       tags:
-        - Collections
+      - Collections
       summary: Retrieve a collections document structure
       requestBody:
         content:
@@ -423,9 +434,9 @@ paths:
                   description: Unique identifier for the collection.
                   format: uuid
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -435,40 +446,41 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/NavigationNode"
+                      "$ref": "#/components/schemas/NavigationNode"
                     example: []
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /collections.list:
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: collectionsDocuments
+  "/collections.list":
     post:
       tags:
-        - Collections
+      - Collections
       summary: List all collections
       requestBody:
         content:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/Pagination"
-                - $ref: "#/components/schemas/Sorting"
-                - type: object
-                  properties:
-                    query:
-                      type: string
-                      description: If set, will filter the results by collection name.
-                    statusFilter:
-                      type: array
-                      items:
-                        $ref: "#/components/schemas/CollectionStatus"
-                      description: An optional array of statuses to filter by.
+              - "$ref": "#/components/schemas/Pagination"
+              - "$ref": "#/components/schemas/Sorting"
+              - type: object
+                properties:
+                  query:
+                    type: string
+                    description: If set, will filter the results by collection name.
+                  statusFilter:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/CollectionStatus"
+                    description: An optional array of statuses to filter by.
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -478,23 +490,24 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Collection"
+                      "$ref": "#/components/schemas/Collection"
                   pagination:
-                    $ref: "#/components/schemas/Pagination"
+                    "$ref": "#/components/schemas/Pagination"
                   policies:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Policy"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /collections.create:
+                      "$ref": "#/components/schemas/Policy"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: collectionsList
+  "/collections.create":
     post:
       tags:
-        - Collections
+      - Collections
       summary: Create a collection
       requestBody:
         content:
@@ -507,9 +520,9 @@ paths:
                   example: Human Resources
                 description:
                   type: string
-                  example: ""
+                  example: ''
                 permission:
-                  $ref: "#/components/schemas/Permission"
+                  "$ref": "#/components/schemas/Permission"
                 color:
                   type: string
                   example: "#123123"
@@ -517,9 +530,9 @@ paths:
                   type: boolean
                   example: false
               required:
-                - name
+              - name
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -527,23 +540,24 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Collection"
+                    "$ref": "#/components/schemas/Collection"
                   policies:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Policy"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /collections.update:
+                      "$ref": "#/components/schemas/Policy"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: collectionsCreate
+  "/collections.update":
     post:
       tags:
-        - Collections
+      - Collections
       summary: Update a collection
       requestBody:
         content:
@@ -558,17 +572,17 @@ paths:
                   type: string
                   example: Human Resources
                 permission:
-                  $ref: "#/components/schemas/Permission"
+                  "$ref": "#/components/schemas/Permission"
                 description:
                   type: string
-                  example: ""
+                  example: ''
                 color:
                   type: string
                   example: "#123123"
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -576,27 +590,29 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Collection"
+                    "$ref": "#/components/schemas/Collection"
                   policies:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Policy"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /collections.add_user:
+                      "$ref": "#/components/schemas/Policy"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: collectionsUpdate
+  "/collections.add_user":
     post:
       tags:
-        - Collections
+      - Collections
       summary: Add a collection user
-      description: This method allows you to add a user membership to the specified collection.
+      description: This method allows you to add a user membership to the specified
+        collection.
       requestBody:
         content:
           application/json:
@@ -610,12 +626,12 @@ paths:
                   type: string
                   format: uuid
                 permission:
-                  $ref: "#/components/schemas/Permission"
+                  "$ref": "#/components/schemas/Permission"
               required:
-                - id
-                - userId
+              - id
+              - userId
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -628,25 +644,26 @@ paths:
                       users:
                         type: array
                         items:
-                          $ref: "#/components/schemas/User"
+                          "$ref": "#/components/schemas/User"
                       memberships:
                         type: array
                         items:
-                          $ref: "#/components/schemas/Membership"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /collections.remove_user:
+                          "$ref": "#/components/schemas/Membership"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: collectionsAddUser
+  "/collections.remove_user":
     post:
       tags:
-        - Collections
+      - Collections
       summary: Remove a collection user
       description: This method allows you to remove a user from the specified collection.
       requestBody:
@@ -663,10 +680,10 @@ paths:
                   type: string
                   format: uuid
               required:
-                - id
-                - userId
+              - id
+              - userId
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -676,44 +693,47 @@ paths:
                   success:
                     type: boolean
                     example: true
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /collections.memberships:
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: collectionsRemoveUser
+  "/collections.memberships":
     post:
       tags:
-        - Collections
+      - Collections
       summary: List all collection memberships
-      description: This method allows you to list a collections individual memberships. It's important to note that memberships returned from this endpoint do not include group memberships.
+      description: This method allows you to list a collections individual memberships.
+        It's important to note that memberships returned from this endpoint do not
+        include group memberships.
       requestBody:
         content:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/Pagination"
-                - type: object
-                  properties:
-                    id:
-                      type: string
-                      description: Identifier for the collection
-                      format: uuid
-                    query:
-                      type: string
-                      description: Filter memberships by user names
-                      example: jenny
-                    permission:
-                      $ref: "#/components/schemas/Permission"
-                  required:
-                    - id
+              - "$ref": "#/components/schemas/Pagination"
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    description: Identifier for the collection
+                    format: uuid
+                  query:
+                    type: string
+                    description: Filter memberships by user names
+                    example: jenny
+                  permission:
+                    "$ref": "#/components/schemas/Permission"
+                required:
+                - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -726,27 +746,29 @@ paths:
                       users:
                         type: array
                         items:
-                          $ref: "#/components/schemas/User"
+                          "$ref": "#/components/schemas/User"
                       memberships:
                         type: array
                         items:
-                          $ref: "#/components/schemas/Membership"
+                          "$ref": "#/components/schemas/Membership"
                   pagination:
-                    $ref: "#/components/schemas/Pagination"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /collections.add_group:
+                    "$ref": "#/components/schemas/Pagination"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: collectionsMemberships
+  "/collections.add_group":
     post:
       tags:
-        - Collections
+      - Collections
       summary: Add a group to a collection
-      description: This method allows you to give all members in a group access to a collection.
+      description: This method allows you to give all members in a group access to
+        a collection.
       requestBody:
         content:
           application/json:
@@ -760,12 +782,12 @@ paths:
                   type: string
                   format: uuid
                 permission:
-                  $ref: "#/components/schemas/Permission"
+                  "$ref": "#/components/schemas/Permission"
               required:
-                - id
-                - groupId
+              - id
+              - groupId
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -778,23 +800,26 @@ paths:
                       collectionGroupMemberships:
                         type: array
                         items:
-                          $ref: "#/components/schemas/CollectionGroupMembership"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /collections.remove_group:
+                          "$ref": "#/components/schemas/CollectionGroupMembership"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: collectionsAddGroup
+  "/collections.remove_group":
     post:
       tags:
-        - Collections
+      - Collections
       summary: Remove a collection group
-      description: This method allows you to revoke all members in a group access to a collection. Note that members of the group may still retain access through other groups or individual memberships.
+      description: This method allows you to revoke all members in a group access
+        to a collection. Note that members of the group may still retain access through
+        other groups or individual memberships.
       requestBody:
         content:
           application/json:
@@ -809,10 +834,10 @@ paths:
                   type: string
                   format: uuid
               required:
-                - id
-                - groupId
+              - id
+              - groupId
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -822,44 +847,46 @@ paths:
                   success:
                     type: boolean
                     example: true
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /collections.group_memberships:
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: collectionsRemoveGroup
+  "/collections.group_memberships":
     post:
       tags:
-        - Collections
+      - Collections
       summary: List all collection group members
-      description: This method allows you to list a collections group memberships. This is the list of groups that have been given access to the collection.
+      description: This method allows you to list a collections group memberships.
+        This is the list of groups that have been given access to the collection.
       requestBody:
         content:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/Pagination"
-                - type: object
-                  properties:
-                    id:
-                      type: string
-                      description: Identifier for the collection
-                      format: uuid
-                    query:
-                      type: string
-                      description: Filter memberships by group names
-                      example: developers
-                    permission:
-                      $ref: "#/components/schemas/Permission"
-                  required:
-                    - id
+              - "$ref": "#/components/schemas/Pagination"
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    description: Identifier for the collection
+                    format: uuid
+                  query:
+                    type: string
+                    description: Filter memberships by group names
+                    example: developers
+                  permission:
+                    "$ref": "#/components/schemas/Permission"
+                required:
+                - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -872,27 +899,29 @@ paths:
                       groups:
                         type: array
                         items:
-                          $ref: "#/components/schemas/Group"
+                          "$ref": "#/components/schemas/Group"
                       collectionGroupMemberships:
                         type: array
                         items:
-                          $ref: "#/components/schemas/CollectionGroupMembership"
+                          "$ref": "#/components/schemas/CollectionGroupMembership"
                   pagination:
-                    $ref: "#/components/schemas/Pagination"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /collections.delete:
+                    "$ref": "#/components/schemas/Pagination"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: collectionsGroupMemberships
+  "/collections.delete":
     post:
       tags:
-        - Collections
+      - Collections
       summary: Delete a collection
-      description: Delete a collection and all of its documents. This action can’t be undone so please be careful.
+      description: Delete a collection and all of its documents. This action can’t
+        be undone so please be careful.
       requestBody:
         content:
           application/json:
@@ -903,9 +932,9 @@ paths:
                   type: string
                   format: uuid
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -915,22 +944,24 @@ paths:
                   success:
                     type: boolean
                     example: true
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /collections.export:
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: collectionsDelete
+  "/collections.export":
     post:
       tags:
-        - Collections
+      - Collections
       summary: Export a collection
-      description:
-        Triggers a bulk export of the collection in markdown format and their attachments. If documents are nested then they will be nested in folders inside the zip file. The endpoint returns a `FileOperation`
-        that can be queried to track the progress of the export and get the url for the final file.
+      description: Triggers a bulk export of the collection in markdown format and
+        their attachments. If documents are nested then they will be nested in folders
+        inside the zip file. The endpoint returns a `FileOperation` that can be queried
+        to track the progress of the export and get the url for the final file.
       requestBody:
         content:
           application/json:
@@ -940,16 +971,16 @@ paths:
                 format:
                   type: string
                   enum:
-                    - outline-markdown
-                    - json
-                    - html
+                  - outline-markdown
+                  - json
+                  - html
                 id:
                   type: string
                   format: uuid
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -960,20 +991,20 @@ paths:
                     type: object
                     properties:
                       fileOperation:
-                        $ref: "#/components/schemas/FileOperation"
-
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /collections.export_all:
+                        "$ref": "#/components/schemas/FileOperation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: collectionsExport
+  "/collections.export_all":
     post:
       tags:
-        - Collections
+      - Collections
       summary: Export all collections
       requestBody:
         content:
@@ -984,12 +1015,15 @@ paths:
                 format:
                   type: string
                   enum:
-                    - outline-markdown
-                    - json
-                    - html
-      description: Triggers a bulk export of all documents in and their attachments. The endpoint returns a `FileOperation` that can be queried through the fileOperations endpoint to track the progress of the export and get the url for the final file.
+                  - outline-markdown
+                  - json
+                  - html
+      description: Triggers a bulk export of all documents in and their attachments.
+        The endpoint returns a `FileOperation` that can be queried through the fileOperations
+        endpoint to track the progress of the export and get the url for the final
+        file.
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1000,20 +1034,20 @@ paths:
                     type: object
                     properties:
                       fileOperation:
-                        $ref: "#/components/schemas/FileOperation"
-
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /comments.create:
+                        "$ref": "#/components/schemas/FileOperation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: collectionsExportAll
+  "/comments.create":
     post:
       tags:
-        - Comments
+      - Comments
       summary: Create a comment
       description: Create a comment
       requestBody:
@@ -1038,11 +1072,10 @@ paths:
                   type: string
                   description: The body of the comment in markdown.
                   example: Sounds great
-
               required:
-                - documentId
+              - documentId
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1050,19 +1083,20 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Comment"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /comments.info:
+                    "$ref": "#/components/schemas/Comment"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: commentsCreate
+  "/comments.info":
     post:
       tags:
-        - Comments
+      - Comments
       summary: Retrieve a comment
       description: Retrieve a comment
       requestBody:
@@ -1076,11 +1110,12 @@ paths:
                   format: uuid
                 includeAnchorText:
                   type: boolean
-                  description: Include the document text that the comment is anchored to, if any
+                  description: Include the document text that the comment is anchored
+                    to, if any
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1088,19 +1123,20 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Comment"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /comments.update:
+                    "$ref": "#/components/schemas/Comment"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: commentsInfo
+  "/comments.update":
     post:
       tags:
-        - Comments
+      - Comments
       summary: Update a comment
       description: Update a comment
       requestBody:
@@ -1115,10 +1151,10 @@ paths:
                 data:
                   type: object
               required:
-                - id
-                - data
+              - id
+              - data
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1126,19 +1162,20 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Comment"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /comments.delete:
+                    "$ref": "#/components/schemas/Comment"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: commentsUpdate
+  "/comments.delete":
     post:
       tags:
-        - Comments
+      - Comments
       summary: Delete a comment
       description: Delete a comment
       requestBody:
@@ -1151,9 +1188,9 @@ paths:
                   type: string
                   format: uuid
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1163,18 +1200,19 @@ paths:
                   success:
                     type: boolean
                     example: true
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /comments.list:
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: commentsDelete
+  "/comments.list":
     post:
       tags:
-        - Comments
+      - Comments
       summary: List all comments
       description: This method will list all comments matching the given properties.
       requestBody:
@@ -1182,23 +1220,24 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/Pagination"
-                - $ref: "#/components/schemas/Sorting"
-                - type: object
-                  properties:
-                    documentId:
-                      type: string
-                      format: uuid
-                      description: Filter to a specific document
-                    collectionId:
-                      type: string
-                      format: uuid
-                      description: Filter to a specific collection
-                    includeAnchorText:
-                      type: boolean
-                      description: Include the document text that the comment is anchored to, if any
+              - "$ref": "#/components/schemas/Pagination"
+              - "$ref": "#/components/schemas/Sorting"
+              - type: object
+                properties:
+                  documentId:
+                    type: string
+                    format: uuid
+                    description: Filter to a specific document
+                  collectionId:
+                    type: string
+                    format: uuid
+                    description: Filter to a specific collection
+                  includeAnchorText:
+                    type: boolean
+                    description: Include the document text that the comment is anchored
+                      to, if any
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1208,23 +1247,24 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Comment"
+                      "$ref": "#/components/schemas/Comment"
                   policies:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Policy"
+                      "$ref": "#/components/schemas/Policy"
                   pagination:
-                    $ref: "#/components/schemas/Pagination"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /documents.info:
+                    "$ref": "#/components/schemas/Pagination"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: commentsList
+  "/documents.info":
     post:
       tags:
-        - Documents
+      - Documents
       summary: Retrieve a document
       requestBody:
         content:
@@ -1234,13 +1274,15 @@ paths:
               properties:
                 id:
                   type: string
-                  description: Unique identifier for the document. Either the UUID or the urlId is acceptable.
+                  description: Unique identifier for the document. Either the UUID
+                    or the urlId is acceptable.
                 shareId:
                   type: string
                   format: uuid
-                  description: "Unique identifier for a document share, a shareId may be used in place of a document UUID"
+                  description: Unique identifier for a document share, a shareId may
+                    be used in place of a document UUID
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1248,21 +1290,25 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Document"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /documents.import:
+                    "$ref": "#/components/schemas/Document"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: documentsInfo
+  "/documents.import":
     post:
       tags:
-        - Documents
+      - Documents
       summary: Import a file as a document
-      description: This method allows you to create a new document by importing an existing file. By default a document is set to the collection root. If you want to create a nested/child document, you should pass parentDocumentId to set the parent document.
+      description: This method allows you to create a new document by importing an
+        existing file. By default a document is set to the collection root. If you
+        want to create a nested/child document, you should pass parentDocumentId to
+        set the parent document.
       requestBody:
         content:
           multipart/form-data:
@@ -1271,7 +1317,8 @@ paths:
               properties:
                 file:
                   type: object
-                  description: Plain text, markdown, docx, csv, tsv, and html format are supported.
+                  description: Plain text, markdown, docx, csv, tsv, and html format
+                    are supported.
                 collectionId:
                   type: string
                   format: uuid
@@ -1283,7 +1330,7 @@ paths:
                 publish:
                   type: boolean
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1291,19 +1338,20 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Document"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /documents.export:
+                    "$ref": "#/components/schemas/Document"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: documentsImport
+  "/documents.export":
     post:
       tags:
-        - Documents
+      - Documents
       summary: Export a document as markdown
       requestBody:
         content:
@@ -1313,9 +1361,10 @@ paths:
               properties:
                 id:
                   type: string
-                  description: Unique identifier for the document. Either the UUID or the urlId is acceptable.
+                  description: Unique identifier for the document. Either the UUID
+                    or the urlId is acceptable.
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1325,47 +1374,49 @@ paths:
                   data:
                     type: string
                     description: The document content in Markdown formatting
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /documents.list:
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: documentsExport
+  "/documents.list":
     post:
       tags:
-        - Documents
+      - Documents
       summary: List all documents
-      description: This method will list all published documents and draft documents belonging to the current user.
+      description: This method will list all published documents and draft documents
+        belonging to the current user.
       requestBody:
         content:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/Pagination"
-                - $ref: "#/components/schemas/Sorting"
-                - type: object
-                  properties:
-                    collectionId:
-                      type: string
-                      format: uuid
-                      description: Optionally filter to a specific collection
-                    userId:
-                      type: string
-                      format: uuid
-                    backlinkDocumentId:
-                      type: string
-                      format: uuid
-                    parentDocumentId:
-                      type: string
-                      format: uuid
-                    template:
-                      type: boolean
-                      description: Optionally filter to only templates
+              - "$ref": "#/components/schemas/Pagination"
+              - "$ref": "#/components/schemas/Sorting"
+              - type: object
+                properties:
+                  collectionId:
+                    type: string
+                    format: uuid
+                    description: Optionally filter to a specific collection
+                  userId:
+                    type: string
+                    format: uuid
+                  backlinkDocumentId:
+                    type: string
+                    format: uuid
+                  parentDocumentId:
+                    type: string
+                    format: uuid
+                  template:
+                    type: boolean
+                    description: Optionally filter to only templates
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1375,49 +1426,52 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Document"
+                      "$ref": "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Policy"
+                      "$ref": "#/components/schemas/Policy"
                   pagination:
-                    $ref: "#/components/schemas/Pagination"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /documents.drafts:
+                    "$ref": "#/components/schemas/Pagination"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: documentsList
+  "/documents.drafts":
     post:
       tags:
-        - Documents
+      - Documents
       summary: List all draft documents
-      description: This method will list all draft documents belonging to the current user.
+      description: This method will list all draft documents belonging to the current
+        user.
       requestBody:
         content:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/Pagination"
-                - $ref: "#/components/schemas/Sorting"
-                - type: object
-                  properties:
-                    collectionId:
-                      type: string
-                      description: A collection to search within
-                      format: uuid
-                    dateFilter:
-                      type: string
-                      description: Any documents that have not been updated within the specified period will be filtered out
-                      example: month
-                      enum:
-                        - day
-                        - week
-                        - month
-                        - year
+              - "$ref": "#/components/schemas/Pagination"
+              - "$ref": "#/components/schemas/Sorting"
+              - type: object
+                properties:
+                  collectionId:
+                    type: string
+                    description: A collection to search within
+                    format: uuid
+                  dateFilter:
+                    type: string
+                    description: Any documents that have not been updated within the
+                      specified period will be filtered out
+                    example: month
+                    enum:
+                    - day
+                    - week
+                    - month
+                    - year
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1427,34 +1481,36 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Document"
+                      "$ref": "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Policy"
+                      "$ref": "#/components/schemas/Policy"
                   pagination:
-                    $ref: "#/components/schemas/Pagination"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /documents.viewed:
+                    "$ref": "#/components/schemas/Pagination"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: documentsDrafts
+  "/documents.viewed":
     post:
       tags:
-        - Documents
+      - Documents
       summary: List all recently viewed documents
-      description: This method will list all documents recently viewed by the current user.
+      description: This method will list all documents recently viewed by the current
+        user.
       requestBody:
         content:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/Pagination"
-                - $ref: "#/components/schemas/Sorting"
+              - "$ref": "#/components/schemas/Pagination"
+              - "$ref": "#/components/schemas/Sorting"
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1464,64 +1520,71 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Document"
+                      "$ref": "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Policy"
+                      "$ref": "#/components/schemas/Policy"
                   pagination:
-                    $ref: "#/components/schemas/Pagination"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /documents.answerQuestion:
+                    "$ref": "#/components/schemas/Pagination"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: documentsViewed
+  "/documents.answerQuestion":
     post:
       tags:
-        - Documents
+      - Documents
       summary: Query documents with natural language
-      description: This method allows asking direct questions of your documents – where possible an answer will be provided. Search results will be restricted to those accessible by the current access token. Note that "AI answers" must be enabled for the workspace.
+      description: This method allows asking direct questions of your documents –
+        where possible an answer will be provided. Search results will be restricted
+        to those accessible by the current access token. Note that "AI answers" must
+        be enabled for the workspace.
       requestBody:
         content:
           application/json:
             schema:
               allOf:
-                - type: object
-                  properties:
-                    query:
-                      type: string
-                      example: What is our holiday policy?
-                    userId:
-                      type: string
-                      description: Any documents that have not been edited by the user identifier will be filtered out
-                      format: uuid
-                    collectionId:
-                      type: string
-                      description: A collection to search within
-                      format: uuid
-                    documentId:
-                      type: string
-                      description: A document to search within
-                      format: uuid
-                    statusFilter:
-                      type: string
-                      description: Any documents that are not in the specified status will be filtered out
-                      enum:
-                        - draft
-                        - archived
-                        - published
-                    dateFilter:
-                      type: string
-                      description: Any documents that have not been updated within the specified period will be filtered out
-                      enum:
-                        - day
-                        - week
-                        - month
-                        - year
+              - type: object
+                properties:
+                  query:
+                    type: string
+                    example: What is our holiday policy?
+                  userId:
+                    type: string
+                    description: Any documents that have not been edited by the user
+                      identifier will be filtered out
+                    format: uuid
+                  collectionId:
+                    type: string
+                    description: A collection to search within
+                    format: uuid
+                  documentId:
+                    type: string
+                    description: A document to search within
+                    format: uuid
+                  statusFilter:
+                    type: string
+                    description: Any documents that are not in the specified status
+                      will be filtered out
+                    enum:
+                    - draft
+                    - archived
+                    - published
+                  dateFilter:
+                    type: string
+                    description: Any documents that have not been updated within the
+                      specified period will be filtered out
+                    enum:
+                    - day
+                    - week
+                    - month
+                    - year
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1531,67 +1594,73 @@ paths:
                   documents:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Document"
+                      "$ref": "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Policy"
+                      "$ref": "#/components/schemas/Policy"
                   search:
-                    $ref: "#/components/schemas/SearchResult"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /documents.search:
+                    "$ref": "#/components/schemas/SearchResult"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: documentsAnswerquestion
+  "/documents.search":
     post:
       tags:
-        - Documents
+      - Documents
       summary: Search all documents
-      description: This methods allows you to search your teams documents with keywords. Note that search results will be restricted to those accessible by the current access token.
+      description: This methods allows you to search your teams documents with keywords.
+        Note that search results will be restricted to those accessible by the current
+        access token.
       requestBody:
         content:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/Pagination"
-                - type: object
-                  properties:
-                    query:
-                      type: string
-                      example: hiring
-                    userId:
-                      type: string
-                      description: Any documents that have not been edited by the user identifier will be filtered out
-                      format: uuid
-                    collectionId:
-                      type: string
-                      description: A collection to search within
-                      format: uuid
-                    documentId:
-                      type: string
-                      description: A document to search within
-                      format: uuid
-                    statusFilter:
-                      type: string
-                      description: Any documents that are not in the specified status will be filtered out
-                      example: published
-                      enum:
-                        - draft
-                        - archived
-                        - published
-                    dateFilter:
-                      type: string
-                      description: Any documents that have not been updated within the specified period will be filtered out
-                      example: month
-                      enum:
-                        - day
-                        - week
-                        - month
-                        - year
+              - "$ref": "#/components/schemas/Pagination"
+              - type: object
+                properties:
+                  query:
+                    type: string
+                    example: hiring
+                  userId:
+                    type: string
+                    description: Any documents that have not been edited by the user
+                      identifier will be filtered out
+                    format: uuid
+                  collectionId:
+                    type: string
+                    description: A collection to search within
+                    format: uuid
+                  documentId:
+                    type: string
+                    description: A document to search within
+                    format: uuid
+                  statusFilter:
+                    type: string
+                    description: Any documents that are not in the specified status
+                      will be filtered out
+                    example: published
+                    enum:
+                    - draft
+                    - archived
+                    - published
+                  dateFilter:
+                    type: string
+                    description: Any documents that have not been updated within the
+                      specified period will be filtered out
+                    example: month
+                    enum:
+                    - day
+                    - week
+                    - month
+                    - year
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1605,33 +1674,39 @@ paths:
                       properties:
                         context:
                           type: string
-                          description: A short snippet of context from the document that includes the search query.
+                          description: A short snippet of context from the document
+                            that includes the search query.
                           example: At Acme Inc our hiring practices are inclusive
                         ranking:
                           type: number
-                          description: The ranking used to order search results based on relevance.
+                          description: The ranking used to order search results based
+                            on relevance.
                           format: float
                           example: 1.1844109
                         document:
-                          $ref: "#/components/schemas/Document"
+                          "$ref": "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Policy"
+                      "$ref": "#/components/schemas/Policy"
                   pagination:
-                    $ref: "#/components/schemas/Pagination"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /documents.create:
+                    "$ref": "#/components/schemas/Pagination"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: documentsSearch
+  "/documents.create":
     post:
       tags:
-        - Documents
+      - Documents
       summary: Create a document
-      description: "This method allows you to create or publish a new document. By default a document is set to the collection root. If you want to create a nested/child document, you should pass parentDocumentId to set the parent document."
+      description: This method allows you to create or publish a new document. By
+        default a document is set to the collection root. If you want to create a
+        nested/child document, you should pass parentDocumentId to set the parent
+        document.
       requestBody:
         content:
           application/json:
@@ -1655,15 +1730,17 @@ paths:
                   format: uuid
                 template:
                   type: boolean
-                  description: Whether this document should be considered to be a template.
+                  description: Whether this document should be considered to be a
+                    template.
                 publish:
                   type: boolean
-                  description: Whether this document should be immediately published and made visible to other team members.
+                  description: Whether this document should be immediately published
+                    and made visible to other team members.
               required:
-                - title
-                - collectionId
+              - title
+              - collectionId
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1671,23 +1748,24 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Document"
+                    "$ref": "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Policy"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /documents.update:
+                      "$ref": "#/components/schemas/Policy"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: documentsCreate
+  "/documents.update":
     post:
       tags:
-        - Documents
+      - Documents
       summary: Update a document
       description: This method allows you to modify an already created document
       requestBody:
@@ -1699,7 +1777,8 @@ paths:
                 id:
                   type: string
                   example: hDYep1TPAM
-                  description: Unique identifier for the document. Either the UUID or the urlId is acceptable.
+                  description: Unique identifier for the document. Either the UUID
+                    or the urlId is acceptable.
                 title:
                   type: string
                   description: The title of the document.
@@ -1708,17 +1787,22 @@ paths:
                   description: The body of the document in markdown.
                 append:
                   type: boolean
-                  description: "If true the text field will be appended to the end of the existing document, rather than the default behavior of replacing it. This is potentially useful for things like logging into a document."
+                  description: If true the text field will be appended to the end
+                    of the existing document, rather than the default behavior of
+                    replacing it. This is potentially useful for things like logging
+                    into a document.
                 publish:
                   type: boolean
-                  description: "Whether this document should be published and made visible to other team members, if a draft"
+                  description: Whether this document should be published and made
+                    visible to other team members, if a draft
                 done:
                   type: boolean
-                  description: "Whether the editing session has finished, this will trigger any notifications. This property will soon be deprecated."
+                  description: Whether the editing session has finished, this will
+                    trigger any notifications. This property will soon be deprecated.
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1726,27 +1810,29 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Document"
+                    "$ref": "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Policy"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /documents.templatize:
+                      "$ref": "#/components/schemas/Policy"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: documentsUpdate
+  "/documents.templatize":
     post:
       tags:
-        - Documents
+      - Documents
       summary: Create a template from a document
-      description: "This method allows you to createa new template using an existing document as the basis"
+      description: This method allows you to createa new template using an existing
+        document as the basis
       requestBody:
         content:
           application/json:
@@ -1757,9 +1843,9 @@ paths:
                   type: string
                   format: uuid
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1767,25 +1853,27 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Document"
+                    "$ref": "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Policy"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /documents.unpublish:
+                      "$ref": "#/components/schemas/Policy"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: documentsTemplatize
+  "/documents.unpublish":
     post:
       tags:
-        - Documents
+      - Documents
       summary: Unpublish a document
-      description: Unpublishing a document moves it back to a draft status and out of the collection.
+      description: Unpublishing a document moves it back to a draft status and out
+        of the collection.
       requestBody:
         content:
           application/json:
@@ -1795,11 +1883,12 @@ paths:
                 id:
                   type: string
                   example: hDYep1TPAM
-                  description: Unique identifier for the document. Either the UUID or the urlId is acceptable.
+                  description: Unique identifier for the document. Either the UUID
+                    or the urlId is acceptable.
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1807,27 +1896,29 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Document"
+                    "$ref": "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Policy"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /documents.move:
+                      "$ref": "#/components/schemas/Policy"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: documentsUnpublish
+  "/documents.move":
     post:
       tags:
-        - Documents
+      - Documents
       summary: Move a document
-      description: "Move a document to a new location or collection. If no parent document is provided, the document will be moved to the collection root."
+      description: Move a document to a new location or collection. If no parent document
+        is provided, the document will be moved to the collection root.
       requestBody:
         content:
           application/json:
@@ -1837,7 +1928,8 @@ paths:
                 id:
                   type: string
                   example: hDYep1TPAM
-                  description: Unique identifier for the document. Either the UUID or the urlId is acceptable.
+                  description: Unique identifier for the document. Either the UUID
+                    or the urlId is acceptable.
                 collectionId:
                   type: string
                   format: uuid
@@ -1845,9 +1937,9 @@ paths:
                   type: string
                   format: uuid
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1860,31 +1952,34 @@ paths:
                       documents:
                         type: array
                         items:
-                          $ref: "#/components/schemas/Document"
+                          "$ref": "#/components/schemas/Document"
                       collections:
                         type: array
                         items:
-                          $ref: "#/components/schemas/Collection"
+                          "$ref": "#/components/schemas/Collection"
                   policies:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Policy"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /documents.archive:
+                      "$ref": "#/components/schemas/Policy"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: documentsMove
+  "/documents.archive":
     post:
       tags:
-        - Documents
+      - Documents
       summary: Archive a document
-      description: Archiving a document allows outdated information to be moved out of sight whilst retaining the ability to optionally search and restore it later.
+      description: Archiving a document allows outdated information to be moved out
+        of sight whilst retaining the ability to optionally search and restore it
+        later.
       requestBody:
         content:
           application/json:
@@ -1894,11 +1989,12 @@ paths:
                 id:
                   type: string
                   example: hDYep1TPAM
-                  description: Unique identifier for the document. Either the UUID or the urlId is acceptable.
+                  description: Unique identifier for the document. Either the UUID
+                    or the urlId is acceptable.
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1906,27 +2002,30 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Document"
+                    "$ref": "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Policy"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /documents.restore:
+                      "$ref": "#/components/schemas/Policy"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: documentsArchive
+  "/documents.restore":
     post:
       tags:
-        - Documents
+      - Documents
       summary: Restore a document
-      description: "If a document has been archived or deleted, it can be restored. Optionally a revision can be passed to restore the document to a previous point in time."
+      description: If a document has been archived or deleted, it can be restored.
+        Optionally a revision can be passed to restore the document to a previous
+        point in time.
       requestBody:
         content:
           application/json:
@@ -1936,15 +2035,16 @@ paths:
                 id:
                   type: string
                   example: hDYep1TPAM
-                  description: Unique identifier for the document. Either the UUID or the urlId is acceptable.
+                  description: Unique identifier for the document. Either the UUID
+                    or the urlId is acceptable.
                 revisionId:
                   type: string
                   format: uuid
                   description: Identifier for the revision to restore to.
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1952,27 +2052,29 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Document"
+                    "$ref": "#/components/schemas/Document"
                   policies:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Policy"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /documents.delete:
+                      "$ref": "#/components/schemas/Policy"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: documentsRestore
+  "/documents.delete":
     post:
       tags:
-        - Documents
+      - Documents
       summary: Delete a document
-      description: Deleting a document moves it to the trash. If not restored within 30 days it is permenantly deleted.
+      description: Deleting a document moves it to the trash. If not restored within
+        30 days it is permenantly deleted.
       requestBody:
         content:
           application/json:
@@ -1982,15 +2084,17 @@ paths:
                 id:
                   type: string
                   example: hDYep1TPAM
-                  description: Unique identifier for the document. Either the UUID or the urlId is acceptable.
+                  description: Unique identifier for the document. Either the UUID
+                    or the urlId is acceptable.
                 permanent:
                   type: boolean
                   example: false
-                  description: If set to true the document will be destroyed with no way to recover rather than moved to the trash.
+                  description: If set to true the document will be destroyed with
+                    no way to recover rather than moved to the trash.
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2000,22 +2104,24 @@ paths:
                   success:
                     type: boolean
                     example: true
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /documents.users:
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: documentsDelete
+  "/documents.users":
     post:
       tags:
-        - Documents
+      - Documents
       summary: List document users
-      description: All users with access to a document. To list only users with direct membership to the document use `documents.memberships`
+      description: All users with access to a document. To list only users with direct
+        membership to the document use `documents.memberships`
       requestBody:
         content:
           application/json:
@@ -2025,14 +2131,15 @@ paths:
                 id:
                   type: string
                   example: hDYep1TPAM
-                  description: Unique identifier for the document. Either the UUID or the urlId is acceptable.
+                  description: Unique identifier for the document. Either the UUID
+                    or the urlId is acceptable.
                 query:
                   type: string
                   description: If set, will filter the results by user name.
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2042,29 +2149,31 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/User"
+                      "$ref": "#/components/schemas/User"
                   pagination:
-                    $ref: "#/components/schemas/Pagination"
+                    "$ref": "#/components/schemas/Pagination"
                   policies:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Policy"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /documents.memberships:
+                      "$ref": "#/components/schemas/Policy"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: documentsUsers
+  "/documents.memberships":
     post:
       tags:
-        - Documents
+      - Documents
       summary: List document memberships
-      description: Users with direct membership to a document. To list all users with access to a document use `documents.users`.
+      description: Users with direct membership to a document. To list all users with
+        access to a document use `documents.users`.
       requestBody:
         content:
           application/json:
@@ -2074,14 +2183,15 @@ paths:
                 id:
                   type: string
                   example: hDYep1TPAM
-                  description: Unique identifier for the document. Either the UUID or the urlId is acceptable.
+                  description: Unique identifier for the document. Either the UUID
+                    or the urlId is acceptable.
                 query:
                   type: string
                   description: If set, will filter the results by user name
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2094,29 +2204,31 @@ paths:
                       users:
                         type: array
                         items:
-                          $ref: "#/components/schemas/User"
+                          "$ref": "#/components/schemas/User"
                       memberships:
                         type: array
                         items:
-                          $ref: "#/components/schemas/Membership"
+                          "$ref": "#/components/schemas/Membership"
                   pagination:
-                    $ref: "#/components/schemas/Pagination"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /documents.add_user:
+                    "$ref": "#/components/schemas/Pagination"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: documentsMemberships
+  "/documents.add_user":
     post:
       tags:
-        - Documents
+      - Documents
       summary: Add a document user
-      description: This method allows you to add a user membership to the specified document.
+      description: This method allows you to add a user membership to the specified
+        document.
       requestBody:
         content:
           application/json:
@@ -2125,17 +2237,18 @@ paths:
               properties:
                 id:
                   type: string
-                  description: Unique identifier for the document. Either the UUID or the urlId is acceptable.
+                  description: Unique identifier for the document. Either the UUID
+                    or the urlId is acceptable.
                 userId:
                   type: string
                   format: uuid
                 permission:
-                  $ref: "#/components/schemas/Permission"
+                  "$ref": "#/components/schemas/Permission"
               required:
-                - id
-                - userId
+              - id
+              - userId
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2148,27 +2261,29 @@ paths:
                       users:
                         type: array
                         items:
-                          $ref: "#/components/schemas/User"
+                          "$ref": "#/components/schemas/User"
                       memberships:
                         type: array
                         items:
-                          $ref: "#/components/schemas/Membership"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /documents.remove_user:
+                          "$ref": "#/components/schemas/Membership"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: documentsAddUser
+  "/documents.remove_user":
     post:
       tags:
-        - Documents
+      - Documents
       summary: Remove a document user
-      description: This method allows you to remove a user membership from the specified document.
+      description: This method allows you to remove a user membership from the specified
+        document.
       requestBody:
         content:
           application/json:
@@ -2177,15 +2292,16 @@ paths:
               properties:
                 id:
                   type: string
-                  description: Unique identifier for the document. Either the UUID or the urlId is acceptable.
+                  description: Unique identifier for the document. Either the UUID
+                    or the urlId is acceptable.
                 userId:
                   type: string
                   format: uuid
               required:
-                - id
-                - userId
+              - id
+              - userId
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2195,51 +2311,56 @@ paths:
                   success:
                     type: boolean
                     example: true
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /events.list:
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: documentsRemoveUser
+  "/events.list":
     post:
       tags:
-        - Events
+      - Events
       summary: List all events
-      description: Events are an audit trail of important events that happen in the knowledge base.
+      description: Events are an audit trail of important events that happen in the
+        knowledge base.
       requestBody:
         content:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/Pagination"
-                - $ref: "#/components/schemas/Sorting"
-                - type: object
-                  properties:
-                    name:
-                      type: string
-                      description: Filter to a specific event, e.g. "collections.create". Event names are in the format "objects.verb"
-                    actorId:
-                      type: string
-                      format: uuid
-                      description: Filter to events performed by the selected user
-                    documentId:
-                      type: string
-                      format: uuid
-                      description: Filter to events performed in the selected document
-                    collectionId:
-                      type: string
-                      format: uuid
-                      description: Filter to events performed in the selected collection
-                    auditLog:
-                      type: boolean
-                      description: Whether to return detailed events suitable for an audit log. Without this flag less detailed event types will be returned.
+              - "$ref": "#/components/schemas/Pagination"
+              - "$ref": "#/components/schemas/Sorting"
+              - type: object
+                properties:
+                  name:
+                    type: string
+                    description: Filter to a specific event, e.g. "collections.create".
+                      Event names are in the format "objects.verb"
+                  actorId:
+                    type: string
+                    format: uuid
+                    description: Filter to events performed by the selected user
+                  documentId:
+                    type: string
+                    format: uuid
+                    description: Filter to events performed in the selected document
+                  collectionId:
+                    type: string
+                    format: uuid
+                    description: Filter to events performed in the selected collection
+                  auditLog:
+                    type: boolean
+                    description: Whether to return detailed events suitable for an
+                      audit log. Without this flag less detailed event types will
+                      be returned.
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2249,19 +2370,20 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Event"
+                      "$ref": "#/components/schemas/Event"
                   pagination:
-                    $ref: "#/components/schemas/Pagination"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /fileOperations.info:
+                    "$ref": "#/components/schemas/Pagination"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: eventsList
+  "/fileOperations.info":
     post:
       tags:
-        - FileOperations
+      - FileOperations
       summary: Retrieve a file operation
       requestBody:
         content:
@@ -2274,9 +2396,9 @@ paths:
                   description: Unique identifier for the file operation.
                   format: uuid
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2284,19 +2406,20 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/FileOperation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /fileOperations.delete:
+                    "$ref": "#/components/schemas/FileOperation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: fileoperationsInfo
+  "/fileOperations.delete":
     post:
       tags:
-        - FileOperations
+      - FileOperations
       summary: Delete a file operation
       requestBody:
         content:
@@ -2309,9 +2432,9 @@ paths:
                   description: Unique identifier for the file operation.
                   format: uuid
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2321,20 +2444,22 @@ paths:
                   success:
                     type: boolean
                     example: true
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /fileOperations.redirect:
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: fileoperationsDelete
+  "/fileOperations.redirect":
     post:
       tags:
-        - FileOperations
+      - FileOperations
       summary: Retrieve the file
-      description: Load the resulting file from where it is stored based on the id. A temporary, signed url with embedded credentials is generated on demand.
+      description: Load the resulting file from where it is stored based on the id.
+        A temporary, signed url with embedded credentials is generated on demand.
       requestBody:
         content:
           application/json:
@@ -2346,48 +2471,49 @@ paths:
                   description: Unique identifier for the file operation.
                   format: uuid
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/octet-stream:
               schema:
                 type: string
                 format: binary
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /fileOperations.list:
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: fileoperationsRedirect
+  "/fileOperations.list":
     post:
       tags:
-        - FileOperations
+      - FileOperations
       summary: List all file operations
       requestBody:
         content:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/Pagination"
-                - $ref: "#/components/schemas/Sorting"
-                - type: object
-                  properties:
-                    type:
-                      type: string
-                      description: The type of fileOperation
-                      example: export
-                      enum:
-                        - export
-                        - import
-                  required:
-                    - type
+              - "$ref": "#/components/schemas/Pagination"
+              - "$ref": "#/components/schemas/Sorting"
+              - type: object
+                properties:
+                  type:
+                    type: string
+                    description: The type of fileOperation
+                    example: export
+                    enum:
+                    - export
+                    - import
+                required:
+                - type
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2397,19 +2523,20 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/FileOperation"
+                      "$ref": "#/components/schemas/FileOperation"
                   pagination:
-                    $ref: "#/components/schemas/Pagination"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /groups.info:
+                    "$ref": "#/components/schemas/Pagination"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: fileoperationsList
+  "/groups.info":
     post:
       tags:
-        - Groups
+      - Groups
       summary: Retrieve a group
       requestBody:
         content:
@@ -2422,9 +2549,9 @@ paths:
                   description: Unique identifier for the group.
                   format: uuid
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2432,29 +2559,30 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Group"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /groups.list:
+                    "$ref": "#/components/schemas/Group"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: groupsInfo
+  "/groups.list":
     post:
       tags:
-        - Groups
+      - Groups
       summary: List all groups
       requestBody:
         content:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/Pagination"
-                - $ref: "#/components/schemas/Sorting"
+              - "$ref": "#/components/schemas/Pagination"
+              - "$ref": "#/components/schemas/Sorting"
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2467,24 +2595,26 @@ paths:
                       groups:
                         type: array
                         items:
-                          $ref: "#/components/schemas/Group"
+                          "$ref": "#/components/schemas/Group"
                       groupMemberships:
                         type: array
-                        description: "A preview of memberships in the group, note that this is not all memberships which can be queried from `groups.memberships`."
+                        description: A preview of memberships in the group, note that
+                          this is not all memberships which can be queried from `groups.memberships`.
                         items:
-                          $ref: "#/components/schemas/GroupMembership"
+                          "$ref": "#/components/schemas/GroupMembership"
                   pagination:
-                    $ref: "#/components/schemas/Pagination"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /groups.create:
+                    "$ref": "#/components/schemas/Pagination"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: groupsList
+  "/groups.create":
     post:
       tags:
-        - Groups
+      - Groups
       summary: Create a group
       requestBody:
         content:
@@ -2496,9 +2626,9 @@ paths:
                   type: string
                   example: Designers
               required:
-                - name
+              - name
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2506,23 +2636,24 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Group"
+                    "$ref": "#/components/schemas/Group"
                   policies:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Policy"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /groups.update:
+                      "$ref": "#/components/schemas/Policy"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: groupsCreate
+  "/groups.update":
     post:
       tags:
-        - Groups
+      - Groups
       summary: Update a group
       requestBody:
         content:
@@ -2537,10 +2668,10 @@ paths:
                   type: string
                   example: Designers
               required:
-                - id
-                - name
+              - id
+              - name
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2548,27 +2679,30 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Group"
+                    "$ref": "#/components/schemas/Group"
                   policies:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Policy"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /groups.delete:
+                      "$ref": "#/components/schemas/Policy"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: groupsUpdate
+  "/groups.delete":
     post:
       tags:
-        - Groups
+      - Groups
       summary: Delete a group
-      description: Deleting a group will cause all of its members to lose access to any collections the group has previously been added to. This action can’t be undone so please be careful.
+      description: Deleting a group will cause all of its members to lose access to
+        any collections the group has previously been added to. This action can’t
+        be undone so please be careful.
       requestBody:
         content:
           application/json:
@@ -2579,9 +2713,9 @@ paths:
                   type: string
                   format: uuid
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2591,20 +2725,21 @@ paths:
                   success:
                     type: boolean
                     example: true
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /groups.memberships:
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: groupsDelete
+  "/groups.memberships":
     post:
       tags:
-        - Groups
+      - Groups
       summary: List all group members
       description: List and filter all the members in a group.
       requestBody:
@@ -2612,21 +2747,21 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/Pagination"
-                - type: object
-                  properties:
-                    id:
-                      type: string
-                      description: Group id
-                      example: a32c2ee6-fbde-4654-841b-0eabdc71b812
-                    query:
-                      type: string
-                      description: Filter memberships by user names
-                      example: jenny
-                  required:
-                    - id
+              - "$ref": "#/components/schemas/Pagination"
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    description: Group id
+                    example: a32c2ee6-fbde-4654-841b-0eabdc71b812
+                  query:
+                    type: string
+                    description: Filter memberships by user names
+                    example: jenny
+                required:
+                - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2639,25 +2774,26 @@ paths:
                       users:
                         type: array
                         items:
-                          $ref: "#/components/schemas/User"
+                          "$ref": "#/components/schemas/User"
                       groupMemberships:
                         type: array
                         items:
-                          $ref: "#/components/schemas/GroupMembership"
+                          "$ref": "#/components/schemas/GroupMembership"
                   pagination:
-                    $ref: "#/components/schemas/Pagination"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /groups.add_user:
+                    "$ref": "#/components/schemas/Pagination"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: groupsMemberships
+  "/groups.add_user":
     post:
       tags:
-        - Groups
+      - Groups
       summary: Add a group member
       description: This method allows you to add a user to the specified group.
       requestBody:
@@ -2673,10 +2809,10 @@ paths:
                   type: string
                   format: uuid
               required:
-                - id
-                - userId
+              - id
+              - userId
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2689,29 +2825,30 @@ paths:
                       users:
                         type: array
                         items:
-                          $ref: "#/components/schemas/User"
+                          "$ref": "#/components/schemas/User"
                       groups:
                         type: array
                         items:
-                          $ref: "#/components/schemas/Group"
+                          "$ref": "#/components/schemas/Group"
                       groupMemberships:
                         type: array
                         items:
-                          $ref: "#/components/schemas/Membership"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /groups.remove_user:
+                          "$ref": "#/components/schemas/Membership"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: groupsAddUser
+  "/groups.remove_user":
     post:
       tags:
-        - Groups
+      - Groups
       summary: Remove a group member
       description: This method allows you to remove a user from the group.
       requestBody:
@@ -2728,10 +2865,10 @@ paths:
                   type: string
                   format: uuid
               required:
-                - id
-                - userId
+              - id
+              - userId
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2744,21 +2881,22 @@ paths:
                       groups:
                         type: array
                         items:
-                          $ref: "#/components/schemas/Group"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /revisions.info:
+                          "$ref": "#/components/schemas/Group"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: groupsRemoveUser
+  "/revisions.info":
     post:
       tags:
-        - Revisions
+      - Revisions
       summary: Retrieve a revision
       requestBody:
         content:
@@ -2771,9 +2909,9 @@ paths:
                   description: Unique identifier for the revision.
                   format: uuid
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2781,29 +2919,30 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Revision"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /revisions.list:
+                    "$ref": "#/components/schemas/Revision"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: revisionsInfo
+  "/revisions.list":
     post:
       tags:
-        - Revisions
+      - Revisions
       summary: List all revisions
       requestBody:
         content:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/Pagination"
-                - $ref: "#/components/schemas/Sorting"
+              - "$ref": "#/components/schemas/Pagination"
+              - "$ref": "#/components/schemas/Sorting"
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2813,19 +2952,20 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Revision"
+                      "$ref": "#/components/schemas/Revision"
                   pagination:
-                    $ref: "#/components/schemas/Pagination"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /shares.info:
+                    "$ref": "#/components/schemas/Pagination"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: revisionsList
+  "/shares.info":
     post:
       tags:
-        - Shares
+      - Shares
       summary: Retrieve a share object
       requestBody:
         content:
@@ -2839,10 +2979,11 @@ paths:
                   format: uuid
                 documentId:
                   type: string
-                  description: Unique identifier for a document. One of id or documentId must be provided.
+                  description: Unique identifier for a document. One of id or documentId
+                    must be provided.
                   format: uuid
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2850,29 +2991,30 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Share"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /shares.list:
+                    "$ref": "#/components/schemas/Share"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: sharesInfo
+  "/shares.list":
     post:
       tags:
-        - Shares
+      - Shares
       summary: List all shares
       requestBody:
         content:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/Pagination"
-                - $ref: "#/components/schemas/Sorting"
+              - "$ref": "#/components/schemas/Pagination"
+              - "$ref": "#/components/schemas/Sorting"
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2882,21 +3024,24 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Share"
+                      "$ref": "#/components/schemas/Share"
                   pagination:
-                    $ref: "#/components/schemas/Pagination"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /shares.create:
+                    "$ref": "#/components/schemas/Pagination"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: sharesList
+  "/shares.create":
     post:
       tags:
-        - Shares
+      - Shares
       summary: Create a share
-      description: Creates a new share link that can be used by to access a document. If you request multiple shares for the same document with the same API key, the same share object will be returned. By default all shares are unpublished.
+      description: Creates a new share link that can be used by to access a document.
+        If you request multiple shares for the same document with the same API key,
+        the same share object will be returned. By default all shares are unpublished.
       requestBody:
         content:
           application/json:
@@ -2907,9 +3052,9 @@ paths:
                   type: string
                   format: uuid
               required:
-                - documentId
+              - documentId
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2917,21 +3062,23 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Share"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /shares.update:
+                    "$ref": "#/components/schemas/Share"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: sharesCreate
+  "/shares.update":
     post:
       tags:
-        - Shares
+      - Shares
       summary: Update a share
-      description: Allows changing an existing shares published status, which removes authentication and makes it available to anyone with the link.
+      description: Allows changing an existing shares published status, which removes
+        authentication and makes it available to anyone with the link.
       requestBody:
         content:
           application/json:
@@ -2944,10 +3091,10 @@ paths:
                 published:
                   type: boolean
               required:
-                - id
-                - published
+              - id
+              - published
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2955,21 +3102,23 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Share"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /shares.revoke:
+                    "$ref": "#/components/schemas/Share"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: sharesUpdate
+  "/shares.revoke":
     post:
       tags:
-        - Shares
+      - Shares
       summary: Revoke a share
-      description: Makes the share link inactive so that it can no longer be used to access the document.
+      description: Makes the share link inactive so that it can no longer be used
+        to access the document.
       requestBody:
         content:
           application/json:
@@ -2980,9 +3129,9 @@ paths:
                   type: string
                   format: uuid
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -2992,20 +3141,21 @@ paths:
                   success:
                     type: boolean
                     example: true
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /stars.create:
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: sharesRevoke
+  "/stars.create":
     post:
       tags:
-        - Stars
+      - Stars
       summary: Create a star
       requestBody:
         content:
@@ -3022,7 +3172,7 @@ paths:
                 index:
                   type: string
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -3030,33 +3180,34 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Star"
+                    "$ref": "#/components/schemas/Star"
                   policies:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Policy"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /stars.list:
+                      "$ref": "#/components/schemas/Policy"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: starsCreate
+  "/stars.list":
     post:
       tags:
-        - Stars
+      - Stars
       summary: List all stars
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Pagination"
+              "$ref": "#/components/schemas/Pagination"
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -3069,27 +3220,28 @@ paths:
                       stars:
                         type: array
                         items:
-                          $ref: "#/components/schemas/Star"
+                          "$ref": "#/components/schemas/Star"
                       documents:
                         type: array
                         items:
-                          $ref: "#/components/schemas/Document"
+                          "$ref": "#/components/schemas/Document"
                   pagination:
-                    $ref: "#/components/schemas/Pagination"
+                    "$ref": "#/components/schemas/Pagination"
                   policies:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Policy"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /stars.update:
+                      "$ref": "#/components/schemas/Policy"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: starsList
+  "/stars.update":
     post:
       tags:
-        - Stars
+      - Stars
       summary: Update a stars index
       requestBody:
         content:
@@ -3103,7 +3255,7 @@ paths:
                 index:
                   type: string
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -3111,25 +3263,26 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/Star"
+                    "$ref": "#/components/schemas/Star"
                   policies:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Policy"
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /stars.delete:
+                      "$ref": "#/components/schemas/Policy"
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: starsUpdate
+  "/stars.delete":
     post:
       tags:
-        - Stars
+      - Stars
       summary: Delete a star
       requestBody:
         content:
@@ -3141,7 +3294,7 @@ paths:
                   type: string
                   format: uuid
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -3151,20 +3304,21 @@ paths:
                   success:
                     type: boolean
                     example: true
-        "400":
-          $ref: "#/components/responses/Validation"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /users.invite:
+        '400':
+          "$ref": "#/components/responses/Validation"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: starsDelete
+  "/users.invite":
     post:
       tags:
-        - Users
+      - Users
       summary: Invite users
       requestBody:
         content:
@@ -3175,11 +3329,11 @@ paths:
                 invites:
                   type: array
                   items:
-                    $ref: "#/components/schemas/Invite"
+                    "$ref": "#/components/schemas/Invite"
               required:
-                - invites
+              - invites
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -3192,21 +3346,22 @@ paths:
                       sent:
                         type: array
                         items:
-                          $ref: "#/components/schemas/Invite"
+                          "$ref": "#/components/schemas/Invite"
                       users:
                         type: array
                         items:
-                          $ref: "#/components/schemas/User"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /users.info:
+                          "$ref": "#/components/schemas/User"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: usersInvite
+  "/users.info":
     post:
       tags:
-        - Users
+      - Users
       summary: Retrieve a user
       requestBody:
         content:
@@ -3219,9 +3374,9 @@ paths:
                   description: Unique identifier for the user.
                   format: uuid
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -3229,19 +3384,20 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/User"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /users.list:
+                    "$ref": "#/components/schemas/User"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: usersInfo
+  "/users.list":
     post:
       tags:
-        - Users
+      - Users
       summary: List all users
       description: List and filter all the users in the team
       requestBody:
@@ -3249,33 +3405,33 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/Pagination"
-                - $ref: "#/components/schemas/Sorting"
-                - type: object
-                  properties:
-                    query:
+              - "$ref": "#/components/schemas/Pagination"
+              - "$ref": "#/components/schemas/Sorting"
+              - type: object
+                properties:
+                  query:
+                    type: string
+                    example: jane
+                  emails:
+                    type: array
+                    description: Array of emails
+                    items:
                       type: string
-                      example: jane
-                    emails:
-                      type: array
-                      description: Array of emails
-                      items:
-                        type: string
-                      example:
-                        - "jane.crandall@mail.com"
-                        - "prudence.crandall@mail.com"
-                    filter:
-                      type: string
-                      description: The status to filter by
-                      enum:
-                        - all
-                        - invited
-                        - active
-                        - suspended
-                    role:
-                      $ref: "#/components/schemas/UserRole"
+                    example:
+                    - jane.crandall@mail.com
+                    - prudence.crandall@mail.com
+                  filter:
+                    type: string
+                    description: The status to filter by
+                    enum:
+                    - all
+                    - invited
+                    - active
+                    - suspended
+                  role:
+                    "$ref": "#/components/schemas/UserRole"
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -3285,19 +3441,20 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/User"
+                      "$ref": "#/components/schemas/User"
                   pagination:
-                    $ref: "#/components/schemas/Pagination"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /users.update:
+                    "$ref": "#/components/schemas/Pagination"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: usersList
+  "/users.update":
     post:
       tags:
-        - Users
+      - Users
       summary: Update a user
       description: Update a users name or avatar. If no `id` is passed then the user
         associated with the authentication will be updated by default.
@@ -3316,7 +3473,7 @@ paths:
                   type: string
                   format: uri
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -3324,19 +3481,20 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/User"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /users.update_role:
+                    "$ref": "#/components/schemas/User"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: usersUpdate
+  "/users.update_role":
     post:
       tags:
-        - Users
+      - Users
       summary: Change a users role
       description: Change the role of a user, only available to admin authorization.
       requestBody:
@@ -3350,12 +3508,12 @@ paths:
                   description: Unique identifier for the user.
                   format: uuid
                 role:
-                  $ref: "#/components/schemas/UserRole"
+                  "$ref": "#/components/schemas/UserRole"
               required:
-                - id
-                - role
+              - id
+              - role
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -3363,21 +3521,23 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/User"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /users.suspend:
+                    "$ref": "#/components/schemas/User"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: usersUpdateRole
+  "/users.suspend":
     post:
       tags:
-        - Users
+      - Users
       summary: Suspend a user
-      description: Suspending a user prevents the user from signing in. Users that are suspended are also not counted against billing totals in the hosted version.
+      description: Suspending a user prevents the user from signing in. Users that
+        are suspended are also not counted against billing totals in the hosted version.
       requestBody:
         content:
           application/json:
@@ -3389,9 +3549,9 @@ paths:
                   description: Unique identifier for the user.
                   format: uuid
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -3399,21 +3559,24 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/User"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /users.activate:
+                    "$ref": "#/components/schemas/User"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: usersSuspend
+  "/users.activate":
     post:
       tags:
-        - Users
+      - Users
       summary: Activate a user
-      description: Activating a previously suspended user allows them to signin again. Users that are activated will cause billing totals to be re-calculated in the hosted version.
+      description: Activating a previously suspended user allows them to signin again.
+        Users that are activated will cause billing totals to be re-calculated in
+        the hosted version.
       requestBody:
         content:
           application/json:
@@ -3425,9 +3588,9 @@ paths:
                   description: Unique identifier for the user.
                   format: uuid
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -3435,21 +3598,24 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/User"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /users.delete:
+                    "$ref": "#/components/schemas/User"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: usersActivate
+  "/users.delete":
     post:
       tags:
-        - Users
+      - Users
       summary: Delete a user
-      description: "Deleting a user removes the object entirely. In almost every circumstance it is preferable to suspend a user, as a deleted user can be recreated by signing in with SSO again."
+      description: Deleting a user removes the object entirely. In almost every circumstance
+        it is preferable to suspend a user, as a deleted user can be recreated by
+        signing in with SSO again.
       requestBody:
         content:
           application/json:
@@ -3461,9 +3627,9 @@ paths:
                   description: Unique identifier for the user.
                   format: uuid
               required:
-                - id
+              - id
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -3473,20 +3639,22 @@ paths:
                   success:
                     type: boolean
                     example: true
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /views.list:
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: usersDelete
+  "/views.list":
     post:
       tags:
-        - Views
+      - Views
       summary: List all views
-      description: List all users that have viewed a document and the overall view count.
+      description: List all users that have viewed a document and the overall view
+        count.
       requestBody:
         content:
           application/json:
@@ -3497,9 +3665,9 @@ paths:
                   type: string
                   format: uuid
               required:
-                - documentId
+              - documentId
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -3509,19 +3677,22 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/View"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/RateLimited"
-  /views.create:
+                      "$ref": "#/components/schemas/View"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: viewsList
+  "/views.create":
     post:
       tags:
-        - Views
+      - Views
       summary: Create a view
-      description: Creates a new view for a document. This is documented in the interests of thoroughness however it is recommended that views are not created from outside of the Outline UI.
+      description: Creates a new view for a document. This is documented in the interests
+        of thoroughness however it is recommended that views are not created from
+        outside of the Outline UI.
       requestBody:
         content:
           application/json:
@@ -3532,9 +3703,9 @@ paths:
                   type: string
                   format: uuid
               required:
-                - documentId
+              - documentId
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -3542,18 +3713,19 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/View"
-        "401":
-          $ref: "#/components/responses/Unauthenticated"
-        "403":
-          $ref: "#/components/responses/Unauthorized"
+                    "$ref": "#/components/schemas/View"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+      operationId: viewsCreate
 components:
   schemas:
     Permission:
       type: string
       enum:
-        - read
-        - read_write
+      - read
+      - read_write
     Attachment:
       type: object
       properties:
@@ -3569,7 +3741,7 @@ components:
           format: uri
         documentId:
           type: string
-          description: "Identifier for the associated document, if any."
+          description: Identifier for the associated document, if any.
           format: uuid
     Pagination:
       type: object
@@ -3589,8 +3761,8 @@ components:
           type: string
           example: DESC
           enum:
-            - ASC
-            - DESC
+          - ASC
+          - DESC
     NavigationNode:
       type: object
       properties:
@@ -3605,14 +3777,14 @@ components:
         children:
           type: array
           items:
-            $ref: "#/components/schemas/NavigationNode"
+            "$ref": "#/components/schemas/NavigationNode"
     Auth:
       type: object
       properties:
         user:
-          $ref: "#/components/schemas/User"
+          "$ref": "#/components/schemas/User"
         team:
-          $ref: "#/components/schemas/Team"
+          "$ref": "#/components/schemas/Team"
     Collection:
       type: object
       properties:
@@ -3623,7 +3795,8 @@ components:
           format: uuid
         urlId:
           type: string
-          description: A short unique identifier that can be used to identify the collection instead of the UUID.
+          description: A short unique identifier that can be used to identify the
+            collection instead of the UUID.
           readOnly: true
           example: hDYep1TPAM
         name:
@@ -3632,35 +3805,38 @@ components:
           example: Human Resources
         description:
           type: string
-          description: "A description of the collection, may contain markdown formatting"
-          example: ""
+          description: A description of the collection, may contain markdown formatting
+          example: ''
         sort:
           type: object
-          description: The sort of documents in the collection. Note that not all API responses respect this and it is left as a frontend concern to implement.
+          description: The sort of documents in the collection. Note that not all
+            API responses respect this and it is left as a frontend concern to implement.
           properties:
             field:
               type: string
             direction:
               type: string
               enum:
-                - asc
-                - desc
+              - asc
+              - desc
         index:
           type: string
           description: The position of the collection in the sidebar
           example: P
         color:
           type: string
-          description: "A color representing the collection, this is used to help make collections more identifiable in the UI. It should be in HEX format including the #"
+          description: 'A color representing the collection, this is used to help
+            make collections more identifiable in the UI. It should be in HEX format
+            including the #'
           example: "#123123"
         icon:
           type: string
-          description: "A string that represents an icon in the outline-icons package"
+          description: A string that represents an icon in the outline-icons package
         permission:
-          $ref: "#/components/schemas/Permission"
+          "$ref": "#/components/schemas/Permission"
         sharing:
           type: boolean
-          description: "Whether public document sharing is enabled in this collection"
+          description: Whether public document sharing is enabled in this collection
           default: false
         createdAt:
           type: string
@@ -3685,7 +3861,7 @@ components:
           readOnly: true
           format: date-time
         archivedBy:
-          $ref: '#/components/schemas/User'
+          "$ref": "#/components/schemas/User"
     Comment:
       type: object
       properties:
@@ -3699,11 +3875,11 @@ components:
           description: The editor data representing this comment.
         documentId:
           type: string
-          description: "Identifier for the document this is related to."
+          description: Identifier for the document this is related to.
           format: uuid
         parentCommentId:
           type: string
-          description: "Identifier for the comment this is a child of, if any."
+          description: Identifier for the comment this is a child of, if any.
           format: uuid
         createdAt:
           type: string
@@ -3711,17 +3887,18 @@ components:
           readOnly: true
           format: date-time
         createdBy:
-          $ref: "#/components/schemas/User"
+          "$ref": "#/components/schemas/User"
         updatedAt:
           type: string
           description: The date and time that this object was last changed
           readOnly: true
           format: date-time
         updatedBy:
-          $ref: "#/components/schemas/User"
+          "$ref": "#/components/schemas/User"
         anchorText:
           type: string
-          description: "The document text that the comment is anchored to, only included if includeAnchorText=true."
+          description: The document text that the comment is anchored to, only included
+            if includeAnchorText=true.
           readOnly: true
     Document:
       type: object
@@ -3737,7 +3914,7 @@ components:
           format: uuid
         parentDocumentId:
           type: string
-          description: "Identifier for the document this is a child of, if any."
+          description: Identifier for the document this is a child of, if any.
           format: uuid
         title:
           type: string
@@ -3752,16 +3929,17 @@ components:
           example: "\U0001F389"
         text:
           type: string
-          description: "The text content of the document, contains markdown formatting"
-          example: …
+          description: The text content of the document, contains markdown formatting
+          example: "…"
         urlId:
           type: string
-          description: A short unique ID that can be used to identify the document as an alternative to the UUID
+          description: A short unique ID that can be used to identify the document
+            as an alternative to the UUID
           example: hDYep1TPAM
         collaborators:
           type: array
           items:
-            $ref: "#/components/schemas/User"
+            "$ref": "#/components/schemas/User"
         pinned:
           type: boolean
           description: Whether this document is pinned in the collection
@@ -3770,11 +3948,13 @@ components:
           description: Whether this document is a template
         templateId:
           type: string
-          description: Unique identifier for the template this document was created from, if any
+          description: Unique identifier for the template this document was created
+            from, if any
           format: uuid
         revision:
           type: number
-          description: A number that is auto incrementing with every revision of the document that is saved
+          description: A number that is auto incrementing with every revision of the
+            document that is saved
           readOnly: true
         createdAt:
           type: string
@@ -3782,14 +3962,14 @@ components:
           readOnly: true
           format: date-time
         createdBy:
-          $ref: "#/components/schemas/User"
+          "$ref": "#/components/schemas/User"
         updatedAt:
           type: string
           description: The date and time that this object was last changed
           readOnly: true
           format: date-time
         updatedBy:
-          $ref: "#/components/schemas/User"
+          "$ref": "#/components/schemas/User"
         publishedAt:
           type: string
           nullable: true
@@ -3821,7 +4001,8 @@ components:
           readOnly: true
         modelId:
           type: string
-          description: Identifier for the object this event is associated with when it is not one of document, collection, or user.
+          description: Identifier for the object this event is associated with when
+            it is not one of document, collection, or user.
           format: uuid
           readOnly: true
         actorId:
@@ -3831,18 +4012,19 @@ components:
           readOnly: true
         actorIpAddress:
           type: string
-          description: The ip address the action was performed from. This field is only returned when the `auditLog` boolean is true.
+          description: The ip address the action was performed from. This field is
+            only returned when the `auditLog` boolean is true.
           example: 60.169.88.100
           readOnly: true
         collectionId:
           type: string
           format: uuid
-          description: "Identifier for the associated collection, if any"
+          description: Identifier for the associated collection, if any
           readOnly: true
         documentId:
           type: string
           format: uuid
-          description: "Identifier for the associated document, if any"
+          description: Identifier for the associated document, if any
           readOnly: true
         createdAt:
           type: string
@@ -3856,7 +4038,7 @@ components:
           description: Additional unstructured data associated with the event
           readOnly: true
         actor:
-          $ref: "#/components/schemas/User"
+          "$ref": "#/components/schemas/User"
     Error:
       type: object
       properties:
@@ -3881,29 +4063,29 @@ components:
           format: uuid
         type:
           type: string
-          example: "export"
+          example: export
           description: The type of file operation.
           readOnly: true
           enum:
-            - import
-            - export
+          - import
+          - export
         state:
           type: string
           description: The state of the file operation.
-          example: "complete"
+          example: complete
           readOnly: true
           enum:
-            - creating
-            - uploading
-            - complete
-            - error
-            - expired
+          - creating
+          - uploading
+          - complete
+          - error
+          - expired
         collection:
           allOf:
-            - nullable: true
-            - $ref: "#/components/schemas/Collection"
+          - nullable: true
+          - "$ref": "#/components/schemas/Collection"
         user:
-          $ref: "#/components/schemas/User"
+          "$ref": "#/components/schemas/User"
         size:
           type: number
           description: The size of the resulting file in bytes
@@ -3971,14 +4153,15 @@ components:
         includeChildDocuments:
           type: boolean
           example: true
-          description: If to also give permission to view documents nested beneath this one.
+          description: If to also give permission to view documents nested beneath
+            this one.
         createdAt:
           type: string
           format: date-time
           description: Date and time when this share was created
           readOnly: true
         createdBy:
-          $ref: "#/components/schemas/User"
+          "$ref": "#/components/schemas/User"
         updatedAt:
           type: string
           format: date-time
@@ -4039,7 +4222,7 @@ components:
           readOnly: true
         text:
           type: string
-          description: "Body of the document, may contain markdown formatting"
+          description: Body of the document, may contain markdown formatting
           readOnly: true
         createdAt:
           type: string
@@ -4047,7 +4230,7 @@ components:
           description: Date and time when this revision was created
           readOnly: true
         createdBy:
-          $ref: "#/components/schemas/User"
+          "$ref": "#/components/schemas/User"
     Team:
       type: object
       properties:
@@ -4058,32 +4241,41 @@ components:
           format: uuid
         name:
           type: string
-          description: "The name of this team, it is usually auto-generated when the first SSO connection is made but can be changed if neccessary."
+          description: The name of this team, it is usually auto-generated when the
+            first SSO connection is made but can be changed if neccessary.
         avatarUrl:
           type: string
           format: uri
-          description: "The URL for the image associated with this team, it will be displayed in the team switcher and in the top left of the knowledge base along with the name."
+          description: The URL for the image associated with this team, it will be
+            displayed in the team switcher and in the top left of the knowledge base
+            along with the name.
         sharing:
           type: boolean
-          description: Whether this team has share links globally enabled. If this value is false then all sharing UI and APIs are disabled.
+          description: Whether this team has share links globally enabled. If this
+            value is false then all sharing UI and APIs are disabled.
         defaultCollectionId:
           type: string
-          description: If set then the referenced collection is where users will be redirected to after signing in instead of the Home screen
+          description: If set then the referenced collection is where users will be
+            redirected to after signing in instead of the Home screen
           format: uuid
         defaultUserRole:
-          $ref: "#/components/schemas/UserRole"
+          "$ref": "#/components/schemas/UserRole"
         memberCollectionCreate:
           type: boolean
-          description: Whether members are allowed to create new collections. If false then only admins can create collections.
+          description: Whether members are allowed to create new collections. If false
+            then only admins can create collections.
         documentEmbeds:
           type: boolean
-          description: Whether this team has embeds in documents globally enabled. It can be disabled to reduce potential data leakage to third parties.
+          description: Whether this team has embeds in documents globally enabled.
+            It can be disabled to reduce potential data leakage to third parties.
         collaborativeEditing:
           type: boolean
-          description: Whether this team has collaborative editing in documents globally enabled.
+          description: Whether this team has collaborative editing in documents globally
+            enabled.
         inviteRequired:
           type: boolean
-          description: Whether an invite is required to join this team, if false users may join with a linked SSO provider.
+          description: Whether an invite is required to join this team, if false users
+            may join with a linked SSO provider.
         allowedDomains:
           type: array
           items:
@@ -4091,13 +4283,17 @@ components:
             description: A hostname that user emails are restricted to
         guestSignin:
           type: boolean
-          description: Whether this team has guest signin enabled. Guests can signin with an email address and are not required to have a Google Workspace/Slack SSO account once invited.
+          description: Whether this team has guest signin enabled. Guests can signin
+            with an email address and are not required to have a Google Workspace/Slack
+            SSO account once invited.
         subdomain:
           type: string
-          description: Represents the subdomain at which this team's knowledge base can be accessed.
+          description: Represents the subdomain at which this team's knowledge base
+            can be accessed.
         url:
           type: string
-          description: The fully qualified URL at which this team's knowledge base can be accessed.
+          description: The fully qualified URL at which this team's knowledge base
+            can be accessed.
           readOnly: true
           format: uri
     User:
@@ -4110,31 +4306,37 @@ components:
           format: uuid
         name:
           type: string
-          description: "The name of this user, it is migrated from Slack or Google Workspace when the SSO connection is made but can be changed if neccessary."
+          description: The name of this user, it is migrated from Slack or Google
+            Workspace when the SSO connection is made but can be changed if neccessary.
           example: Jane Doe
         avatarUrl:
           type: string
           format: uri
-          description: "The URL for the image associated with this user, it will be displayed in the application UI and email notifications."
+          description: The URL for the image associated with this user, it will be
+            displayed in the application UI and email notifications.
         email:
           type: string
-          description: "The email associated with this user, it is migrated from Slack or Google Workspace when the SSO connection is made but can be changed if neccessary."
+          description: The email associated with this user, it is migrated from Slack
+            or Google Workspace when the SSO connection is made but can be changed
+            if neccessary.
           format: email
           readOnly: true
         role:
-          $ref: "#/components/schemas/UserRole"
+          "$ref": "#/components/schemas/UserRole"
         isSuspended:
           type: boolean
           description: Whether this user has been suspended.
           readOnly: true
         lastActiveAt:
           type: string
-          description: "The last time this user made an API request, this value is updated at most every 5 minutes."
+          description: The last time this user made an API request, this value is
+            updated at most every 5 minutes.
           readOnly: true
           format: date-time
         createdAt:
           type: string
-          description: The date and time that this user first signed in or was invited as a guest.
+          description: The date and time that this user first signed in or was invited
+            as a guest.
           readOnly: true
           format: date-time
     Invite:
@@ -4147,18 +4349,18 @@ components:
           type: string
           description: The email address to invite
         role:
-          $ref: "#/components/schemas/UserRole"
+          "$ref": "#/components/schemas/UserRole"
     UserRole:
       type: string
       enum:
-        - admin
-        - member
-        - viewer
-        - guest
+      - admin
+      - member
+      - viewer
+      - guest
     CollectionStatus:
       type: string
       enum:
-        - archived
+      - archived
     Membership:
       type: object
       properties:
@@ -4177,7 +4379,7 @@ components:
           readOnly: true
           format: uuid
         permission:
-          $ref: "#/components/schemas/Permission"
+          "$ref": "#/components/schemas/Permission"
     SearchResult:
       type: object
       properties:
@@ -4188,27 +4390,26 @@ components:
         query:
           type: string
           description: The user-provided search query
-          example: "What is our hiring policy?"
+          example: What is our hiring policy?
           readOnly: true
         answer:
           type: string
           description: An answer to the query, if possible
-          example: "Our hiring policy can be summarized as…"
+          example: Our hiring policy can be summarized as…
           readOnly: true
         source:
           type: string
-          example: "app"
+          example: app
           description: The source of the query
           readOnly: true
           enum:
-            - api
-            - app
+          - api
+          - app
         createdAt:
           type: string
           description: The date and time that this object was created
           readOnly: true
           format: date-time
-
     Policy:
       type: object
       properties:
@@ -4268,7 +4469,7 @@ components:
           readOnly: true
           format: uuid
         user:
-          $ref: "#/components/schemas/User"
+          "$ref": "#/components/schemas/User"
     CollectionGroupMembership:
       type: object
       properties:
@@ -4287,7 +4488,7 @@ components:
           readOnly: true
           format: uuid
         permission:
-          $ref: "#/components/schemas/Permission"
+          "$ref": "#/components/schemas/Permission"
     View:
       type: object
       properties:
@@ -4316,43 +4517,43 @@ components:
           example: 22
           readOnly: true
         user:
-          $ref: "#/components/schemas/User"
+          "$ref": "#/components/schemas/User"
   responses:
     NotFound:
       description: The specified resource was not found.
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
+            "$ref": "#/components/schemas/Error"
     Validation:
       description: The request failed one or more validations.
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
+            "$ref": "#/components/schemas/Error"
     Unauthorized:
       description: The current API key is not authorized to perform this action.
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
+            "$ref": "#/components/schemas/Error"
     Unauthenticated:
       description: The API key is missing or otherwise invalid.
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
+            "$ref": "#/components/schemas/Error"
     RateLimited:
       description: The request was rate limited.
       headers:
         Retry-After:
-          $ref: "#/components/headers/Retry-After"
+          "$ref": "#/components/headers/Retry-After"
         RateLimit-Limit:
-          $ref: "#/components/headers/RateLimit-Limit"
+          "$ref": "#/components/headers/RateLimit-Limit"
         RateLimit-Remaining:
-          $ref: "#/components/headers/RateLimit-Remaining"
+          "$ref": "#/components/headers/RateLimit-Remaining"
         RateLimit-Reset:
-          $ref: "#/components/headers/RateLimit-Reset"
+          "$ref": "#/components/headers/RateLimit-Reset"
       content:
         application/json:
           schema:

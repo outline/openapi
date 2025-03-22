@@ -200,6 +200,7 @@ paths:
     post:
       tags:
         - Attachments
+      operationId: attachmentsCreate
       summary: Create an attachment
       description: Creating an attachment object creates a database record and returns the inputs needed to generate a signed url and upload the file from the client to cloud storage.
       requestBody:
@@ -257,6 +258,7 @@ paths:
     post:
       tags:
         - Attachments
+      operationId: attachmentsRedirect
       summary: Retrieve an attachment
       description: "Load an attachment from where it is stored based on the id. If the attachment is private then a temporary, signed url with embedded credentials is generated on demand."
       requestBody:
@@ -278,6 +280,7 @@ paths:
     post:
       tags:
         - Attachments
+      operationId: attachmentsDelete
       summary: Delete an attachment
       description: Deleting an attachment is permanant. It will not delete references or links to the attachment that may exist in your documents.
       requestBody:
@@ -317,6 +320,7 @@ paths:
     post:
       tags:
         - Auth
+      operationId: authInfo
       summary: Retrieve auth
       description: Retrieve authentication details for the current API key
       responses:
@@ -337,6 +341,7 @@ paths:
     post:
       tags:
         - Auth
+      operationId: authConfig
       summary: Retrieve auth config
       description: Retrieve authentication options
       responses:
@@ -376,6 +381,7 @@ paths:
     post:
       tags:
         - Collections
+      operationId: collectionsInfo
       summary: Retrieve a collection
       requestBody:
         content:
@@ -411,6 +417,7 @@ paths:
     post:
       tags:
         - Collections
+      operationId: collectionsDocuments
       summary: Retrieve a collections document structure
       requestBody:
         content:
@@ -449,6 +456,7 @@ paths:
     post:
       tags:
         - Collections
+      operationId: collectionsList
       summary: List all collections
       requestBody:
         content:
@@ -495,6 +503,7 @@ paths:
     post:
       tags:
         - Collections
+      operationId: collectionsCreate
       summary: Create a collection
       requestBody:
         content:

@@ -544,6 +544,7 @@ paths:
     post:
       tags:
         - Collections
+      operationId: collectionsUpdate
       summary: Update a collection
       requestBody:
         content:
@@ -595,6 +596,7 @@ paths:
     post:
       tags:
         - Collections
+      operationId: collectionsAddUser
       summary: Add a collection user
       description: This method allows you to add a user membership to the specified collection.
       requestBody:
@@ -647,6 +649,7 @@ paths:
     post:
       tags:
         - Collections
+      operationId: collectionsRemoveUser
       summary: Remove a collection user
       description: This method allows you to remove a user from the specified collection.
       requestBody:
@@ -690,6 +693,7 @@ paths:
     post:
       tags:
         - Collections
+      operationId: collectionsMemberships
       summary: List all collection memberships
       description: This method allows you to list a collections individual memberships. It's important to note that memberships returned from this endpoint do not include group memberships.
       requestBody:
@@ -745,6 +749,7 @@ paths:
     post:
       tags:
         - Collections
+      operationId: collectionsAddGroup
       summary: Add a group to a collection
       description: This method allows you to give all members in a group access to a collection.
       requestBody:
@@ -793,6 +798,7 @@ paths:
     post:
       tags:
         - Collections
+      operationId: collectionsRemoveGroup
       summary: Remove a collection group
       description: This method allows you to revoke all members in a group access to a collection. Note that members of the group may still retain access through other groups or individual memberships.
       requestBody:
@@ -836,6 +842,7 @@ paths:
     post:
       tags:
         - Collections
+      operationId: collectionsGroupMemberships
       summary: List all collection group members
       description: This method allows you to list a collections group memberships. This is the list of groups that have been given access to the collection.
       requestBody:
@@ -891,6 +898,7 @@ paths:
     post:
       tags:
         - Collections
+      operationId: collectionsDelete
       summary: Delete a collection
       description: Delete a collection and all of its documents. This action can’t be undone so please be careful.
       requestBody:
@@ -927,6 +935,7 @@ paths:
     post:
       tags:
         - Collections
+      operationId: collectionsExport
       summary: Export a collection
       description:
         Triggers a bulk export of the collection in markdown format and their attachments. If documents are nested then they will be nested in folders inside the zip file. The endpoint returns a `FileOperation`
@@ -974,6 +983,7 @@ paths:
     post:
       tags:
         - Collections
+      operationId: collectionsExportAll
       summary: Export all collections
       requestBody:
         content:

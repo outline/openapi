@@ -157,7 +157,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "attachmentsCreate"
       }
     },
     "/attachments.redirect": {
@@ -190,7 +191,8 @@
           "302": {
             "description": "The url for the attachment"
           }
-        }
+        },
+        "operationId": "attachmentsRedirect"
       }
     },
     "/attachments.delete": {
@@ -251,7 +253,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "attachmentsDelete"
       }
     },
     "/auth.info": {
@@ -283,7 +286,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "authInfo"
       }
     },
     "/auth.config": {
@@ -342,7 +346,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "authConfig"
       }
     },
     "/collections.info": {
@@ -398,7 +403,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "collectionsInfo"
       }
     },
     "/collections.documents": {
@@ -458,7 +464,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "collectionsDocuments"
       }
     },
     "/collections.list": {
@@ -536,7 +543,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "collectionsList"
       }
     },
     "/collections.create": {
@@ -612,7 +620,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "collectionsCreate"
       }
     },
     "/collections.update": {
@@ -691,7 +700,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "collectionsUpdate"
       }
     },
     "/collections.add_user": {
@@ -772,7 +782,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "collectionsAdd_user"
       }
     },
     "/collections.remove_user": {
@@ -838,7 +849,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "collectionsRemove_user"
       }
     },
     "/collections.memberships": {
@@ -927,7 +939,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "collectionsMemberships"
       }
     },
     "/collections.add_group": {
@@ -1002,7 +1015,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "collectionsAdd_group"
       }
     },
     "/collections.remove_group": {
@@ -1068,7 +1082,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "collectionsRemove_group"
       }
     },
     "/collections.group_memberships": {
@@ -1157,7 +1172,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "collectionsGroup_memberships"
       }
     },
     "/collections.delete": {
@@ -1214,7 +1230,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "collectionsDelete"
       }
     },
     "/collections.export": {
@@ -1283,7 +1300,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "collectionsExport"
       }
     },
     "/collections.export_all": {
@@ -1345,7 +1363,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "collectionsExport_all"
       }
     },
     "/comments.create": {
@@ -1418,7 +1437,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "commentsCreate"
       }
     },
     "/comments.info": {
@@ -1478,7 +1498,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "commentsInfo"
       }
     },
     "/comments.update": {
@@ -1538,7 +1559,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "commentsUpdate"
       }
     },
     "/comments.delete": {
@@ -1595,7 +1617,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "commentsDelete"
       }
     },
     "/comments.list": {
@@ -1677,7 +1700,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "commentsList"
       }
     },
     "/documents.info": {
@@ -1734,7 +1758,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "documentsInfo"
       }
     },
     "/documents.import": {
@@ -1801,7 +1826,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "documentsImport"
       }
     },
     "/documents.export": {
@@ -1854,7 +1880,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "documentsExport"
       }
     },
     "/documents.list": {
@@ -1943,7 +1970,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "documentsList"
       }
     },
     "/documents.drafts": {
@@ -2027,7 +2055,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "documentsDrafts"
       }
     },
     "/documents.viewed": {
@@ -2090,7 +2119,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "documentsViewed"
       }
     },
     "/documents.answerQuestion": {
@@ -2190,7 +2220,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "documentsAnswerQuestion"
       }
     },
     "/documents.search": {
@@ -2311,7 +2342,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "documentsSearch"
       }
     },
     "/documents.create": {
@@ -2398,7 +2430,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "documentsCreate"
       }
     },
     "/documents.update": {
@@ -2484,7 +2517,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "documentsUpdate"
       }
     },
     "/documents.templatize": {
@@ -2546,7 +2580,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "documentsTemplatize"
       }
     },
     "/documents.unpublish": {
@@ -2612,7 +2647,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "documentsUnpublish"
       }
     },
     "/documents.move": {
@@ -2700,7 +2736,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "documentsMove"
       }
     },
     "/documents.archive": {
@@ -2766,7 +2803,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "documentsArchive"
       }
     },
     "/documents.restore": {
@@ -2837,7 +2875,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "documentsRestore"
       }
     },
     "/documents.delete": {
@@ -2903,7 +2942,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "documentsDelete"
       }
     },
     "/documents.users": {
@@ -2979,7 +3019,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "documentsUsers"
       }
     },
     "/documents.memberships": {
@@ -3060,7 +3101,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "documentsMemberships"
       }
     },
     "/documents.add_user": {
@@ -3141,7 +3183,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "documentsAdd_user"
       }
     },
     "/documents.remove_user": {
@@ -3206,7 +3249,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "documentsRemove_user"
       }
     },
     "/events.list": {
@@ -3291,7 +3335,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "eventsList"
       }
     },
     "/fileOperations.info": {
@@ -3347,7 +3392,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "fileOperationsInfo"
       }
     },
     "/fileOperations.delete": {
@@ -3404,7 +3450,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "fileOperationsDelete"
       }
     },
     "/fileOperations.redirect": {
@@ -3457,7 +3504,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "fileOperationsRedirect"
       }
     },
     "/fileOperations.list": {
@@ -3530,7 +3578,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "fileOperationsList"
       }
     },
     "/groups.info": {
@@ -3586,7 +3635,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "groupsInfo"
       }
     },
     "/groups.list": {
@@ -3654,7 +3704,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "groupsList"
       }
     },
     "/groups.create": {
@@ -3715,7 +3766,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "groupsCreate"
       }
     },
     "/groups.update": {
@@ -3784,7 +3836,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "groupsUpdate"
       }
     },
     "/groups.delete": {
@@ -3844,7 +3897,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "groupsDelete"
       }
     },
     "/groups.memberships": {
@@ -3930,7 +3984,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "groupsMemberships"
       }
     },
     "/groups.add_user": {
@@ -4014,7 +4069,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "groupsAdd_user"
       }
     },
     "/groups.remove_user": {
@@ -4087,7 +4143,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "groupsRemove_user"
       }
     },
     "/revisions.info": {
@@ -4143,7 +4200,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "revisionsInfo"
       }
     },
     "/revisions.list": {
@@ -4199,7 +4257,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "revisionsList"
       }
     },
     "/shares.info": {
@@ -4257,7 +4316,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "sharesInfo"
       }
     },
     "/shares.list": {
@@ -4313,7 +4373,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "sharesList"
       }
     },
     "/shares.create": {
@@ -4369,7 +4430,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "sharesCreate"
       }
     },
     "/shares.update": {
@@ -4429,7 +4491,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "sharesUpdate"
       }
     },
     "/shares.revoke": {
@@ -4489,7 +4552,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "sharesRevoke"
       }
     },
     "/stars.create": {
@@ -4557,7 +4621,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "starsCreate"
       }
     },
     "/stars.list": {
@@ -4623,7 +4688,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "starsList"
       }
     },
     "/stars.update": {
@@ -4687,7 +4753,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "starsUpdate"
       }
     },
     "/stars.delete": {
@@ -4743,7 +4810,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "starsDelete"
       }
     },
     "/users.invite": {
@@ -4811,7 +4879,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "usersInvite"
       }
     },
     "/users.info": {
@@ -4867,7 +4936,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "usersInfo"
       }
     },
     "/users.list": {
@@ -4957,7 +5027,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "usersList"
       }
     },
     "/users.update": {
@@ -5017,7 +5088,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "usersUpdate"
       }
     },
     "/users.update_role": {
@@ -5078,7 +5150,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "usersUpdate_role"
       }
     },
     "/users.suspend": {
@@ -5135,7 +5208,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "usersSuspend"
       }
     },
     "/users.activate": {
@@ -5192,7 +5266,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "usersActivate"
       }
     },
     "/users.delete": {
@@ -5250,7 +5325,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "usersDelete"
       }
     },
     "/views.list": {
@@ -5306,7 +5382,8 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "operationId": "viewsList"
       }
     },
     "/views.create": {
@@ -5356,7 +5433,8 @@
           "403": {
             "$ref": "#/components/responses/Unauthorized"
           }
-        }
+        },
+        "operationId": "viewsCreate"
       }
     }
   },

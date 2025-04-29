@@ -2581,6 +2581,20 @@ paths:
               allOf:
               - "$ref": "#/components/schemas/Pagination"
               - "$ref": "#/components/schemas/Sorting"
+              - type: object
+                properties:
+                  userId:
+                    type: string
+                    format: uuid
+                    description: Filter to groups including a specific user
+                  externalId:
+                    type: string
+                    format: uuid
+                    description: Filter to groups matching an external ID
+                  query:
+                    type: string
+                    format: uuid
+                    description: Filter to groups matching a search query
       responses:
         '200':
           description: OK
@@ -2941,6 +2955,12 @@ paths:
               allOf:
               - "$ref": "#/components/schemas/Pagination"
               - "$ref": "#/components/schemas/Sorting"
+              - type: object
+                properties:
+                  documentId:
+                    type: string
+                    format: uuid
+                    description: The document ID to retrieve revisions for
       responses:
         '200':
           description: OK
@@ -3013,6 +3033,12 @@ paths:
               allOf:
               - "$ref": "#/components/schemas/Pagination"
               - "$ref": "#/components/schemas/Sorting"
+              - type: object
+                properties:
+                  query:
+                    type: string
+                    format: uuid
+                    description: Filter to shared documents matching a search query
       responses:
         '200':
           description: OK
@@ -3664,6 +3690,7 @@ paths:
                 documentId:
                   type: string
                   format: uuid
+                  description: The document ID to retrieve views for
               required:
               - documentId
       responses:

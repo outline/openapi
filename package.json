@@ -1,0 +1,18 @@
+{
+  "name": "outline-openapi",
+  "version": "1.0.0",
+  "description": "This repository contains [OpenAPI specifications](https://swagger.io/specification/) for Outline's API.",
+  "homepage": "https://github.com/outline/openapi#readme",
+  "bugs": {
+    "url": "https://github.com/outline/openapi/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/outline/openapi.git"
+  },
+  "license": "MIT",
+  "author": "",
+  "devDependencies": {
+    "js-yaml": "^4.1.0"
+  }
+}

@@ -73,6 +73,22 @@ info:
     Some API endpoints allow unauthenticated requests for public resources and
     they can be called without authentication
 
+    # Scopes
+
+    Scopes are used to limit the access of an API key or application to specific resources. For example,
+    an application may only need access to read documents, but not write them. Scopes can
+    be global in the case of `read` and `write` scopes, specific to an API endpoint like
+    `documents.read` and `documents.create`, or use wildcard scopes like `documents.*`.
+
+    Some examples of scopes that can be used are:
+
+    - `documents.read`: Allows reading documents
+    - `documents.write`: Allows writing documents
+    - `documents.*`: Allows all document-related actions
+    - `users.*`: Allows all user-related actions
+    - `read`: Allows all read actions
+    - `write`: Allows all write actions
+
     # Errors
 
     All successful API requests will be returned with a 200 or 201 status code

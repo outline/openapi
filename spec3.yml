@@ -16,9 +16,8 @@ info:
     # Making requests
 
     Outline’s API follows simple RPC style conventions where each API endpoint is
-    a method on `https://app.getoutline.com/api/method`. Both `GET` and `POST`
-    methods are supported but it’s recommended that you make all call using POST.
-    Only HTTPS is supported and all response payloads are JSON.
+    a `POST` method on `https://app.getoutline.com/api/:method`. Only HTTPS is
+    supported and all response payloads are JSON.
 
     When making `POST` requests, request parameters are parsed depending on
     Content-Type header. To make a call using JSON payload, you must pass
@@ -51,19 +50,28 @@ info:
 
     # Authentication
 
-    To access API endpoints, you must provide a valid API key. You can create new
-    API keys in your [account settings](https://app.getoutline.com/settings). Be
+    ## API key
+
+    You can create new API keys in your [account settings](https://app.getoutline.com/settings). Be
     careful when handling your keys as they give access to all of your documents,
     you should treat them like passwords and they should never be committed to
     source control.
 
-    To authenticate with API, you can supply the API key as a header
-    (`Authorization: Bearer YOUR_API_KEY`) or as part of the payload using `token`
-    parameter. Header based authentication is highly recommended so that your keys
-    don’t accidentally leak into logs.
+    To authenticate with API, you should supply the API key as the `Authorization` header
+    (`Authorization: Bearer YOUR_API_KEY`).
+
+    ## OAuth 2.0
+
+    OAuth 2.0 is a widely used protocol for authorization and authentication. It allows users
+    to grant third-party _or_ internal applications access to their resources without sharing
+    their credentials. To use OAuth 2.0 you need to follow these steps:
+
+    1. Register your application under **Settings => Applications**
+    2. Obtain an access token by exchanging the client credentials for an access token
+    3. Use the access token to authenticate requests to the API
 
     Some API endpoints allow unauthenticated requests for public resources and
-    they can be called without an API key.
+    they can be called without authentication
 
     # Errors
 

@@ -52,7 +52,7 @@ info:
 
     ## API key
 
-    You can create new API keys in your [account settings](https://app.getoutline.com/settings). Be
+    You can create new API keys under **Settings => API & Apps**. Be
     careful when handling your keys as they give access to all of your documents,
     you should treat them like passwords and they should never be committed to
     source control.

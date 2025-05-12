@@ -2946,7 +2946,8 @@ paths:
     post:
       tags:
       - OAuthClients
-      summary: Retrive an OAuthClient
+      summary: Retrieve an OAuth client
+      description: To retrieve information about an OAuth client you must pass either an `id` or a `clientId`.
       requestBody:
         content:
           application/json:
@@ -2971,6 +2972,10 @@ paths:
                 properties:
                   data:
                     "$ref": "#/components/schemas/OAuthClient"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
         '401':
           "$ref": "#/components/responses/Unauthenticated"
         '403':
@@ -3034,6 +3039,10 @@ paths:
                 properties:
                   data:
                     "$ref": "#/components/schemas/OAuthClient"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
         '401':
           "$ref": "#/components/responses/Unauthenticated"
         '403':
@@ -3098,6 +3107,10 @@ paths:
                 properties:
                   data:
                     "$ref": "#/components/schemas/OAuthClient"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
         '401':
           "$ref": "#/components/responses/Unauthenticated"
         '403':
@@ -3131,6 +3144,10 @@ paths:
                 properties:
                   data:
                     "$ref": "#/components/schemas/OAuthClient"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
         '401':
           "$ref": "#/components/responses/Unauthenticated"
         '403':

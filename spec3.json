@@ -4186,7 +4186,8 @@
         "tags": [
           "OAuthClients"
         ],
-        "summary": "Retrive an OAuthClient",
+        "summary": "Retrieve an OAuth client",
+        "description": "To retrieve information about an OAuth client you must pass either an `id` or a `clientId`.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4218,6 +4219,12 @@
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/OAuthClient"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
                     }
                   }
                 }
@@ -4310,6 +4317,12 @@
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/OAuthClient"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
                     }
                   }
                 }
@@ -4403,6 +4416,12 @@
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/OAuthClient"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
                     }
                   }
                 }
@@ -4454,6 +4473,12 @@
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/OAuthClient"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
                     }
                   }
                 }

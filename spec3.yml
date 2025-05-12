@@ -195,6 +195,14 @@ tags:
     `Groups` represent a list of users that logically belong together, for
     example there might be groups for each department in your organization.
     Groups can be granted access to collections with read or write permissions.
+- name: OAuthClients
+  description: |
+    `OAuthClients` represent OAuth clients that can be used to authenticate
+    users with third-party services.
+- name: OAuthAuthentications
+  description: |
+    `OAuthAuthentications` represent individual scoped authentications between
+    Outline and an `OAuthClient`.
 - name: Revisions
   description: |
     `Revisions` represent a snapshop of a document at a point in time. They
@@ -2931,6 +2939,237 @@ paths:
         '429':
           "$ref": "#/components/responses/RateLimited"
       operationId: groupsRemoveUser
+  "/oauthClients.info":
+    post:
+      tags:
+      - OAuthClients
+      summary: Retrive an OAuthClient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Unique identifier for the OAuth client.
+                  format: uuid
+                clientId:
+                  type: string
+                  description: Public identifier for the OAuth client.
+                  example: 2bquf8avrpdv31par42a
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/OAuthClient"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: oauthClientsInfo
+
+  "/oauthClients.create":
+    post:
+      tags:
+      - OAuthClients
+      summary: Create an OAuth client
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the OAuth client.
+                  example: My App
+                description:
+                  type: string
+                  description: A short description of this OAuth client.
+                  example: Integrate Acme Inc's services into Outline.
+                developerName:
+                  type: string
+                  description: The name of the developer who created this OAuth client.
+                  example: Acme Inc
+                developerUrl:
+                  type: string
+                  description: The URL of the developer who created this OAuth client.
+                  example: https://example.com
+                avatarUrl:
+                  type: string
+                  description: A URL pointing to an image representing the OAuth client.
+                redirectUris:
+                  type: array
+                  items:
+                    type: string
+                  description: List of redirect URIs for the OAuth client.
+                  example: ["https://example.com/callback"]
+                published:
+                  type: boolean
+                  description: Whether the OAuth client is available to other workspaces.
+                  example: true
+              required:
+              - name
+              - redirectUris
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/OAuthClient"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: oauthClientsCreate
+
+  "/oauthClients.update":
+    post:
+      tags:
+      - OAuthClients
+      summary: Update an OAuth client
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Unique identifier for the OAuth client.
+                  format: uuid
+                name:
+                  type: string
+                  description: Name of the OAuth client.
+                  example: My App
+                description:
+                  type: string
+                  description: A short description of this OAuth client.
+                  example: Integrate Acme Inc's services into Outline.
+                developerName:
+                  type: string
+                  description: The name of the developer who created this OAuth client.
+                  example: Acme Inc
+                developerUrl:
+                  type: string
+                  description: The URL of the developer who created this OAuth client.
+                  example: https://example.com
+                avatarUrl:
+                  type: string
+                  description: A URL pointing to an image representing the OAuth client.
+                redirectUris:
+                  type: array
+                  items:
+                    type: string
+                  description: List of redirect URIs for the OAuth client.
+                  example: ["https://example.com/callback"]
+                published:
+                  type: boolean
+                  description: Whether the OAuth client is available to other workspaces.
+                  example: true
+              required:
+                - id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/OAuthClient"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: oauthClientsUpdate
+
+  "/oauthClients.rotate_secret":
+    post:
+      tags:
+      - OAuthClients
+      summary: Rotate the secret for an OAuth client
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Unique identifier for the OAuth client.
+                  format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/OAuthClient"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: oauthClientsRotateSecret
+
+  "/oauthClients.delete":
+    post:
+      tags:
+      - OAuthClients
+      summary: Delete an OAuth client
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Unique identifier for the OAuth client.
+                  format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: oauthClientsDelete
+
   "/revisions.info":
     post:
       tags:
@@ -3799,6 +4038,7 @@ components:
       properties:
         offset:
           type: number
+          example: 0
         limit:
           type: number
           example: 25
@@ -4174,6 +4414,91 @@ components:
           description: The date and time that this object was last changed
           readOnly: true
           format: date-time
+    OAuthClient:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the object.
+          readOnly: true
+          format: uuid
+        name:
+          type: string
+          description: The name of this OAuth client.
+          example: Acme Inc
+        description:
+          type: string
+          description: A short description of this OAuth client.
+          example: Integrate Acme Inc's services into Outline.
+        developerName:
+          type: string
+          description: The name of the developer who created this OAuth client.
+          example: Acme Inc
+        developerUrl:
+          type: string
+          description: The URL of the developer who created this OAuth client.
+          example: https://example.com
+        avatarUrl:
+          type: string
+          description: A URL pointing to an image representing the OAuth client.
+        clientId:
+          type: string
+          description: The client ID for the OAuth client.
+          readOnly: true
+          example: 2bquf8avrpdv31par42a
+        clientSecret:
+          type: string
+          description: The client secret for the OAuth client.
+          readOnly: true
+          example: ol_sk_rapdv31...
+        redirectUris:
+          type: array
+          items:
+            type: string
+          description: The redirect URIs for the OAuth client.
+          example: ["https://example.com/callback"]
+        published:
+          type: boolean
+          description: Whether the OAuth client is available to other workspaces.
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+          description: Date and time when this OAuth client was created
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          description: Date and time when this OAuth client was updated
+          readOnly: true
+    Revision:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the object.
+          readOnly: true
+          format: uuid
+        documentId:
+          type: string
+          description: Identifier for the associated document.
+          readOnly: true
+          format: uuid
+        title:
+          type: string
+          description: Title of the document.
+          readOnly: true
+        text:
+          type: string
+          description: Body of the document, may contain markdown formatting
+          readOnly: true
+        createdAt:
+          type: string
+          format: date-time
+          description: Date and time when this revision was created
+          readOnly: true
+        createdBy:
+          "$ref": "#/components/schemas/User"
     Share:
       type: object
       properties:
@@ -4254,34 +4579,6 @@ components:
           format: date-time
           description: Date and time when this star was created
           readOnly: true
-    Revision:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the object.
-          readOnly: true
-          format: uuid
-        documentId:
-          type: string
-          description: Identifier for the associated document.
-          readOnly: true
-          format: uuid
-        title:
-          type: string
-          description: Title of the document.
-          readOnly: true
-        text:
-          type: string
-          description: Body of the document, may contain markdown formatting
-          readOnly: true
-        createdAt:
-          type: string
-          format: date-time
-          description: Date and time when this revision was created
-          readOnly: true
-        createdBy:
-          "$ref": "#/components/schemas/User"
     Team:
       type: object
       properties:

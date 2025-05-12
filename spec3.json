@@ -16,7 +16,13 @@
   ],
   "security": [
     {
-      "http": []
+      "BearerAuth": []
+    },
+    {
+      "OAuth2": [
+        "read",
+        "write"
+      ]
     }
   ],
   "tags": [
@@ -7028,10 +7034,24 @@
       }
     },
     "securitySchemes": {
-      "http": {
+      "BearerAuth": {
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT"
+      },
+      "OAuth2": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://app.getoutline.com/oauth/authorize",
+            "tokenUrl": "https://app.getoutline.com/oauth/token",
+            "refreshUrl": "https://app.getoutline.com/oauth/token",
+            "scopes": {
+              "read": "Read access",
+              "write": "Write access"
+            }
+          }
+        }
       }
     }
   }

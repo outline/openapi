@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Outline API",
-    "description": "# Introduction\n\nThe Outline API is structured in an RPC style. It enables you to\nprogramatically interact with all aspects of Outline’s data – in fact, the\nmain application is built on exactly the same API.\n\nThe API structure is available as an\n[openapi specification](https://github.com/outline/openapi) if that’s your\njam – it can be used to generate clients for most programming languages.\n\n# Making requests\n\nOutline’s API follows simple RPC style conventions where each API endpoint is\na `POST` method on `https://app.getoutline.com/api/:method`. Only HTTPS is\nsupported and all response payloads are JSON.\n\nWhen making `POST` requests, request parameters are parsed depending on\nContent-Type header. To make a call using JSON payload, you must pass\nContent-Type: application/json header, here’s an example using CURL:\n\n```\ncurl https://app.getoutline.com/api/documents.info \\\n-X 'POST' \\\n-H 'authorization: Bearer MY_API_KEY' \\\n-H 'content-type: application/json' \\\n-H 'accept: application/json' \\\n-d '{\"id\": \"outline-api-NTpezNwhUP\"}'\n```\n\nOr, with JavaScript:\n\n```javascript\nconst response = await fetch(\"https://app.getoutline.com/api/documents.info\", {\n  method: \"POST\",\n  headers: {\n    Accept: \"application/json\",\n    \"Content-Type\": \"application/json\",\n    Authorization: \"Bearer MY_API_KEY\"\n  }\n})\n\nconst body = await response.json();\nconst document = body.data;\n```\n\n# Authentication\n\n## API key\n\nYou can create new API keys under **Settings => API & Apps**. Be\ncareful when handling your keys as they give access to all of your documents,\nyou should treat them like passwords and they should never be committed to\nsource control.\n\nTo authenticate with API, you should supply the API key as the `Authorization` header\n(`Authorization: Bearer YOUR_API_KEY`).\n\n## OAuth 2.0\n\nOAuth 2.0 is a widely used protocol for authorization and authentication. It allows users\nto grant third-party _or_ internal applications access to their resources without sharing\ntheir credentials. To use OAuth 2.0 you need to follow these steps:\n\n1. Register your application under **Settings => Applications**\n2. Obtain an access token by exchanging the client credentials for an access token\n3. Use the access token to authenticate requests to the API\n\nSome API endpoints allow unauthenticated requests for public resources and\nthey can be called without authentication\n\n# Scopes\n\nScopes are used to limit the access of an API key or application to specific resources. For example,\nan application may only need access to read documents, but not write them. Scopes can\nbe global in the case of `read` and `write` scopes, specific to an API endpoint like\n`documents.read` and `documents.create`, or use wildcard scopes like `documents.*`.\n\nSome examples of scopes that can be used are:\n\n- `documents.read`: Allows reading documents\n- `documents.write`: Allows writing documents\n- `documents.*`: Allows all document-related actions\n- `users.*`: Allows all user-related actions\n- `read`: Allows all read actions\n- `write`: Allows all write actions\n\n# Errors\n\nAll successful API requests will be returned with a 200 or 201 status code\nand `ok: true` in the response payload. If there’s an error while making the\nrequest, the appropriate status code is returned with the error message:\n\n```\n{\n  \"ok\": false,\n  \"error\": \"Not Found\"\n}\n```\n\n# Pagination\n\nMost top-level API resources have support for \"list\" API methods. For instance,\nyou can list users, documents, and collections. These list methods share\ncommon parameters, taking both `limit` and `offset`.\n\nResponses will echo these parameters in the root `pagination` key, and also\ninclude a `nextPath` key which can be used as a handy shortcut to fetch the\nnext page of results. For example:\n\n```\n{\n  ok: true,\n  status: 200,\n  data: […],\n  pagination: {\n    limit: 25,\n    offset: 0,\n    nextPath: \"/api/documents.list?limit=25&offset=25\"\n  }\n}\n```\n\n# Rate limits\n\nLike most APIs, Outline has rate limits in place to prevent abuse. Endpoints\nthat mutate data are more restrictive than read-only endpoints. If you exceed\nthe rate limit for a given endpoint, you will receive a `429 Too Many Requests`\nstatus code.\n\nThe response will include a `Retry-After` header that indicates how many seconds\nyou should wait before making another request.\n\n# Policies\n\nMost API resources have associated \"policies\", these objects describe the\ncurrent API keys authorized actions related to an individual resource. It\nshould be noted that the policy \"id\" is identical to the resource it is\nrelated to, policies themselves do not have unique identifiers.\n\nFor most usecases of the API, policies can be safely ignored. Calling\nunauthorized methods will result in the appropriate response code – these can\nbe used in an interface to adjust which elements are visible.\n",
+    "description": "# Introduction\n\nThe Outline API is structured in an RPC style. It enables you to\nprogramatically interact with all aspects of Outline’s data – in fact, the\nmain application is built on exactly the same API.\n\nThe API structure is available as an\n[openapi specification](https://github.com/outline/openapi) if that’s your\njam – it can be used to generate clients for most programming languages.\n\n# Making requests\n\nOutline’s API follows simple RPC style conventions where each API endpoint is\na `POST` method on `https://app.getoutline.com/api/:method`. Only HTTPS is\nsupported and all response payloads are JSON.\n\nWhen making `POST` requests, request parameters are parsed depending on\nContent-Type header. To make a call using JSON payload, you must pass\nContent-Type: application/json header, here’s an example using CURL:\n\n```\ncurl https://app.getoutline.com/api/documents.info \\\n-X 'POST' \\\n-H 'authorization: Bearer MY_API_KEY' \\\n-H 'content-type: application/json' \\\n-H 'accept: application/json' \\\n-d '{\"id\": \"outline-api-NTpezNwhUP\"}'\n```\n\nOr, with JavaScript:\n\n```javascript\nconst response = await fetch(\"https://app.getoutline.com/api/documents.info\", {\n  method: \"POST\",\n  headers: {\n    Accept: \"application/json\",\n    \"Content-Type\": \"application/json\",\n    Authorization: \"Bearer MY_API_KEY\"\n  }\n})\n\nconst body = await response.json();\nconst document = body.data;\n```\n\n# Authentication\n\n## API key\n\nYou can create new API keys under **Settings => API & Apps**. Be\ncareful when handling your keys as they give access to all of your documents,\nyou should treat them like passwords and they should never be committed to\nsource control.\n\nTo authenticate with API, you should supply the API key as the `Authorization` header\n(`Authorization: Bearer YOUR_API_KEY`).\n\n## OAuth 2.0\n\nOAuth 2.0 is a widely used protocol for authorization and authentication. It allows users\nto grant third-party _or_ internal applications access to their resources without sharing\ntheir credentials. To use OAuth 2.0 you need to follow these steps:\n\n1. Register your application under **Settings => Applications**\n2. Obtain an access token by exchanging the client credentials for an access token\n3. Use the access token to authenticate requests to the API\n\nSome API endpoints allow unauthenticated requests for public resources and\nthey can be called without authentication\n\n# Scopes\n\nScopes are used to limit the access of an API key or application to specific resources. For example,\nan application may only need access to read documents, but not write them. Scopes can\nbe global in the case of `read` and `write` scopes, specific to an API endpoint like\n`documents.read` and `documents.create`, or use wildcard scopes like `documents.*`.\n\nSome examples of scopes that can be used are:\n\n- `documents.read`: Allows reading documents\n- `documents.write`: Allows writing documents\n- `documents.*`: Allows all document-related actions\n- `users.*`: Allows all user-related actions\n- `read`: Allows all read actions\n- `write`: Allows all write actions\n\n# Errors\n\nAll successful API requests will be returned with a 200 or 201 status code\nand `ok: true` in the response payload. If there’s an error while making the\nrequest, the appropriate status code is returned with the error message:\n\n```\n{\n  \"ok\": false,\n  \"error\": \"Not Found\"\n}\n```\n\n# Pagination\n\nMost top-level API resources have support for \"list\" API methods. For instance,\nyou can list users, documents, and collections. These list methods share\ncommon parameters, taking both `limit` and `offset`.\n\nResponses will echo these parameters in the root `pagination` key, and also\ninclude a `nextPath` key which can be used as a handy shortcut to fetch the\nnext page of results. For example:\n\n```\n{\n  ok: true,\n  status: 200,\n  data: […],\n  pagination: {\n    limit: 25,\n    offset: 0,\n    nextPath: \"/api/documents.list?limit=25&offset=25\"\n  }\n}\n```\n\n# Rate limits\n\nLike most APIs, Outline has rate limits in place to prevent abuse. Endpoints\nthat mutate data are more restrictive than read-only endpoints. If you exceed\nthe rate limit for a given endpoint, you will receive a `429 Too Many Requests`\nstatus code.\n\nThe response will include a `Retry-After` header that indicates how many seconds\nyou should wait before making another request.\n\n# Policies\n\nMost API resources have associated \"policies\", these objects describe the\ncurrent authentications authorized actions related to an individual resource. It\nshould be noted that the policy \"id\" is identical to the resource it is\nrelated to, policies themselves do not have unique identifiers.\n\nFor most usecases of the API, policies can be safely ignored. Calling\nunauthorized methods will result in the appropriate response code – these can\nbe used in an interface to adjust which elements are visible.\n",
     "version": "0.1.0",
     "contact": {
       "email": "hello@getoutline.com"
@@ -311,6 +311,7 @@
         ],
         "summary": "Retrieve auth config",
         "description": "Retrieve authentication options",
+        "security": [],
         "responses": {
           "200": {
             "description": "OK",
@@ -399,6 +400,12 @@
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/Collection"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
                     }
                   }
                 }
@@ -579,17 +586,24 @@
                   },
                   "description": {
                     "type": "string",
-                    "example": ""
+                    "description": "A brief description of the collection, markdown supported.",
+                    "example": "HR documentation is confidential and should be handled with care."
                   },
                   "permission": {
                     "$ref": "#/components/schemas/Permission"
                   },
+                  "icon": {
+                    "type": "string",
+                    "description": "A string that represents an icon in the outline-icons package or an emoji"
+                  },
                   "color": {
                     "type": "string",
+                    "description": "A hex color code for the collection icon",
                     "example": "#123123"
                   },
-                  "private": {
+                  "sharing": {
                     "type": "boolean",
+                    "description": "Whether public sharing of documents is allowed",
                     "example": false
                   }
                 },
@@ -658,16 +672,27 @@
                     "type": "string",
                     "example": "Human Resources"
                   },
+                  "description": {
+                    "type": "string",
+                    "description": "A brief description of the collection, markdown supported.",
+                    "example": "HR documentation is confidential and should be handled with care."
+                  },
                   "permission": {
                     "$ref": "#/components/schemas/Permission"
                   },
-                  "description": {
+                  "icon": {
                     "type": "string",
-                    "example": ""
+                    "description": "A string that represents an icon in the outline-icons package or an emoji"
                   },
                   "color": {
                     "type": "string",
+                    "description": "A hex color code for the collection icon",
                     "example": "#123123"
+                  },
+                  "sharing": {
+                    "type": "boolean",
+                    "description": "Whether public sharing of documents is allowed",
+                    "example": false
                   }
                 },
                 "required": [
@@ -1387,7 +1412,7 @@
           "Comments"
         ],
         "summary": "Create a comment",
-        "description": "Create a comment",
+        "description": "Add a comment or reply to a document, either `data` or `text` is required.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1474,7 +1499,7 @@
                   },
                   "includeAnchorText": {
                     "type": "boolean",
-                    "description": "Include the document text that the comment is anchored to, if any"
+                    "description": "Include the document text that the comment is anchored to, if any, in the response."
                   }
                 },
                 "required": [
@@ -1494,6 +1519,12 @@
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/Comment"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
                     }
                   }
                 }
@@ -1555,6 +1586,12 @@
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/Comment"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
                     }
                   }
                 }
@@ -1583,7 +1620,7 @@
           "Comments"
         ],
         "summary": "Delete a comment",
-        "description": "Delete a comment",
+        "description": "Deletes a comment. If the comment is a top-level comment, all its children will be deleted as well.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1668,7 +1705,7 @@
                       },
                       "includeAnchorText": {
                         "type": "boolean",
-                        "description": "Include the document text that the comment is anchored to, if any"
+                        "description": "Include the document text that the comment is anchored to, if any, in the response."
                       }
                     }
                   }
@@ -1724,6 +1761,7 @@
           "Documents"
         ],
         "summary": "Retrieve a document",
+        "description": "Retrieve a document by its `UUID`, `urlId`, or `shareId`. At least one of these parameters must be provided.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1754,6 +1792,12 @@
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/Document"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
                     }
                   }
                 }
@@ -1807,7 +1851,10 @@
                   "publish": {
                     "type": "boolean"
                   }
-                }
+                },
+                "required": [
+                  "file"
+                ]
               }
             }
           }
@@ -1822,6 +1869,12 @@
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/Document"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
                     }
                   }
                 }
@@ -1859,7 +1912,10 @@
                   "id": {
                     "type": "string",
                     "description": "Unique identifier for the document. Either the UUID or the urlId is acceptable."
-                  }
+                  },
+                  "required": [
+                    "id"
+                  ]
                 }
               }
             }
@@ -3631,6 +3687,12 @@
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/Group"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
                     }
                   }
                 }
@@ -3719,6 +3781,12 @@
                             "$ref": "#/components/schemas/GroupMembership"
                           }
                         }
+                      }
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
                       }
                     },
                     "pagination": {
@@ -4247,6 +4315,65 @@
         "operationId": "oauthClientsInfo"
       }
     },
+    "/oauthClients.list": {
+      "post": {
+        "tags": [
+          "OAuthClients"
+        ],
+        "summary": "List accessible OAuth clients",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": null,
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Pagination"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Sorting"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/OAuthClient"
+                        }
+                      },
+                      "policies": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Policy"
+                        }
+                      },
+                      "pagination": {
+                        "$ref": "#/components/schemas/Pagination"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "oauthClientsList"
+      }
+    },
     "/oauthClients.create": {
       "post": {
         "tags": [
@@ -4458,7 +4585,10 @@
                     "description": "Unique identifier for the OAuth client.",
                     "format": "uuid"
                   }
-                }
+                },
+                "required": [
+                  "id"
+                ]
               }
             }
           }
@@ -4515,7 +4645,10 @@
                     "description": "Unique identifier for the OAuth client.",
                     "format": "uuid"
                   }
-                }
+                },
+                "required": [
+                  "id"
+                ]
               }
             }
           }
@@ -4556,6 +4689,7 @@
           "Revisions"
         ],
         "summary": "Retrieve a revision",
+        "description": "A revision is a snapshot of a document at a specific point in time. This endpoint allows you to retrieve a specific version of a document by its unique identifier.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4711,6 +4845,12 @@
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/Share"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
                     }
                   }
                 }
@@ -4779,6 +4919,12 @@
                         "$ref": "#/components/schemas/Share"
                       }
                     },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    },
                     "pagination": {
                       "$ref": "#/components/schemas/Pagination"
                     }
@@ -4835,6 +4981,12 @@
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/Share"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
                     }
                   }
                 }
@@ -4863,7 +5015,7 @@
           "Shares"
         ],
         "summary": "Update a share",
-        "description": "Allows changing an existing shares published status, which removes authentication and makes it available to anyone with the link.",
+        "description": "Allows changing an existing share's published status, which removes authentication and makes it available to anyone with the link.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4896,6 +5048,12 @@
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/Share"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
                     }
                   }
                 }
@@ -4985,6 +5143,7 @@
           "Stars"
         ],
         "summary": "Create a star",
+        "description": "Stars a document or collection so it appears in the users sidebar. One of either `documentId` or `collectionId` must be provided.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -5120,7 +5279,7 @@
         "tags": [
           "Stars"
         ],
-        "summary": "Update a stars index",
+        "summary": "Update a stars order in the sidebar",
         "requestBody": {
           "content": {
             "application/json": {
@@ -5134,7 +5293,11 @@
                   "index": {
                     "type": "string"
                   }
-                }
+                },
+                "required": [
+                  "id",
+                  "index"
+                ]
               }
             }
           }
@@ -5196,7 +5359,10 @@
                     "type": "string",
                     "format": "uuid"
                   }
-                }
+                },
+                "required": [
+                  "id"
+                ]
               }
             }
           }
@@ -5341,6 +5507,12 @@
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/User"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
                     }
                   }
                 }
@@ -5433,6 +5605,12 @@
                         "$ref": "#/components/schemas/User"
                       }
                     },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    },
                     "pagination": {
                       "$ref": "#/components/schemas/Pagination"
                     }
@@ -5493,6 +5671,12 @@
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/User"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
                     }
                   }
                 }
@@ -5555,6 +5739,12 @@
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/User"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
                     }
                   }
                 }
@@ -5613,6 +5803,12 @@
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/User"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
                     }
                   }
                 }
@@ -5671,6 +5867,12 @@
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/User"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
                     }
                   }
                 }
@@ -6011,7 +6213,7 @@
           },
           "icon": {
             "type": "string",
-            "description": "A string that represents an icon in the outline-icons package"
+            "description": "A string that represents an icon in the outline-icons package or an emoji"
           },
           "permission": {
             "$ref": "#/components/schemas/Permission"

@@ -138,7 +138,7 @@ info:
     # Policies
 
     Most API resources have associated "policies", these objects describe the
-    current API keys authorized actions related to an individual resource. It
+    current authentications authorized actions related to an individual resource. It
     should be noted that the policy "id" is identical to the resource it is
     related to, policies themselves do not have unique identifiers.
 
@@ -383,6 +383,7 @@ paths:
       - Auth
       summary: Retrieve auth config
       description: Retrieve authentication options
+      security: []
       responses:
         '200':
           description: OK
@@ -444,6 +445,10 @@ paths:
                 properties:
                   data:
                     "$ref": "#/components/schemas/Collection"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
         '401':
           "$ref": "#/components/responses/Unauthenticated"
         '403':
@@ -555,14 +560,20 @@ paths:
                   example: Human Resources
                 description:
                   type: string
-                  example: ''
+                  description: A brief description of the collection, markdown supported.
+                  example: HR documentation is confidential and should be handled with care.
                 permission:
                   "$ref": "#/components/schemas/Permission"
+                icon:
+                  type: string
+                  description: A string that represents an icon in the outline-icons package or an emoji
                 color:
                   type: string
+                  description: A hex color code for the collection icon
                   example: "#123123"
-                private:
+                sharing:
                   type: boolean
+                  description: Whether public sharing of documents is allowed
                   example: false
               required:
               - name
@@ -606,14 +617,23 @@ paths:
                 name:
                   type: string
                   example: Human Resources
-                permission:
-                  "$ref": "#/components/schemas/Permission"
                 description:
                   type: string
-                  example: ''
+                  description: A brief description of the collection, markdown supported.
+                  example: HR documentation is confidential and should be handled with care.
+                permission:
+                  "$ref": "#/components/schemas/Permission"
+                icon:
+                  type: string
+                  description: A string that represents an icon in the outline-icons package or an emoji
                 color:
                   type: string
+                  description: A hex color code for the collection icon
                   example: "#123123"
+                sharing:
+                  type: boolean
+                  description: Whether public sharing of documents is allowed
+                  example: false
               required:
               - id
       responses:
@@ -1084,7 +1104,7 @@ paths:
       tags:
       - Comments
       summary: Create a comment
-      description: Create a comment
+      description: Add a comment or reply to a document, either `data` or `text` is required.
       requestBody:
         content:
           application/json:
@@ -1146,7 +1166,7 @@ paths:
                 includeAnchorText:
                   type: boolean
                   description: Include the document text that the comment is anchored
-                    to, if any
+                    to, if any, in the response.
               required:
               - id
       responses:
@@ -1159,6 +1179,10 @@ paths:
                 properties:
                   data:
                     "$ref": "#/components/schemas/Comment"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
         '401':
           "$ref": "#/components/responses/Unauthenticated"
         '403':
@@ -1198,6 +1222,10 @@ paths:
                 properties:
                   data:
                     "$ref": "#/components/schemas/Comment"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
         '401':
           "$ref": "#/components/responses/Unauthenticated"
         '403':
@@ -1212,7 +1240,7 @@ paths:
       tags:
       - Comments
       summary: Delete a comment
-      description: Delete a comment
+      description: Deletes a comment. If the comment is a top-level comment, all its children will be deleted as well.
       requestBody:
         content:
           application/json:
@@ -1270,7 +1298,7 @@ paths:
                   includeAnchorText:
                     type: boolean
                     description: Include the document text that the comment is anchored
-                      to, if any
+                      to, if any, in the response.
       responses:
         '200':
           description: OK
@@ -1301,6 +1329,7 @@ paths:
       tags:
       - Documents
       summary: Retrieve a document
+      description: Retrieve a document by its `UUID`, `urlId`, or `shareId`. At least one of these parameters must be provided.
       requestBody:
         content:
           application/json:
@@ -1326,6 +1355,10 @@ paths:
                 properties:
                   data:
                     "$ref": "#/components/schemas/Document"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
         '401':
           "$ref": "#/components/responses/Unauthenticated"
         '403':
@@ -1364,6 +1397,8 @@ paths:
                   type: boolean
                 publish:
                   type: boolean
+              required:
+                - file
       responses:
         '200':
           description: OK
@@ -1374,6 +1409,10 @@ paths:
                 properties:
                   data:
                     "$ref": "#/components/schemas/Document"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
         '401':
           "$ref": "#/components/responses/Unauthenticated"
         '403':
@@ -1398,6 +1437,8 @@ paths:
                   type: string
                   description: Unique identifier for the document. Either the UUID
                     or the urlId is acceptable.
+                required:
+                  - id
       responses:
         '200':
           description: OK
@@ -2595,6 +2636,10 @@ paths:
                 properties:
                   data:
                     "$ref": "#/components/schemas/Group"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
         '401':
           "$ref": "#/components/responses/Unauthenticated"
         '403':
@@ -2651,6 +2696,10 @@ paths:
                           this is not all memberships which can be queried from `groups.memberships`.
                         items:
                           "$ref": "#/components/schemas/GroupMembership"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
                   pagination:
                     "$ref": "#/components/schemas/Pagination"
         '401':
@@ -2986,6 +3035,42 @@ paths:
           "$ref": "#/components/responses/RateLimited"
       operationId: oauthClientsInfo
 
+  "/oauthClients.list":
+    post:
+      tags:
+      - OAuthClients
+      summary: List accessible OAuth clients
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+              allOf:
+              - "$ref": "#/components/schemas/Pagination"
+              - "$ref": "#/components/schemas/Sorting"
+              - type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/OAuthClient"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
+                  pagination:
+                    "$ref": "#/components/schemas/Pagination"
+        '401':
+          "$ref": "#/components/responses/Unauthenticated"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+        '429':
+          "$ref": "#/components/responses/RateLimited"
+      operationId: oauthClientsList
+
   "/oauthClients.create":
     post:
       tags:
@@ -3134,6 +3219,8 @@ paths:
                   type: string
                   description: Unique identifier for the OAuth client.
                   format: uuid
+              required:
+                - id
       responses:
         '200':
           description: OK
@@ -3171,6 +3258,8 @@ paths:
                   type: string
                   description: Unique identifier for the OAuth client.
                   format: uuid
+              required:
+                - id
       responses:
         '200':
           description: OK
@@ -3195,6 +3284,7 @@ paths:
       tags:
       - Revisions
       summary: Retrieve a revision
+      description: A revision is a snapshot of a document at a specific point in time. This endpoint allows you to retrieve a specific version of a document by its unique identifier.
       requestBody:
         content:
           application/json:
@@ -3295,6 +3385,10 @@ paths:
                 properties:
                   data:
                     "$ref": "#/components/schemas/Share"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
         '401':
           "$ref": "#/components/responses/Unauthenticated"
         '403':
@@ -3334,6 +3428,10 @@ paths:
                     type: array
                     items:
                       "$ref": "#/components/schemas/Share"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
                   pagination:
                     "$ref": "#/components/schemas/Pagination"
         '401':
@@ -3372,6 +3470,10 @@ paths:
                 properties:
                   data:
                     "$ref": "#/components/schemas/Share"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
         '400':
           "$ref": "#/components/responses/Validation"
         '401':
@@ -3386,7 +3488,7 @@ paths:
       tags:
       - Shares
       summary: Update a share
-      description: Allows changing an existing shares published status, which removes
+      description: Allows changing an existing share's published status, which removes
         authentication and makes it available to anyone with the link.
       requestBody:
         content:
@@ -3412,6 +3514,10 @@ paths:
                 properties:
                   data:
                     "$ref": "#/components/schemas/Share"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
         '400':
           "$ref": "#/components/responses/Validation"
         '401':
@@ -3466,6 +3572,7 @@ paths:
       tags:
       - Stars
       summary: Create a star
+      description: Stars a document or collection so it appears in the users sidebar. One of either `documentId` or `collectionId` must be provided.
       requestBody:
         content:
           application/json:
@@ -3551,7 +3658,7 @@ paths:
     post:
       tags:
       - Stars
-      summary: Update a stars index
+      summary: Update a stars order in the sidebar
       requestBody:
         content:
           application/json:
@@ -3563,6 +3670,9 @@ paths:
                   format: uuid
                 index:
                   type: string
+              required:
+                - id
+                - index
       responses:
         '200':
           description: OK
@@ -3602,6 +3712,8 @@ paths:
                 id:
                   type: string
                   format: uuid
+              required:
+                - id
       responses:
         '200':
           description: OK
@@ -3694,6 +3806,10 @@ paths:
                 properties:
                   data:
                     "$ref": "#/components/schemas/User"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
         '401':
           "$ref": "#/components/responses/Unauthenticated"
         '403':
@@ -3751,6 +3867,10 @@ paths:
                     type: array
                     items:
                       "$ref": "#/components/schemas/User"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
                   pagination:
                     "$ref": "#/components/schemas/Pagination"
         '401':
@@ -3791,6 +3911,10 @@ paths:
                 properties:
                   data:
                     "$ref": "#/components/schemas/User"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
         '401':
           "$ref": "#/components/responses/Unauthenticated"
         '403':
@@ -3831,6 +3955,10 @@ paths:
                 properties:
                   data:
                     "$ref": "#/components/schemas/User"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
         '401':
           "$ref": "#/components/responses/Unauthenticated"
         '403':
@@ -3869,6 +3997,10 @@ paths:
                 properties:
                   data:
                     "$ref": "#/components/schemas/User"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
         '401':
           "$ref": "#/components/responses/Unauthenticated"
         '403':
@@ -3908,6 +4040,10 @@ paths:
                 properties:
                   data:
                     "$ref": "#/components/schemas/User"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
         '401':
           "$ref": "#/components/responses/Unauthenticated"
         '403':
@@ -4142,7 +4278,7 @@ components:
           example: "#123123"
         icon:
           type: string
-          description: A string that represents an icon in the outline-icons package
+          description: A string that represents an icon in the outline-icons package or an emoji
         permission:
           "$ref": "#/components/schemas/Permission"
         sharing:

@@ -1,0 +1,27 @@
+name: Validate
+
+on:
+  push:
+    paths:
+      - 'spec3.yml'
+  pull_request:
+    paths:
+      - 'spec3.yml'
+
+jobs:
+  validate-swagger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install swagger-cli
+        run: npm install -g swagger-cli
+
+      - name: Validate spec3.yml
+        run: swagger-cli validate spec3.yml

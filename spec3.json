@@ -1912,11 +1912,11 @@
                   "id": {
                     "type": "string",
                     "description": "Unique identifier for the document. Either the UUID or the urlId is acceptable."
-                  },
-                  "required": [
-                    "id"
-                  ]
-                }
+                  }
+                },
+                "required": [
+                  "id"
+                ]
               }
             }
           }
@@ -4326,35 +4326,36 @@
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": null,
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/Pagination"
-                  },
-                  {
-                    "$ref": "#/components/schemas/Sorting"
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "data": {
-                        "type": "array",
-                        "items": {
-                          "$ref": "#/components/schemas/OAuthClient"
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Pagination"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Sorting"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/OAuthClient"
+                          }
+                        },
+                        "policies": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Policy"
+                          }
+                        },
+                        "pagination": {
+                          "$ref": "#/components/schemas/Pagination"
                         }
-                      },
-                      "policies": {
-                        "type": "array",
-                        "items": {
-                          "$ref": "#/components/schemas/Policy"
-                        }
-                      },
-                      "pagination": {
-                        "$ref": "#/components/schemas/Pagination"
                       }
                     }
-                  }
-                ]
+                  ]
+                }
               }
             }
           },

@@ -1437,8 +1437,8 @@ paths:
                   type: string
                   description: Unique identifier for the document. Either the UUID
                     or the urlId is acceptable.
-                required:
-                  - id
+              required:
+                - id
       responses:
         '200':
           description: OK
@@ -3046,21 +3046,21 @@ paths:
           content:
             application/json:
               schema:
-              allOf:
-              - "$ref": "#/components/schemas/Pagination"
-              - "$ref": "#/components/schemas/Sorting"
-              - type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/OAuthClient"
-                  policies:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/Policy"
-                  pagination:
-                    "$ref": "#/components/schemas/Pagination"
+                allOf:
+                - "$ref": "#/components/schemas/Pagination"
+                - "$ref": "#/components/schemas/Sorting"
+                - type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        "$ref": "#/components/schemas/OAuthClient"
+                    policies:
+                      type: array
+                      items:
+                        "$ref": "#/components/schemas/Policy"
+                    pagination:
+                      "$ref": "#/components/schemas/Pagination"
         '401':
           "$ref": "#/components/responses/Unauthenticated"
         '403':

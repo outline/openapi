@@ -1,7 +1,14 @@
-
 node utils/yamlToJSON.js
 RESULT=$?
 if [ $RESULT -ne 0 ]; then
   echo "yamlToJSON.js failed. Commit aborted."
   exit 1
+fi
+
+# Stage spec3.json if it was changed
+if git diff --quiet --exit-code spec3.json; then
+  # No changes to spec3.json
+  :
+else
+  git add spec3.json
 fi

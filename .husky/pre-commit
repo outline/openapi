@@ -1,0 +1,7 @@
+
+node utils/yamlToJSON.js
+RESULT=$?
+if [ $RESULT -ne 0 ]; then
+  echo "yamlToJSON.js failed. Commit aborted."
+  exit 1
+fi

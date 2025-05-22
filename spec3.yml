@@ -4924,37 +4924,21 @@ components:
           readOnly: true
         abilities:
           type: object
-          properties:
-            create:
-              type: boolean
-            read:
-              type: boolean
-            update:
-              type: boolean
-            delete:
-              type: boolean
-            restore:
-              type: boolean
-            star:
-              type: boolean
-            unstar:
-              type: boolean
-            share:
-              type: boolean
-            download:
-              type: boolean
-            pin:
-              type: boolean
-            unpin:
-              type: boolean
-            move:
-              type: boolean
-            archive:
-              type: boolean
-            unarchive:
-              type: boolean
-            createChildDocument:
-              type: boolean
+          description: The abilities that are allowed by this policy, if an array is returned then the individual ID's in the array represent the memberships that grant the ability.
+          additionalProperties:
+            $ref: "#/components/schemas/Ability"
+          example:
+            read: true
+            update: true
+            delete: false
+    Ability:
+      description: A single permission granted by a policy
+      example: true
+      oneOf:
+        - type: array
+          items:
+            type: string
+        - type: boolean
     GroupMembership:
       type: object
       properties:

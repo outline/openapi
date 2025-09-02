@@ -150,7 +150,12 @@ info:
     email: hello@getoutline.com
 servers:
 - url: https://app.getoutline.com/api
-  description: Production
+  description: Cloud hosted
+- url: https://{domain}/api
+  description: Self-hosted on your own server
+  variables:
+    domain:
+      default: example.com
 security:
 - BearerAuth: []
 - OAuth2:

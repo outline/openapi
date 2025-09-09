@@ -76,18 +76,25 @@ info:
     # Scopes
 
     Scopes are used to limit the access of an API key or application to specific resources. For example,
-    an application may only need access to read documents, but not write them. Scopes can
-    be global in the case of `read` and `write` scopes, specific to an API endpoint like
-    `documents.read` and `documents.create`, or use wildcard scopes like `documents.*`.
+    an application may only need access to read documents, but not write them. Scopes can be global in
+    the case of `read` and `write` scopes, scoped to a namespace, scoped to an API endpoint, or use
+    wildcard scopes like `documents.*`. Some examples of scopes that can be used are:
 
-    Some examples of scopes that can be used are:
+    ## Global
 
-    - `documents.read`: Allows reading documents
-    - `documents.write`: Allows writing documents
-    - `documents.*`: Allows all document-related actions
-    - `users.*`: Allows all user-related actions
     - `read`: Allows all read actions
-    - `write`: Allows all write actions
+    - `write`: Allows all read and write actions
+
+    ## Namespaced
+
+    - `documents:read`: Allows all document read actions
+    - `collections:write`: Allows all collection write actions
+
+    ## Endpoints
+
+    - `documents.info`: Allows only one specific API method
+    - `documents.*`: Allows all document API methods
+    - `users.*`: Allows all user API methods
 
     # Errors
 

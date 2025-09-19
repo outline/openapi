@@ -2946,7 +2946,7 @@ paths:
                       groupMemberships:
                         type: array
                         items:
-                          "$ref": "#/components/schemas/Membership"
+                          "$ref": "#/components/schemas/GroupMembership"
         '400':
           "$ref": "#/components/responses/Validation"
         '401':

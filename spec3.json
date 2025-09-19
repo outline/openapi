@@ -6,6 +6,10 @@
     "version": "0.1.0",
     "contact": {
       "email": "hello@getoutline.com"
+    },
+    "license": {
+      "name": "BSD-3-Clause",
+      "url": "https://github.com/outline/openapi/blob/main/LICENSE"
     }
   },
   "servers": [
@@ -4155,7 +4159,7 @@
                         "groupMemberships": {
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/Membership"
+                            "$ref": "#/components/schemas/GroupMembership"
                           }
                         }
                       }

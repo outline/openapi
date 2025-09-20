@@ -155,6 +155,9 @@ info:
   version: 0.1.0
   contact:
     email: hello@getoutline.com
+  license:
+    name: BSD-3-Clause
+    url: https://github.com/outline/openapi/blob/main/LICENSE
 servers:
 - url: https://app.getoutline.com/api
   description: Cloud hosted
@@ -2943,7 +2946,7 @@ paths:
                       groupMemberships:
                         type: array
                         items:
-                          "$ref": "#/components/schemas/Membership"
+                          "$ref": "#/components/schemas/GroupMembership"
         '400':
           "$ref": "#/components/responses/Validation"
         '401':

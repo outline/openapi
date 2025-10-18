@@ -12,3 +12,18 @@ if git diff --quiet --exit-code spec3.json; then
 else
   git add spec3.json
 fi
+
+node utils/updateCopyright.js
+RESULT=$?
+if [ $RESULT -ne 0 ]; then
+  echo "updateCopyright.js failed. Commit aborted."
+  exit 1
+fi
+
+# Stage any changes made by updateCopyright.js
+if git diff --quiet --exit-code LICENSE; then
+  # No changes to LICENSE
+  :
+else
+  git add LICENSE
+fi

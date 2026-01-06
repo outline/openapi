@@ -3316,6 +3316,85 @@ paths:
           "$ref": "#/components/responses/RateLimited"
       operationId: oauthClientsDelete
 
+  "/oauthAuthentications.list":
+    post:
+      tags:
+        - OAuthAuthentications
+      summary: List accessible OAuth authentications
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - "$ref": "#/components/schemas/Pagination"
+                  - "$ref": "#/components/schemas/Sorting"
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          "$ref": "#/components/schemas/OAuthAuthentication"
+                      policies:
+                        type: array
+                        items:
+                          "$ref": "#/components/schemas/Policy"
+                      pagination:
+                        "$ref": "#/components/schemas/Pagination"
+        "401":
+          "$ref": "#/components/responses/Unauthenticated"
+        "403":
+          "$ref": "#/components/responses/Unauthorized"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "429":
+          "$ref": "#/components/responses/RateLimited"
+      operationId: oauthAuthenticationsList
+
+  "/oauthAuthentications.delete":
+    post:
+      tags:
+        - OAuthAuthentications
+      summary: Delete an OAuth authentiation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                oauthClientId:
+                  type: string
+                  format: uuid
+                scope:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - oauthClientId
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        "400":
+          "$ref": "#/components/responses/Validation"
+        "401":
+          "$ref": "#/components/responses/Unauthenticated"
+        "403":
+          "$ref": "#/components/responses/Unauthorized"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "429":
+          "$ref": "#/components/responses/RateLimited"
+      operationId: oauthAuthenticationsDelete
+
   "/revisions.info":
     post:
       tags:
@@ -4670,6 +4749,34 @@ components:
           format: date-time
           description: Date and time when this OAuth client was updated
           readOnly: true
+    OAuthAuthentication:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the object.
+          readOnly: true
+          format: uuid
+        oauthClientId:
+          type: string
+          description: Identifier for the associated OAuthClient.
+          readOnly: true
+          format: uuid
+        userId:
+          type: string
+          description: Identifier for the associated User.
+          readOnly: true
+          format: uuid
+        scope:
+          type: array
+          items:
+            type: string
+        lastActiveAt:
+          type: string
+          format: date-time
+          description: Date and time when this authentication was last used
+          readOnly: true
+
     Revision:
       type: object
       properties:

@@ -192,6 +192,11 @@ tags:
     description: |
       `Comments` represent a comment either on a selection of text in a document
       or on the document itself.
+  - name: DataAttributes
+    description: |
+      `DataAttributes` represent custom metadata fields that can be attached to
+      documents. They allow teams to add structured data like status, priority,
+      or any other custom properties to their documents.
   - name: Documents
     description: |
       `Documents` are what everything else revolves around. A document represents
@@ -1351,6 +1356,251 @@ paths:
         "429":
           "$ref": "#/components/responses/RateLimited"
       operationId: commentsList
+  "/dataAttributes.info":
+    post:
+      x-badges:
+        - name: Business
+        - name: Enterprise
+      tags:
+        - DataAttributes
+      summary: Retrieve a data attribute
+      description: Retrieve a data attribute by its unique identifier.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Unique identifier for the data attribute.
+                  format: uuid
+              required:
+                - id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/DataAttribute"
+        "401":
+          "$ref": "#/components/responses/Unauthenticated"
+        "403":
+          "$ref": "#/components/responses/Unauthorized"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "429":
+          "$ref": "#/components/responses/RateLimited"
+      operationId: dataAttributesInfo
+  "/dataAttributes.list":
+    post:
+      x-badges:
+        - name: Business
+        - name: Enterprise
+      tags:
+        - DataAttributes
+      summary: List all data attributes
+      description: List all data attributes.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - "$ref": "#/components/schemas/Pagination"
+                - type: object
+                  properties:
+                    sort:
+                      type: string
+                      description: Specifies the attributes by which data attributes will be sorted in the list.
+                      enum:
+                        - createdAt
+                        - updatedAt
+                      default: createdAt
+                    direction:
+                      type: string
+                      description: Specifies the sort order with respect to sort field.
+                      enum:
+                        - ASC
+                        - DESC
+                      default: DESC
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/DataAttribute"
+                  pagination:
+                    "$ref": "#/components/schemas/Pagination"
+        "401":
+          "$ref": "#/components/responses/Unauthenticated"
+        "403":
+          "$ref": "#/components/responses/Unauthorized"
+        "429":
+          "$ref": "#/components/responses/RateLimited"
+      operationId: dataAttributesList
+  "/dataAttributes.create":
+    post:
+      x-badges:
+        - name: Business
+        - name: Enterprise
+      tags:
+        - DataAttributes
+      summary: Create a data attribute
+      description: Create a new data attribute. Only admins can create data attributes.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the data attribute.
+                  example: Status
+                description:
+                  type: string
+                  description: Description of the data attribute.
+                  example: The current status of the document.
+                dataType:
+                  "$ref": "#/components/schemas/DataAttributeDataType"
+                options:
+                  "$ref": "#/components/schemas/DataAttributeOptions"
+                pinned:
+                  type: boolean
+                  description: Whether the data attribute is pinned to the top of document.
+                  default: false
+              required:
+                - name
+                - dataType
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/DataAttribute"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
+        "401":
+          "$ref": "#/components/responses/Unauthenticated"
+        "403":
+          "$ref": "#/components/responses/Unauthorized"
+        "429":
+          "$ref": "#/components/responses/RateLimited"
+      operationId: dataAttributesCreate
+  "/dataAttributes.update":
+    post:
+      x-badges:
+        - name: Business
+        - name: Enterprise
+      tags:
+        - DataAttributes
+      summary: Update a data attribute
+      description: Update an existing data attribute. Only admins can update data attributes. Note that the dataType cannot be changed after creation.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Unique identifier for the data attribute.
+                  format: uuid
+                name:
+                  type: string
+                  description: Name of the data attribute.
+                  example: Status
+                description:
+                  type: string
+                  description: Description of the data attribute.
+                options:
+                  "$ref": "#/components/schemas/DataAttributeOptions"
+                pinned:
+                  type: boolean
+                  description: Whether the data attribute is pinned to the top of document.
+              required:
+                - id
+                - name
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/DataAttribute"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
+        "401":
+          "$ref": "#/components/responses/Unauthenticated"
+        "403":
+          "$ref": "#/components/responses/Unauthorized"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "429":
+          "$ref": "#/components/responses/RateLimited"
+      operationId: dataAttributesUpdate
+  "/dataAttributes.delete":
+    post:
+      x-badges:
+        - name: Business
+        - name: Enterprise
+      tags:
+        - DataAttributes
+      summary: Delete a data attribute
+      description: Delete a data attribute. Only admins can delete data attributes.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Unique identifier for the data attribute.
+                  format: uuid
+              required:
+                - id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        "401":
+          "$ref": "#/components/responses/Unauthenticated"
+        "403":
+          "$ref": "#/components/responses/Unauthorized"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "429":
+          "$ref": "#/components/responses/RateLimited"
+      operationId: dataAttributesDelete
   "/documents.info":
     post:
       tags:
@@ -1640,6 +1890,10 @@ paths:
       operationId: documentsViewed
   "/documents.answerQuestion":
     post:
+      x-badges:
+        - name: Business
+        - name: Enterprise
+        - name: Cloud
       tags:
         - Documents
       summary: Query documents with natural language
@@ -4469,6 +4723,73 @@ components:
             The document text that the comment is anchored to, only included
             if includeAnchorText=true.
           readOnly: true
+    DataAttribute:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the object.
+          readOnly: true
+          format: uuid
+        name:
+          type: string
+          description: The name of this data attribute.
+          example: Status
+        description:
+          type: string
+          description: A description of the data attribute.
+          example: The current status of the document.
+        dataType:
+          "$ref": "#/components/schemas/DataAttributeDataType"
+        options:
+          "$ref": "#/components/schemas/DataAttributeOptions"
+        pinned:
+          type: boolean
+          description: Whether this data attribute is pinned to the top of documents.
+          default: false
+        createdAt:
+          type: string
+          description: The date and time that this object was created
+          readOnly: true
+          format: date-time
+        updatedAt:
+          type: string
+          description: The date and time that this object was last changed
+          readOnly: true
+          format: date-time
+        deletedAt:
+          type: string
+          nullable: true
+          description: The date and time that this object was deleted
+          readOnly: true
+          format: date-time
+    DataAttributeDataType:
+      type: string
+      description: The data type of the attribute value.
+      enum:
+        - string
+        - number
+        - boolean
+        - list
+    DataAttributeOptions:
+      type: object
+      description: Additional options for certain data attribute types.
+      properties:
+        icon:
+          type: string
+          description: An icon representing the data attribute from the outline-icons package.
+        options:
+          type: array
+          description: Valid options for list data type.
+          items:
+            type: object
+            properties:
+              value:
+                type: string
+                description: The label/value of the option.
+              color:
+                type: string
+                description: Optional color for the option.
     Document:
       type: object
       properties:

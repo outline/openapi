@@ -6949,6 +6949,27 @@
           }
         }
       },
+      "DocumentDataAttribute": {
+        "type": "object",
+        "properties": {
+          "dataAttributeId": {
+            "type": "string",
+            "description": "Unique identifier for the associated data attribute.",
+            "format": "uuid"
+          },
+          "value": {
+            "type": "string",
+            "description": "The value of the data attribute for this document.",
+            "example": "In Progress"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "The date and time that this object attribute was last changed",
+            "readOnly": true,
+            "format": "date-time"
+          }
+        }
+      },
       "Document": {
         "type": "object",
         "properties": {
@@ -7040,6 +7061,13 @@
             "description": "The date and time that this object was published",
             "readOnly": true,
             "format": "date-time"
+          },
+          "dataAttributes": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/DocumentDataAttribute"
+            }
           },
           "archivedAt": {
             "type": "string",

@@ -2888,6 +2888,39 @@
                   "publish": {
                     "type": "boolean",
                     "description": "Whether this document should be immediately published and made visible to other team members."
+                  },
+                  "dataAttributes": {
+                    "type": "array",
+                    "description": "Data attributes to be included on the document.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "dataAttributeId": {
+                          "type": "string",
+                          "description": "Unique identifier for the data attribute.",
+                          "format": "uuid"
+                        },
+                        "value": {
+                          "description": "The value of the data attribute. Can be a string, boolean, or number depending on the data attribute type.",
+                          "example": "In Progress",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "dataAttributeId",
+                        "value"
+                      ]
+                    }
                   }
                 },
                 "required": [
@@ -2973,6 +3006,40 @@
                   "done": {
                     "type": "boolean",
                     "description": "Whether the editing session has finished, this will trigger any notifications. This property will soon be deprecated."
+                  },
+                  "dataAttributes": {
+                    "type": "array",
+                    "description": "Data attributes to be updated. Attributes not included will be removed from the document.",
+                    "nullable": true,
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "dataAttributeId": {
+                          "type": "string",
+                          "description": "Unique identifier for the data attribute.",
+                          "format": "uuid"
+                        },
+                        "value": {
+                          "description": "The value of the data attribute. Can be a string, boolean, or number depending on the data attribute type.",
+                          "example": "In Progress",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "dataAttributeId",
+                        "value"
+                      ]
+                    }
                   }
                 },
                 "required": [
@@ -6958,9 +7025,19 @@
             "format": "uuid"
           },
           "value": {
-            "type": "string",
             "description": "The value of the data attribute for this document.",
-            "example": "In Progress"
+            "example": "In Progress",
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "number"
+              }
+            ]
           },
           "updatedAt": {
             "type": "string",

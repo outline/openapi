@@ -2807,7 +2807,7 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "documentsAnswerquestion"
+        "operationId": "documentsAnswerQuestion"
       }
     },
     "/documents.search_titles": {
@@ -4797,7 +4797,7 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "fileoperationsInfo"
+        "operationId": "fileOperationsInfo"
       }
     },
     "/fileOperations.delete": {
@@ -4855,7 +4855,7 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "fileoperationsDelete"
+        "operationId": "fileOperationsDelete"
       }
     },
     "/fileOperations.redirect": {
@@ -4909,7 +4909,7 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "fileoperationsRedirect"
+        "operationId": "fileOperationsRedirect"
       }
     },
     "/fileOperations.list": {
@@ -4983,7 +4983,7 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "fileoperationsList"
+        "operationId": "fileOperationsList"
       }
     },
     "/groups.info": {

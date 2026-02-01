@@ -13,7 +13,9 @@
   "license": "MIT",
   "author": "",
   "scripts": {
-    "validate": "node utils/validateSpec.js"
+    "validate": "node utils/validateSpec.js && node utils/validateOperationIds.js",
+    "validate:spec": "node utils/validateSpec.js",
+    "validate:operationIds": "node utils/validateOperationIds.js"
   },
   "devDependencies": {
     "@apidevtools/swagger-parser": "^10.1.0",

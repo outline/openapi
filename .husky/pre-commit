@@ -5,6 +5,13 @@ if [ $RESULT -ne 0 ]; then
   exit 1
 fi
 
+node utils/validateOperationIds.js
+RESULT=$?
+if [ $RESULT -ne 0 ]; then
+  echo "Operation ID validation failed. Commit aborted."
+  exit 1
+fi
+
 node utils/yamlToJSON.js
 RESULT=$?
 if [ $RESULT -ne 0 ]; then

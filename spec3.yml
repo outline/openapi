@@ -2027,7 +2027,7 @@ paths:
           "$ref": "#/components/responses/Unauthorized"
         "429":
           "$ref": "#/components/responses/RateLimited"
-      operationId: documentsAnswerquestion
+      operationId: documentsAnswerQuestion
   "/documents.search_titles":
     post:
       tags:
@@ -3392,7 +3392,7 @@ paths:
           "$ref": "#/components/responses/NotFound"
         "429":
           "$ref": "#/components/responses/RateLimited"
-      operationId: fileoperationsInfo
+      operationId: fileOperationsInfo
   "/fileOperations.delete":
     post:
       tags:
@@ -3429,7 +3429,7 @@ paths:
           "$ref": "#/components/responses/NotFound"
         "429":
           "$ref": "#/components/responses/RateLimited"
-      operationId: fileoperationsDelete
+      operationId: fileOperationsDelete
   "/fileOperations.redirect":
     post:
       tags:
@@ -3465,7 +3465,7 @@ paths:
           "$ref": "#/components/responses/NotFound"
         "429":
           "$ref": "#/components/responses/RateLimited"
-      operationId: fileoperationsRedirect
+      operationId: fileOperationsRedirect
   "/fileOperations.list":
     post:
       tags:
@@ -3509,7 +3509,7 @@ paths:
           "$ref": "#/components/responses/Unauthorized"
         "429":
           "$ref": "#/components/responses/RateLimited"
-      operationId: fileoperationsList
+      operationId: fileOperationsList
   "/groups.info":
     post:
       tags:

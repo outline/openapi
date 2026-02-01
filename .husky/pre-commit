@@ -1,3 +1,10 @@
+node utils/validateSpec.js
+RESULT=$?
+if [ $RESULT -ne 0 ]; then
+  echo "OpenAPI spec validation failed. Commit aborted."
+  exit 1
+fi
+
 node utils/yamlToJSON.js
 RESULT=$?
 if [ $RESULT -ne 0 ]; then

@@ -2995,17 +2995,18 @@
                     "type": "string",
                     "description": "The body of the document in markdown."
                   },
-                  "append": {
-                    "type": "boolean",
-                    "description": "If true the text field will be appended to the end of the existing document, rather than the default behavior of replacing it. This is potentially useful for things like logging into a document."
+                  "editMode": {
+                    "type": "enum",
+                    "description": "The editing mode of the request - append will add content to the end of the document, prepend will add content to the start of the document, and replace will overwrite the existing content.",
+                    "enum": [
+                      "append",
+                      "prepend",
+                      "replace"
+                    ]
                   },
                   "publish": {
                     "type": "boolean",
                     "description": "Whether this document should be published and made visible to other team members, if a draft"
-                  },
-                  "done": {
-                    "type": "boolean",
-                    "description": "Whether the editing session has finished, this will trigger any notifications. This property will soon be deprecated."
                   },
                   "dataAttributes": {
                     "type": "array",

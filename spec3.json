@@ -45,7 +45,7 @@
     },
     {
       "name": "Auth",
-      "description": "`Auth` represents the current API Keys authentication details. It can be\nused to check that a token is still valid and load the IDs for the current\nuser and team.\n"
+      "description": "`Auth` represents the current API Keys authentication details. It can be\nused to check that a token is still valid and load the IDs for the current\nuser and workspace.\n"
     },
     {
       "name": "Collections",
@@ -57,7 +57,7 @@
     },
     {
       "name": "DataAttributes",
-      "description": "`DataAttributes` represent custom metadata fields that can be attached to\ndocuments. They allow teams to add structured data like status, priority,\nor any other custom properties to their documents.\n"
+      "description": "`DataAttributes` represent custom metadata fields that can be attached to\ndocuments. They allow workspaces to add structured data like status, priority,\nor any other custom properties to their documents.\n"
     },
     {
       "name": "Documents",
@@ -89,7 +89,7 @@
     },
     {
       "name": "Shares",
-      "description": "`Shares` represent authorization to view a document without being a member\nof the team. Shares are created in order to give access to documents publicly.\nEach user that shares a document will have a unique share object.\n"
+      "description": "`Shares` represent authorization to view a document without being a member\nof the workspace. Shares are created in order to give access to documents publicly.\nEach user that shares a document will have a unique share object.\n"
     },
     {
       "name": "Stars",
@@ -388,6 +388,7 @@
           "Collections"
         ],
         "summary": "Retrieve a collection",
+        "description": "Retrieve the details of a collection by its unique identifier.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -451,6 +452,7 @@
           "Collections"
         ],
         "summary": "Retrieve a collections document structure",
+        "description": "Returns the document structure of a collection as a tree of navigation nodes, representing the hierarchy of documents within the collection.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -512,6 +514,7 @@
           "Collections"
         ],
         "summary": "List all collections",
+        "description": "List all collections that the authenticated user has access to.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -591,6 +594,7 @@
           "Collections"
         ],
         "summary": "Create a collection",
+        "description": "Create a new collection with the specified name, description, icon, color, and permission settings. Collections are used to organize documents.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -675,6 +679,7 @@
           "Collections"
         ],
         "summary": "Update a collection",
+        "description": "Update an existing collection's properties such as name, description, icon, color, sharing settings, or permission level.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2326,6 +2331,7 @@
           "Documents"
         ],
         "summary": "Export a document in various formats, the format requested in Accepts header determines the response.",
+        "description": "Export a document in Markdown, HTML, or PDF format. The response format is determined by the Accept header. Optionally include child documents in the export as a zip file.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2948,7 +2954,7 @@
           "Documents"
         ],
         "summary": "Search all documents",
-        "description": "This methods allows you to search your teams documents with keywords. Note that search results will be restricted to those accessible by the current access token.",
+        "description": "This methods allows you to search your workspace's documents with keywords. Note that search results will be restricted to those accessible by the current access token.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3155,7 +3161,7 @@
                   },
                   "publish": {
                     "type": "boolean",
-                    "description": "Whether this document should be immediately published and made visible to other team members."
+                    "description": "Whether this document should be immediately published and made visible to other workspace members."
                   },
                   "fullWidth": {
                     "type": "boolean",
@@ -3303,7 +3309,7 @@
                   },
                   "publish": {
                     "type": "boolean",
-                    "description": "Whether this document should be published and made visible to other team members, if a draft"
+                    "description": "Whether this document should be published and made visible to other workspace members, if a draft"
                   },
                   "dataAttributes": {
                     "type": "array",
@@ -4159,7 +4165,7 @@
           "Documents"
         ],
         "summary": "List all archived documents",
-        "description": "This method will list all archived documents belonging to the team that the current user has access to.",
+        "description": "This method will list all archived documents belonging to the workspace that the current user has access to.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4233,7 +4239,7 @@
           "Documents"
         ],
         "summary": "List all deleted documents",
-        "description": "This method will list all deleted documents belonging to the team that the current user has access to.",
+        "description": "This method will list all deleted documents belonging to the workspace that the current user has access to.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4749,6 +4755,7 @@
           "FileOperations"
         ],
         "summary": "Retrieve a file operation",
+        "description": "Retrieve the details and current status of a file operation by its unique identifier. File operations represent long-running import or export tasks.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4806,6 +4813,7 @@
           "FileOperations"
         ],
         "summary": "Delete a file operation",
+        "description": "Delete a file operation and its associated files. This is useful for cleaning up completed or failed import/export operations.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4918,6 +4926,7 @@
           "FileOperations"
         ],
         "summary": "List all file operations",
+        "description": "List all file operations for the current workspace, filtered by type (import or export).",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4992,6 +5001,7 @@
           "Groups"
         ],
         "summary": "Retrieve a group",
+        "description": "Retrieve the details of a group by its unique identifier, including its name and member count.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -5055,6 +5065,7 @@
           "Groups"
         ],
         "summary": "List all groups",
+        "description": "List all groups in the workspace. Groups are used to organize users and manage permissions for collections.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -5150,6 +5161,7 @@
           "Groups"
         ],
         "summary": "Create a group",
+        "description": "Create a new group with the specified name. Groups can be used to organize users and assign collection permissions to multiple users at once.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -5212,6 +5224,7 @@
           "Groups"
         ],
         "summary": "Update a group",
+        "description": "Update an existing group's name. The group is identified by its unique identifier.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -5655,6 +5668,7 @@
           "OAuthClients"
         ],
         "summary": "List accessible OAuth clients",
+        "description": "List all OAuth clients that the authenticated user has access to. This includes both clients created by the user and published clients available to the workspace.",
         "responses": {
           "200": {
             "description": "OK",
@@ -5715,6 +5729,7 @@
           "OAuthClients"
         ],
         "summary": "Create an OAuth client",
+        "description": "Create a new OAuth client application that can be used to authenticate users and access the API on their behalf.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -5810,6 +5825,7 @@
           "OAuthClients"
         ],
         "summary": "Update an OAuth client",
+        "description": "Update an existing OAuth client's properties such as name, description, redirect URIs, or published status.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -5909,6 +5925,7 @@
           "OAuthClients"
         ],
         "summary": "Rotate the secret for an OAuth client",
+        "description": "Generate a new client secret for an OAuth client. The old secret will be invalidated immediately, so ensure your application is updated to use the new secret.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -5969,6 +5986,7 @@
           "OAuthClients"
         ],
         "summary": "Delete an OAuth client",
+        "description": "Permanently delete an OAuth client and revoke all associated access tokens. This action cannot be undone.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -6024,6 +6042,7 @@
           "OAuthAuthentications"
         ],
         "summary": "List accessible OAuth authentications",
+        "description": "List all OAuth authentications for the current user. These represent the third-party applications that the user has authorized to access their account.",
         "responses": {
           "200": {
             "description": "OK",
@@ -6084,6 +6103,7 @@
           "OAuthAuthentications"
         ],
         "summary": "Delete an OAuth authentiation",
+        "description": "Revoke an OAuth authentication, removing the third-party application's access to the user's account.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -6208,6 +6228,7 @@
           "Revisions"
         ],
         "summary": "List all revisions",
+        "description": "List all revisions for a specific document. Revisions represent historical snapshots of a document's content and can be used to track changes over time.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -6275,6 +6296,7 @@
           "Shares"
         ],
         "summary": "Retrieve a share object",
+        "description": "Retrieve the details of a share link by its unique identifier or by the associated document ID. Shares allow documents to be accessed publicly or by specific users.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -6340,6 +6362,7 @@
           "Shares"
         ],
         "summary": "List all shares",
+        "description": "List all share links in the workspace.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -6674,6 +6697,7 @@
           "Stars"
         ],
         "summary": "List all stars",
+        "description": "List all starred documents for the authenticated user. Stars allow users to bookmark important documents for quick access in the sidebar.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -6741,6 +6765,7 @@
           "Stars"
         ],
         "summary": "Update a stars order in the sidebar",
+        "description": "Update the position of a starred document in the sidebar. The index parameter determines the display order relative to other starred documents.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -6810,6 +6835,7 @@
           "Stars"
         ],
         "summary": "Delete a star",
+        "description": "Remove a star from a document, removing it from the user's starred documents list in the sidebar.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -6870,6 +6896,7 @@
           "Users"
         ],
         "summary": "Invite users",
+        "description": "Send email invitations to one or more users to join the workspace. Invitations include a link to create an account and join the workspace.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -6939,6 +6966,7 @@
           "Users"
         ],
         "summary": "Retrieve a user",
+        "description": "Retrieve the details of a user by their unique identifier, including their name, email, avatar, and role within the workspace.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -7002,7 +7030,7 @@
           "Users"
         ],
         "summary": "List all users",
-        "description": "List and filter all the users in the team",
+        "description": "List and filter all the users in the workspace",
         "requestBody": {
           "content": {
             "application/json": {
@@ -8437,16 +8465,16 @@
           },
           "name": {
             "type": "string",
-            "description": "The name of this team, it is usually auto-generated when the first SSO connection is made but can be changed if neccessary."
+            "description": "The name of this workspace, it is usually auto-generated when the first SSO connection is made but can be changed if neccessary."
           },
           "avatarUrl": {
             "type": "string",
             "format": "uri",
-            "description": "The URL for the image associated with this team, it will be displayed in the team switcher and in the top left of the knowledge base along with the name."
+            "description": "The URL for the image associated with this workspace, it will be displayed in the workspace switcher and in the top left of the knowledge base along with the name."
           },
           "sharing": {
             "type": "boolean",
-            "description": "Whether this team has share links globally enabled. If this value is false then all sharing UI and APIs are disabled."
+            "description": "Whether this workspace has share links globally enabled. If this value is false then all sharing UI and APIs are disabled."
           },
           "defaultCollectionId": {
             "type": "string",
@@ -8462,15 +8490,15 @@
           },
           "documentEmbeds": {
             "type": "boolean",
-            "description": "Whether this team has embeds in documents globally enabled. It can be disabled to reduce potential data leakage to third parties."
+            "description": "Whether this workspace has embeds in documents globally enabled. It can be disabled to reduce potential data leakage to third parties."
           },
           "collaborativeEditing": {
             "type": "boolean",
-            "description": "Whether this team has collaborative editing in documents globally enabled."
+            "description": "Whether this workspace has collaborative editing in documents globally enabled."
           },
           "inviteRequired": {
             "type": "boolean",
-            "description": "Whether an invite is required to join this team, if false users may join with a linked SSO provider."
+            "description": "Whether an invite is required to join this workspace, if false users may join with a linked SSO provider."
           },
           "allowedDomains": {
             "type": "array",
@@ -8481,15 +8509,15 @@
           },
           "guestSignin": {
             "type": "boolean",
-            "description": "Whether this team has guest signin enabled. Guests can signin with an email address and are not required to have a Google Workspace/Slack SSO account once invited."
+            "description": "Whether this workspace has guest signin enabled. Guests can signin with an email address and are not required to have a Google Workspace/Slack SSO account once invited."
           },
           "subdomain": {
             "type": "string",
-            "description": "Represents the subdomain at which this team's knowledge base can be accessed."
+            "description": "Represents the subdomain at which this workspace's knowledge base can be accessed."
           },
           "url": {
             "type": "string",
-            "description": "The fully qualified URL at which this team's knowledge base can be accessed.",
+            "description": "The fully qualified URL at which this workspace's knowledge base can be accessed.",
             "readOnly": true,
             "format": "uri"
           }

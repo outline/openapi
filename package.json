@@ -13,6 +13,7 @@
   "license": "MIT",
   "author": "",
   "scripts": {
+    "prepare": "husky",
     "lint": "spectral lint spec3.yml",
     "validate": "yarn lint --fail-severity=error && node utils/validateOperationIds.js",
     "validate:operationIds": "node utils/validateOperationIds.js"

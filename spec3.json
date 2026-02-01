@@ -2330,7 +2330,7 @@
         "tags": [
           "Documents"
         ],
-        "summary": "Export a document in various formats, the format requested in Accepts header determines the response.",
+        "summary": "Export a document.",
         "description": "Export a document in Markdown, HTML, or PDF format. The response format is determined by the Accept header. Optionally include child documents in the export as a zip file.",
         "requestBody": {
           "content": {

@@ -1,7 +1,8 @@
-node utils/validateSpec.js
+# Lint with Spectral (fail on errors only, warnings are allowed)
+npx spectral lint spec3.yml --fail-severity=error
 RESULT=$?
 if [ $RESULT -ne 0 ]; then
-  echo "OpenAPI spec validation failed. Commit aborted."
+  echo "Spectral linting failed. Commit aborted."
   exit 1
 fi
 

@@ -3,13 +3,17 @@ name: Validate
 on:
   push:
     paths:
-      - 'spec3.yml'
+      - "spec3.yml"
+      - ".spectral.yml"
+      - "utils/**"
   pull_request:
     paths:
-      - 'spec3.yml'
+      - "spec3.yml"
+      - ".spectral.yml"
+      - "utils/**"
 
 jobs:
-  validate-swagger:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -18,10 +22,19 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
+          cache: "yarn"
 
-      - name: Install swagger-cli
-        run: npm install -g swagger-cli
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
 
-      - name: Validate spec3.yml
-        run: swagger-cli validate spec3.yml
+      - name: Validate operation IDs
+        run: node utils/validateOperationIds.js
+
+      - name: Lint with Spectral
+        run: yarn lint --fail-severity=error
+
+      - name: Verify YAML to JSON conversion
+        run: |
+          node utils/yamlToJSON.js
+          git diff --exit-code spec3.json || (echo "spec3.json is out of sync with spec3.yml" && exit 1)

@@ -1434,22 +1434,7 @@ paths:
             schema:
               allOf:
                 - "$ref": "#/components/schemas/Pagination"
-                - type: object
-                  properties:
-                    sort:
-                      type: string
-                      description: Specifies the attributes by which data attributes will be sorted in the list.
-                      enum:
-                        - createdAt
-                        - updatedAt
-                      default: createdAt
-                    direction:
-                      type: string
-                      description: Specifies the sort order with respect to sort field.
-                      enum:
-                        - ASC
-                        - DESC
-                      default: DESC
+                - "$ref": "#/components/schemas/Sorting"
       responses:
         "200":
           description: OK
@@ -3970,33 +3955,33 @@ paths:
         - OAuthClients
       summary: List accessible OAuth clients
       description: List all OAuth clients that the authenticated user has access to. This includes both clients created by the user and published clients available to the workspace.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Pagination"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                allOf:
-                  - "$ref": "#/components/schemas/Pagination"
-                  - "$ref": "#/components/schemas/Sorting"
-                  - type: object
-                    properties:
-                      data:
-                        type: array
-                        items:
-                          "$ref": "#/components/schemas/OAuthClient"
-                      policies:
-                        type: array
-                        items:
-                          "$ref": "#/components/schemas/Policy"
-                      pagination:
-                        "$ref": "#/components/schemas/Pagination"
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/OAuthClient"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
+                  pagination:
+                    "$ref": "#/components/schemas/Pagination"
         "401":
           "$ref": "#/components/responses/Unauthenticated"
         "403":
           "$ref": "#/components/responses/Unauthorized"
-        "404":
-          "$ref": "#/components/responses/NotFound"
         "429":
           "$ref": "#/components/responses/RateLimited"
       operationId: oauthClientsList
@@ -4219,27 +4204,29 @@ paths:
         - OAuthAuthentications
       summary: List accessible OAuth authentications
       description: List all OAuth authentications for the current user. These represent the third-party applications that the user has authorized to access their account.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Pagination"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                allOf:
-                  - "$ref": "#/components/schemas/Pagination"
-                  - "$ref": "#/components/schemas/Sorting"
-                  - type: object
-                    properties:
-                      data:
-                        type: array
-                        items:
-                          "$ref": "#/components/schemas/OAuthAuthentication"
-                      policies:
-                        type: array
-                        items:
-                          "$ref": "#/components/schemas/Policy"
-                      pagination:
-                        "$ref": "#/components/schemas/Pagination"
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/OAuthAuthentication"
+                  policies:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Policy"
+                  pagination:
+                    "$ref": "#/components/schemas/Pagination"
         "401":
           "$ref": "#/components/responses/Unauthenticated"
         "403":
@@ -5134,6 +5121,10 @@ paths:
                   type: string
                   format: uuid
                   description: The document ID to retrieve views for
+                includeSuspended:
+                  type: boolean
+                  description: Whether to include views from suspended users
+                  default: false
               required:
                 - documentId
       responses:

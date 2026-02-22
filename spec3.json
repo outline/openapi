@@ -2438,10 +2438,6 @@
                         "type": "string",
                         "format": "uuid"
                       },
-                      "template": {
-                        "type": "boolean",
-                        "description": "Optionally filter to only templates"
-                      },
                       "statusFilter": {
                         "type": "array",
                         "items": {
@@ -3159,10 +3155,6 @@
                     "type": "string",
                     "format": "uuid"
                   },
-                  "template": {
-                    "type": "boolean",
-                    "description": "Whether this document should be considered to be a template."
-                  },
                   "publish": {
                     "type": "boolean",
                     "description": "Whether this document should be immediately published and made visible to other workspace members."
@@ -3404,7 +3396,7 @@
           "Documents"
         ],
         "summary": "Create a template from a document",
-        "description": "This method allows you to createa new template using an existing document as the basis",
+        "description": "This method allows you to create a new template using an existing document as the basis",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3443,7 +3435,7 @@
                   "type": "object",
                   "properties": {
                     "data": {
-                      "$ref": "#/components/schemas/Document"
+                      "$ref": "#/components/schemas/Template"
                     },
                     "policies": {
                       "type": "array",
@@ -8503,10 +8495,6 @@
           "pinned": {
             "type": "boolean",
             "description": "Whether this document is pinned in the collection"
-          },
-          "template": {
-            "type": "boolean",
-            "description": "Whether this document is a template"
           },
           "templateId": {
             "type": "string",

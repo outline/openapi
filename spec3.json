@@ -85,7 +85,7 @@
     },
     {
       "name": "Revisions",
-      "description": "`Revisions` represent a snapshop of a document at a point in time. They\nare used to keep tracking of editing and collaboration history – a document\ncan also be restored to a previous revision if neccessary.\n"
+      "description": "`Revisions` represent a snapshot of a document at a point in time. They\nare used to keep track of editing and collaboration history – a document\ncan also be restored to a previous revision if necessary.\n"
     },
     {
       "name": "Shares",
@@ -124,6 +124,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
+                    "description": "Name of the file attachment.",
                     "example": "image.png"
                   },
                   "documentId": {
@@ -133,6 +134,7 @@
                   },
                   "contentType": {
                     "type": "string",
+                    "description": "MIME type of the file attachment.",
                     "example": "image/png"
                   },
                   "size": {
@@ -224,7 +226,19 @@
         },
         "responses": {
           "302": {
-            "description": "The url for the attachment"
+            "description": "Redirect to the attachment URL"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         },
         "operationId": "attachmentsRedirect"
@@ -236,7 +250,7 @@
           "Attachments"
         ],
         "summary": "Delete an attachment",
-        "description": "Deleting an attachment is permanant. It will not delete references or links to the attachment that may exist in your documents.",
+        "description": "Deleting an attachment is permanent. It will not delete references or links to the attachment that may exist in your documents.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -784,10 +798,12 @@
                 "properties": {
                   "id": {
                     "type": "string",
+                    "description": "Identifier for the collection",
                     "format": "uuid"
                   },
                   "userId": {
                     "type": "string",
+                    "description": "Identifier for the user to add to the collection",
                     "format": "uuid"
                   },
                   "permission": {
@@ -871,6 +887,7 @@
                   },
                   "userId": {
                     "type": "string",
+                    "description": "Identifier for the user to remove from the collection",
                     "format": "uuid"
                   }
                 },
@@ -2428,7 +2445,8 @@
                       },
                       "userId": {
                         "type": "string",
-                        "format": "uuid"
+                        "format": "uuid",
+                        "description": "Optionally filter to documents created by a specific user"
                       },
                       "backlinkDocumentId": {
                         "type": "string",
@@ -3779,7 +3797,7 @@
           "Documents"
         ],
         "summary": "Delete a document",
-        "description": "Deleting a document moves it to the trash. If not restored within 30 days it is permenantly deleted.",
+        "description": "Deleting a document moves it to the trash. If not restored within 30 days it is permanently deleted.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -5448,10 +5466,12 @@
                 "properties": {
                   "id": {
                     "type": "string",
+                    "description": "Identifier for the group",
                     "format": "uuid"
                   },
                   "userId": {
                     "type": "string",
+                    "description": "Identifier for the user to add to the group",
                     "format": "uuid"
                   }
                 },
@@ -5533,11 +5553,12 @@
                 "properties": {
                   "id": {
                     "type": "string",
-                    "description": "Identifier for the collection",
+                    "description": "Identifier for the group",
                     "format": "uuid"
                   },
                   "userId": {
                     "type": "string",
+                    "description": "Identifier for the user to remove from the group",
                     "format": "uuid"
                   }
                 },
@@ -6083,9 +6104,6 @@
           "403": {
             "$ref": "#/components/responses/Unauthorized"
           },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
@@ -6375,7 +6393,6 @@
                     "properties": {
                       "query": {
                         "type": "string",
-                        "format": "uuid",
                         "description": "Filter to shared documents matching a search query"
                       }
                     }
@@ -7543,6 +7560,12 @@
           },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         },
         "operationId": "viewsCreate"
@@ -8985,7 +9008,7 @@
           },
           "name": {
             "type": "string",
-            "description": "The name of this workspace, it is usually auto-generated when the first SSO connection is made but can be changed if neccessary."
+            "description": "The name of this workspace, it is usually auto-generated when the first SSO connection is made but can be changed if necessary."
           },
           "avatarUrl": {
             "type": "string",
@@ -9054,7 +9077,7 @@
           },
           "name": {
             "type": "string",
-            "description": "The name of this user, it is migrated from Slack or Google Workspace when the SSO connection is made but can be changed if neccessary.",
+            "description": "The name of this user, it is migrated from Slack or Google Workspace when the SSO connection is made but can be changed if necessary.",
             "example": "Jane Doe"
           },
           "avatarUrl": {
@@ -9064,7 +9087,7 @@
           },
           "email": {
             "type": "string",
-            "description": "The email associated with this user, it is migrated from Slack or Google Workspace when the SSO connection is made but can be changed if neccessary.",
+            "description": "The email associated with this user, it is migrated from Slack or Google Workspace when the SSO connection is made but can be changed if necessary.",
             "format": "email",
             "readOnly": true
           },

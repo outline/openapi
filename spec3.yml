@@ -228,9 +228,9 @@ tags:
       Outline and an `OAuthClient`.
   - name: Revisions
     description: |
-      `Revisions` represent a snapshop of a document at a point in time. They
-      are used to keep tracking of editing and collaboration history – a document
-      can also be restored to a previous revision if neccessary.
+      `Revisions` represent a snapshot of a document at a point in time. They
+      are used to keep track of editing and collaboration history – a document
+      can also be restored to a previous revision if necessary.
   - name: Shares
     description: |
       `Shares` represent authorization to view a document without being a member
@@ -273,6 +273,7 @@ paths:
               properties:
                 name:
                   type: string
+                  description: Name of the file attachment.
                   example: image.png
                 documentId:
                   type: string
@@ -280,6 +281,7 @@ paths:
                   format: uuid
                 contentType:
                   type: string
+                  description: MIME type of the file attachment.
                   example: image/png
                 size:
                   type: number
@@ -339,14 +341,22 @@ paths:
                 - id
       responses:
         "302":
-          description: The url for the attachment
+          description: Redirect to the attachment URL
+        "401":
+          "$ref": "#/components/responses/Unauthenticated"
+        "403":
+          "$ref": "#/components/responses/Unauthorized"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "429":
+          "$ref": "#/components/responses/RateLimited"
       operationId: attachmentsRedirect
   "/attachments.delete":
     post:
       tags:
         - Attachments
       summary: Delete an attachment
-      description: Deleting an attachment is permanant. It will not delete references
+      description: Deleting an attachment is permanent. It will not delete references
         or links to the attachment that may exist in your documents.
       requestBody:
         content:
@@ -707,9 +717,11 @@ paths:
               properties:
                 id:
                   type: string
+                  description: Identifier for the collection
                   format: uuid
                 userId:
                   type: string
+                  description: Identifier for the user to add to the collection
                   format: uuid
                 permission:
                   "$ref": "#/components/schemas/Permission"
@@ -764,6 +776,7 @@ paths:
                   format: uuid
                 userId:
                   type: string
+                  description: Identifier for the user to remove from the collection
                   format: uuid
               required:
                 - id
@@ -1783,6 +1796,7 @@ paths:
                     userId:
                       type: string
                       format: uuid
+                      description: Optionally filter to documents created by a specific user
                     backlinkDocumentId:
                       type: string
                       format: uuid
@@ -2717,7 +2731,7 @@ paths:
         - Documents
       summary: Delete a document
       description: Deleting a document moves it to the trash. If not restored within
-        30 days it is permenantly deleted.
+        30 days it is permanently deleted.
       requestBody:
         content:
           application/json:
@@ -3814,9 +3828,11 @@ paths:
               properties:
                 id:
                   type: string
+                  description: Identifier for the group
                   format: uuid
                 userId:
                   type: string
+                  description: Identifier for the user to add to the group
                   format: uuid
               required:
                 - id
@@ -3869,10 +3885,11 @@ paths:
               properties:
                 id:
                   type: string
-                  description: Identifier for the collection
+                  description: Identifier for the group
                   format: uuid
                 userId:
                   type: string
+                  description: Identifier for the user to remove from the group
                   format: uuid
               required:
                 - id
@@ -4227,8 +4244,6 @@ paths:
           "$ref": "#/components/responses/Unauthenticated"
         "403":
           "$ref": "#/components/responses/Unauthorized"
-        "404":
-          "$ref": "#/components/responses/NotFound"
         "429":
           "$ref": "#/components/responses/RateLimited"
       operationId: oauthAuthenticationsList
@@ -4416,7 +4431,6 @@ paths:
                   properties:
                     query:
                       type: string
-                      format: uuid
                       description: Filter to shared documents matching a search query
       responses:
         "200":
@@ -5175,6 +5189,10 @@ paths:
           "$ref": "#/components/responses/Unauthenticated"
         "403":
           "$ref": "#/components/responses/Unauthorized"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "429":
+          "$ref": "#/components/responses/RateLimited"
       operationId: viewsCreate
   "/templates.create":
     post:
@@ -6226,7 +6244,7 @@ components:
           type: string
           description:
             The name of this workspace, it is usually auto-generated when the
-            first SSO connection is made but can be changed if neccessary.
+            first SSO connection is made but can be changed if necessary.
         avatarUrl:
           type: string
           format: uri
@@ -6300,7 +6318,7 @@ components:
         name:
           type: string
           description: The name of this user, it is migrated from Slack or Google
-            Workspace when the SSO connection is made but can be changed if neccessary.
+            Workspace when the SSO connection is made but can be changed if necessary.
           example: Jane Doe
         avatarUrl:
           type: string
@@ -6311,7 +6329,7 @@ components:
           type: string
           description: The email associated with this user, it is migrated from Slack
             or Google Workspace when the SSO connection is made but can be changed
-            if neccessary.
+            if necessary.
           format: email
           readOnly: true
         role:

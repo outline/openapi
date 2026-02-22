@@ -100,6 +100,10 @@
       "description": "`Users` represent an individual with access to the knowledge base. Users\ncan be created automatically when signing in with SSO or when a user is\ninvited via email.\n"
     },
     {
+      "name": "Templates",
+      "description": "`Templates` represent reusable document templates that can be used as a\nstarting point when creating new documents. Templates can be scoped to a\nspecific collection or available workspace-wide.\n"
+    },
+    {
       "name": "Views",
       "description": "`Views` represent a compressed record of an individual users views of a\ndocument. Individual views are not recorded but a first, last and total\nis kept per user.\n"
     }
@@ -7551,6 +7555,534 @@
         },
         "operationId": "viewsCreate"
       }
+    },
+    "/templates.create": {
+      "post": {
+        "tags": [
+          "Templates"
+        ],
+        "summary": "Create a template",
+        "description": "Create a new template that can be used as a starting point for new documents. Templates can optionally be scoped to a specific collection.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Optionally provide a specific UUID for the template."
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "The title of the template.",
+                    "minLength": 1,
+                    "maxLength": 255
+                  },
+                  "data": {
+                    "type": "object",
+                    "description": "The body of the template as a Prosemirror document."
+                  },
+                  "icon": {
+                    "type": "string",
+                    "description": "An emoji to use as the template icon.",
+                    "nullable": true
+                  },
+                  "color": {
+                    "type": "string",
+                    "description": "The color of the template icon in hex format.",
+                    "nullable": true,
+                    "pattern": "^#[0-9A-Fa-f]{6}$"
+                  },
+                  "collectionId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Identifier for the collection to which the template belongs."
+                  }
+                },
+                "required": [
+                  "title",
+                  "data"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Template"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "templatesCreate"
+      }
+    },
+    "/templates.list": {
+      "post": {
+        "tags": [
+          "Templates"
+        ],
+        "summary": "List all templates",
+        "description": "List all templates available to the current user. Optionally filter by collection. Templates not associated with a collection are workspace-wide.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Pagination"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Sorting"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "collectionId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Optionally filter to a specific collection"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Template"
+                      }
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "templatesList"
+      }
+    },
+    "/templates.info": {
+      "post": {
+        "tags": [
+          "Templates"
+        ],
+        "summary": "Retrieve a template",
+        "description": "Retrieve a template by its unique identifier.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the template. Either the UUID or the urlId is acceptable."
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Template"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "templatesInfo"
+      }
+    },
+    "/templates.update": {
+      "post": {
+        "tags": [
+          "Templates"
+        ],
+        "summary": "Update a template",
+        "description": "Update an existing template by its unique identifier.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the template. Either the UUID or the urlId is acceptable."
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "The title of the template."
+                  },
+                  "data": {
+                    "type": "object",
+                    "description": "The body of the template as a Prosemirror document."
+                  },
+                  "icon": {
+                    "type": "string",
+                    "description": "An emoji to use as the template icon.",
+                    "nullable": true
+                  },
+                  "color": {
+                    "type": "string",
+                    "description": "The color of the template icon in hex format.",
+                    "nullable": true,
+                    "pattern": "^#[0-9A-Fa-f]{6}$"
+                  },
+                  "fullWidth": {
+                    "type": "boolean",
+                    "description": "Whether the template should be displayed full width."
+                  },
+                  "collectionId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Identifier for the collection to which the template belongs. Set to null for a workspace-wide template.",
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Template"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "templatesUpdate"
+      }
+    },
+    "/templates.delete": {
+      "post": {
+        "tags": [
+          "Templates"
+        ],
+        "summary": "Delete a template",
+        "description": "Delete a template by its unique identifier. This will soft-delete the template, it can be restored later.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the template. Either the UUID or the urlId is acceptable."
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "templatesDelete"
+      }
+    },
+    "/templates.restore": {
+      "post": {
+        "tags": [
+          "Templates"
+        ],
+        "summary": "Restore a template",
+        "description": "Restore a previously deleted template by its unique identifier.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the template. Either the UUID or the urlId is acceptable."
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Template"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "templatesRestore"
+      }
+    },
+    "/templates.duplicate": {
+      "post": {
+        "tags": [
+          "Templates"
+        ],
+        "summary": "Duplicate a template",
+        "description": "Create a copy of an existing template. Optionally override the title and target collection.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the template to duplicate. Either the UUID or the urlId is acceptable."
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Override the title of the duplicated template."
+                  },
+                  "collectionId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Identifier for the collection to place the duplicated template in. If not provided, uses the original template's collection.",
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Template"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "templatesDuplicate"
+      }
     }
   },
   "components": {
@@ -8749,6 +9281,86 @@
           },
           "permission": {
             "$ref": "#/components/schemas/Permission"
+          }
+        }
+      },
+      "Template": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the object.",
+            "readOnly": true,
+            "format": "uuid"
+          },
+          "url": {
+            "type": "string",
+            "description": "A URL path to access the template.",
+            "readOnly": true
+          },
+          "urlId": {
+            "type": "string",
+            "description": "A short unique identifier for the template used in URLs.",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the template."
+          },
+          "data": {
+            "type": "object",
+            "description": "The body of the template as a Prosemirror document."
+          },
+          "icon": {
+            "type": "string",
+            "description": "An emoji to use as the template icon.",
+            "nullable": true
+          },
+          "color": {
+            "type": "string",
+            "description": "The color of the template icon in hex format.",
+            "nullable": true
+          },
+          "fullWidth": {
+            "type": "boolean",
+            "description": "Whether the template should be displayed full width."
+          },
+          "collectionId": {
+            "type": "string",
+            "description": "Identifier for the associated collection, if any.",
+            "format": "uuid",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "The date and time that the template was created.",
+            "readOnly": true,
+            "format": "date-time"
+          },
+          "createdBy": {
+            "$ref": "#/components/schemas/User"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "The date and time that the template was last changed.",
+            "readOnly": true,
+            "format": "date-time"
+          },
+          "updatedBy": {
+            "$ref": "#/components/schemas/User"
+          },
+          "deletedAt": {
+            "type": "string",
+            "description": "The date and time that the template was deleted.",
+            "readOnly": true,
+            "format": "date-time",
+            "nullable": true
+          },
+          "publishedAt": {
+            "type": "string",
+            "description": "The date and time that the template was published.",
+            "readOnly": true,
+            "format": "date-time"
           }
         }
       },

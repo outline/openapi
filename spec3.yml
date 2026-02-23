@@ -53,12 +53,21 @@ info:
     ## API key
 
     You can create new API keys under **Settings => API & Apps**. Be
-    careful when handling your keys as they give access to all of your documents,
+    careful when handling your keys as they allow full access to your data,
     you should treat them like passwords and they should never be committed to
     source control.
 
-    To authenticate with API, you should supply the API key as the `Authorization` header
+    ### Usage
+
+    To authenticate with API, you should supply the API key as a "Bearer" token in the `Authorization` header
     (`Authorization: Bearer YOUR_API_KEY`).
+
+    API keys can be revoked at any time by the creating user or an administrator of the workspace. If an API
+    key is revoked, any requests made with that key will return a `401 Unauthenticated` response.
+
+    ### Format
+
+    All API keys always begin with `ol_api_` followed by a random string of 38 letters and numbers.
 
     ## OAuth 2.0
 
@@ -71,7 +80,7 @@ info:
     3. Use the access token to authenticate requests to the API
 
     Some API endpoints allow unauthenticated requests for public resources and
-    they can be called without authentication
+    they can be called without authentication.
 
     # Scopes
 

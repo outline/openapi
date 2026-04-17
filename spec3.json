@@ -3301,6 +3301,10 @@
                   "editMode": {
                     "$ref": "#/components/schemas/TextEditMode"
                   },
+                  "findText": {
+                    "type": "string",
+                    "description": "The text to find within the document when using `patch` editMode. This text will be replaced with the value of `text`. Required when `editMode` is `patch`."
+                  },
                   "publish": {
                     "type": "boolean",
                     "description": "Whether this document should be published and made visible to other workspace members, if a draft"
@@ -8095,11 +8099,12 @@
       },
       "TextEditMode": {
         "type": "string",
-        "description": "The editing mode for text updates to a document.",
+        "description": "The editing mode for text updates to a document. When set to `patch`, the `findText` parameter is required and the existing occurrence of `findText` will be replaced with the value of `text`.",
         "enum": [
           "append",
           "prepend",
-          "replace"
+          "replace",
+          "patch"
         ]
       },
       "Attachment": {
@@ -8918,6 +8923,11 @@
             "type": "boolean",
             "example": true,
             "description": "If to also give permission to view documents nested beneath this one."
+          },
+          "allowSubscriptions": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether visitors to the public share can subscribe to receive email notifications when the document is updated. Requires SMTP to be configured on the workspace."
           },
           "createdAt": {
             "type": "string",

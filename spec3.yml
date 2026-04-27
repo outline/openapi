@@ -293,7 +293,8 @@ paths:
                   description: MIME type of the file attachment.
                   example: image/png
                 size:
-                  type: number
+                  type: integer
+                  minimum: 0
                   description: Size of the file attachment in bytes.
               required:
                 - name
@@ -1662,6 +1663,58 @@ paths:
         "429":
           "$ref": "#/components/responses/RateLimited"
       operationId: documentsInfo
+  "/documents.insights":
+    post:
+      tags:
+        - Documents
+      summary: Retrieve insights for a document
+      description: Retrieve a chronologically sorted array of daily activity
+        rollups (views, comments, reactions, revisions, editors) for a document.
+        Insights must be enabled on the document. Defaults to the last 30 days
+        when no date range is provided.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  description: Unique identifier for the document.
+                startDate:
+                  type: string
+                  format: date-time
+                  description: Start of the insights window (inclusive). Defaults to 30 days ago.
+                endDate:
+                  type: string
+                  format: date-time
+                  description: End of the insights window (inclusive). Defaults to today.
+              required:
+                - id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/DocumentInsight"
+        "400":
+          "$ref": "#/components/responses/Validation"
+        "401":
+          "$ref": "#/components/responses/Unauthenticated"
+        "403":
+          "$ref": "#/components/responses/Unauthorized"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "429":
+          "$ref": "#/components/responses/RateLimited"
+      operationId: documentsInsights
   "/documents.import":
     post:
       tags:
@@ -4463,9 +4516,11 @@ paths:
       tags:
         - Shares
       summary: Create a share
-      description: Creates a new share link that can be used by to access a document.
-        If you request multiple shares for the same document with the same API key,
-        the same share object will be returned. By default all shares are unpublished.
+      description: Creates a new share link that can be used by to access a document
+        or collection. If you request multiple shares for the same resource with the
+        same API key, the same share object will be returned. By default all shares
+        are unpublished. Exactly one of `documentId` or `collectionId` must be
+        provided.
       requestBody:
         content:
           application/json:
@@ -4475,8 +4530,16 @@ paths:
                 documentId:
                   type: string
                   format: uuid
-              required:
-                - documentId
+                  description: Identifier for the document to share. Mutually exclusive with `collectionId`.
+                collectionId:
+                  type: string
+                  format: uuid
+                  description: Identifier for the collection to share. Mutually exclusive with `documentId`.
+              oneOf:
+                - required:
+                    - documentId
+                - required:
+                    - collectionId
       responses:
         "200":
           description: OK
@@ -5914,6 +5977,32 @@ components:
           description: The date and time that this object was deleted
           readOnly: true
           format: date-time
+    DocumentInsight:
+      type: object
+      description: A daily rollup of activity counts for a document.
+      properties:
+        date:
+          type: string
+          format: date
+          description: The UTC day the rollup represents.
+        viewCount:
+          type: integer
+          description: Total number of document views on this day.
+        viewerCount:
+          type: integer
+          description: Number of unique viewers on this day.
+        commentCount:
+          type: integer
+          description: Total comments made on this day.
+        reactionCount:
+          type: integer
+          description: Total reactions added on this day.
+        revisionCount:
+          type: integer
+          description: Number of document revisions on this day.
+        editorCount:
+          type: integer
+          description: Number of unique editors on this day.
     Event:
       type: object
       properties:

@@ -6594,6 +6594,17 @@
                   },
                   "published": {
                     "type": "boolean"
+                  },
+                  "title": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "description": "An optional title that overrides the document title on the publicly shared page."
+                  },
+                  "iconUrl": {
+                    "type": "string",
+                    "format": "uri",
+                    "maxLength": 4096,
+                    "description": "An optional icon URL that overrides the workspace branding on the publicly shared page."
                   }
                 },
                 "required": [
@@ -9038,6 +9049,17 @@
             "format": "uri",
             "description": "URL of the publicly shared document.",
             "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "An optional title that overrides the document title on the publicly shared page."
+          },
+          "iconUrl": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 4096,
+            "description": "An optional icon URL that overrides the workspace branding on the publicly shared page."
           },
           "published": {
             "type": "boolean",

@@ -6603,6 +6603,7 @@
                   },
                   "iconUrl": {
                     "type": "string",
+                    "format": "uri",
                     "maxLength": 4096,
                     "nullable": true,
                     "description": "URL of an icon to display on the publicly shared page, overriding the workspace branding."
@@ -9053,11 +9054,14 @@
           },
           "title": {
             "type": "string",
+            "maxLength": 255,
             "nullable": true,
             "description": "Override title displayed on the publicly shared page. If not set the source document or collection title is used."
           },
           "iconUrl": {
             "type": "string",
+            "format": "uri",
+            "maxLength": 4096,
             "nullable": true,
             "description": "URL of an icon displayed on the publicly shared page, overriding the workspace branding."
           },

@@ -6598,13 +6598,15 @@
                   "title": {
                     "type": "string",
                     "maxLength": 255,
-                    "description": "An optional title that overrides the document title on the publicly shared page."
+                    "nullable": true,
+                    "description": "Override title displayed on the publicly shared page. If not set the source document or collection title is used."
                   },
                   "iconUrl": {
                     "type": "string",
                     "format": "uri",
                     "maxLength": 4096,
-                    "description": "An optional icon URL that overrides the workspace branding on the publicly shared page."
+                    "nullable": true,
+                    "description": "URL of an icon to display on the publicly shared page, overriding the workspace branding."
                   }
                 },
                 "required": [
@@ -9053,13 +9055,15 @@
           "title": {
             "type": "string",
             "maxLength": 255,
-            "description": "An optional title that overrides the document title on the publicly shared page."
+            "nullable": true,
+            "description": "Override title displayed on the publicly shared page. If not set the source document or collection title is used."
           },
           "iconUrl": {
             "type": "string",
             "format": "uri",
             "maxLength": 4096,
-            "description": "An optional icon URL that overrides the workspace branding on the publicly shared page."
+            "nullable": true,
+            "description": "URL of an icon displayed on the publicly shared page, overriding the workspace branding."
           },
           "published": {
             "type": "boolean",

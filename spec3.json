@@ -40,6 +40,10 @@
   ],
   "tags": [
     {
+      "name": "AccessRequests",
+      "description": "`AccessRequests` represent a request by a user for access to a document\nthey do not currently have permission to view. The request can be approved\nor dismissed by a user with permission to share the document.\n"
+    },
+    {
       "name": "Attachments",
       "description": "`Attachments` represent a file uploaded to cloud storage. They are created\nbefore the upload happens from the client and store all the meta information\nsuch as file type, size, and location.\n"
     },
@@ -109,6 +113,286 @@
     }
   ],
   "paths": {
+    "/accessRequests.create": {
+      "post": {
+        "tags": [
+          "AccessRequests"
+        ],
+        "summary": "Create an access request",
+        "description": "Request access to a document. The request will be sent to users with permission to share the document for approval or dismissal.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "documentId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Identifier for the document to request access to."
+                  }
+                },
+                "required": [
+                  "documentId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/AccessRequest"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "accessRequestsCreate"
+      }
+    },
+    "/accessRequests.info": {
+      "post": {
+        "tags": [
+          "AccessRequests"
+        ],
+        "summary": "Retrieve an access request",
+        "description": "Retrieve information about an access request by `id`, or the current user's pending request for a document by `documentId`. At least one of these parameters must be provided.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unique identifier for the access request."
+                  },
+                  "documentId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Identifier for the document to find a pending request for the current user."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/AccessRequest"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "accessRequestsInfo"
+      }
+    },
+    "/accessRequests.approve": {
+      "post": {
+        "tags": [
+          "AccessRequests"
+        ],
+        "summary": "Approve an access request",
+        "description": "Approve a pending access request, granting the requesting user a membership on the document with the specified permission.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unique identifier for the access request."
+                  },
+                  "permission": {
+                    "type": "string",
+                    "description": "The permission to grant the requesting user.",
+                    "enum": [
+                      "read",
+                      "read_write",
+                      "admin"
+                    ],
+                    "default": "read"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/AccessRequest"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "accessRequestsApprove"
+      }
+    },
+    "/accessRequests.dismiss": {
+      "post": {
+        "tags": [
+          "AccessRequests"
+        ],
+        "summary": "Dismiss an access request",
+        "description": "Dismiss a pending access request without granting the requesting user access to the document.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unique identifier for the access request."
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/AccessRequest"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "accessRequestsDismiss"
+      }
+    },
     "/attachments.create": {
       "post": {
         "tags": [
@@ -8209,6 +8493,71 @@
           "replace",
           "patch"
         ]
+      },
+      "AccessRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the object.",
+            "readOnly": true,
+            "format": "uuid"
+          },
+          "documentId": {
+            "type": "string",
+            "description": "Identifier for the document this request is for.",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "description": "Identifier for the user that made the request.",
+            "format": "uuid"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "teamId": {
+            "type": "string",
+            "description": "Identifier for the workspace the request belongs to.",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string",
+            "description": "The current status of the access request.",
+            "enum": [
+              "pending",
+              "approved",
+              "dismissed"
+            ]
+          },
+          "responderId": {
+            "type": "string",
+            "description": "Identifier for the user that responded to the request, if any.",
+            "format": "uuid",
+            "nullable": true
+          },
+          "responder": {
+            "$ref": "#/components/schemas/User"
+          },
+          "respondedAt": {
+            "type": "string",
+            "description": "The date and time the request was responded to, if any.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "The date and time that this object was created",
+            "readOnly": true,
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "The date and time that this object was last changed",
+            "readOnly": true,
+            "format": "date-time"
+          }
+        }
       },
       "Attachment": {
         "type": "object",

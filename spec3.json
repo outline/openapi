@@ -1750,7 +1750,7 @@
           "Comments"
         ],
         "summary": "Create a comment",
-        "description": "Add a comment or reply to a document, either `data` or `text` is required.",
+        "description": "Add a comment or reply to a document, either `data` or `text` is required. Provide `anchorText` to create an inline comment attached to a specific text range in the document.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1777,6 +1777,18 @@
                     "type": "string",
                     "description": "The body of the comment in markdown.",
                     "example": "Sounds great"
+                  },
+                  "anchorText": {
+                    "type": "string",
+                    "description": "Plain text substring to anchor the comment to as an inline comment. The first occurrence in the document's plain text is used unless disambiguated by `anchorPrefix` and/or `anchorSuffix`."
+                  },
+                  "anchorPrefix": {
+                    "type": "string",
+                    "description": "Text immediately preceding `anchorText`, used to disambiguate between multiple occurrences. Requires `anchorText`."
+                  },
+                  "anchorSuffix": {
+                    "type": "string",
+                    "description": "Text immediately following `anchorText`, used to disambiguate between multiple occurrences. Requires `anchorText`."
                   }
                 },
                 "required": [

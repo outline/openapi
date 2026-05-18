@@ -1886,10 +1886,11 @@ paths:
       tags:
         - Documents
       summary: Retrieve insights for a document
-      description: Retrieve a chronologically sorted array of daily activity
-        rollups (views, comments, reactions, revisions, editors) for a document.
-        Insights must be enabled on the document. Defaults to the last 30 days
-        when no date range is provided.
+      description: Retrieve a chronologically sorted array of activity rollups
+        (views, comments, reactions, revisions, editors) for a document. Recent
+        activity is returned as daily rollups, while older activity is
+        aggregated into weekly rollups. Insights must be enabled on the
+        document. Defaults to the last 30 days when no date range is provided.
       requestBody:
         content:
           application/json:
@@ -6263,12 +6264,22 @@ components:
           format: date-time
     DocumentInsight:
       type: object
-      description: A daily rollup of activity counts for a document.
+      description: A rollup of activity counts for a document over a daily or weekly
+        period.
       properties:
         date:
           type: string
           format: date
-          description: The UTC day the rollup represents.
+          description: The UTC day the rollup represents. For weekly rollups this is
+            the first day (Monday) of the week.
+        period:
+          type: string
+          description: The length of time the rollup covers. Daily rollups are
+            stored for recent activity, older rollups are aggregated into
+            weekly buckets.
+          enum:
+            - day
+            - week
         viewCount:
           type: integer
           description: Total number of document views on this day.

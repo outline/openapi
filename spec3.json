@@ -9175,6 +9175,17 @@
               "export"
             ]
           },
+          "format": {
+            "type": "string",
+            "description": "The file format of the resulting file.",
+            "example": "outline-markdown",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the file operation, derived from the collection name, document title, or file name.",
+            "readOnly": true
+          },
           "state": {
             "type": "string",
             "description": "The state of the file operation.",
@@ -9188,28 +9199,44 @@
               "expired"
             ]
           },
-          "collection": {
-            "allOf": [
-              {
-                "nullable": true
-              },
-              {
-                "$ref": "#/components/schemas/Collection"
-              }
-            ]
+          "error": {
+            "type": "string",
+            "nullable": true,
+            "description": "An error message if the file operation failed.",
+            "readOnly": true
+          },
+          "size": {
+            "type": "string",
+            "description": "The size of the resulting file in bytes. Returned as a string as the value may exceed the safe integer range.",
+            "readOnly": true,
+            "example": "2048"
+          },
+          "collectionId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Identifier for the associated collection, if the file operation is scoped to a single collection.",
+            "readOnly": true,
+            "format": "uuid"
+          },
+          "documentId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Identifier for the associated document, if the file operation is scoped to a single document.",
+            "readOnly": true,
+            "format": "uuid"
           },
           "user": {
             "$ref": "#/components/schemas/User"
           },
-          "size": {
-            "type": "number",
-            "description": "The size of the resulting file in bytes",
-            "readOnly": true,
-            "example": 2048
-          },
           "createdAt": {
             "type": "string",
             "description": "The date and time that this object was created",
+            "readOnly": true,
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "The date and time that this object was last changed",
             "readOnly": true,
             "format": "date-time"
           }

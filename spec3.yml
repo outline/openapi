@@ -6216,6 +6216,25 @@ components:
               color:
                 type: string
                 description: Optional color for the option.
+    DocumentDataAttribute:
+      type: object
+      properties:
+        dataAttributeId:
+          type: string
+          description: Unique identifier for the associated data attribute.
+          format: uuid
+        value:
+          description: The value of the data attribute for this document.
+          example: In Progress
+          oneOf:
+            - type: string
+            - type: boolean
+            - type: number
+        updatedAt:
+          type: string
+          description: The date and time that this object attribute was last changed
+          readOnly: true
+          format: date-time
     Document:
       type: object
       properties:
@@ -6312,6 +6331,11 @@ components:
           description: The date and time that this object was published
           readOnly: true
           format: date-time
+        dataAttributes:
+          type: array
+          nullable: true
+          items:
+            "$ref": "#/components/schemas/DocumentDataAttribute"
         archivedAt:
           type: string
           nullable: true

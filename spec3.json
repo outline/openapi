@@ -910,8 +910,12 @@
                   },
                   "description": {
                     "type": "string",
-                    "description": "A brief description of the collection, markdown supported.",
+                    "description": "A brief description of the collection, markdown supported. Only one of `description` or `data` may be provided.",
                     "example": "HR documentation is confidential and should be handled with care."
+                  },
+                  "data": {
+                    "type": "object",
+                    "description": "The collection description as a rich-text ProseMirror JSON document. Only one of `description` or `data` may be provided."
                   },
                   "permission": {
                     "$ref": "#/components/schemas/Permission"
@@ -999,8 +1003,12 @@
                   },
                   "description": {
                     "type": "string",
-                    "description": "A brief description of the collection, markdown supported.",
+                    "description": "A brief description of the collection, markdown supported. Only one of `description` or `data` may be provided.",
                     "example": "HR documentation is confidential and should be handled with care."
+                  },
+                  "data": {
+                    "type": "object",
+                    "description": "The collection description as a rich-text ProseMirror JSON document. Only one of `description` or `data` may be provided."
                   },
                   "permission": {
                     "$ref": "#/components/schemas/Permission"

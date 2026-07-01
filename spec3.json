@@ -6590,7 +6590,7 @@
                   "type": "object",
                   "properties": {
                     "data": {
-                      "$ref": "#/components/schemas/Revision"
+                      "$ref": "#/components/schemas/RevisionDetail"
                     }
                   }
                 }
@@ -6619,7 +6619,7 @@
           "Revisions"
         ],
         "summary": "List all revisions",
-        "description": "List all revisions for a specific document. Revisions represent historical snapshots of a document's content and can be used to track changes over time.",
+        "description": "List all revisions for a specific document. Revisions represent historical snapshots of a document's content and can be used to track changes over time. The `data` and `text` fields are omitted from listed revisions for performance; use `revisions.info` to retrieve the full content of a specific revision.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -9636,16 +9636,6 @@
             "description": "The name of the revision, if any.",
             "readOnly": true
           },
-          "data": {
-            "type": "object",
-            "description": "The body of the revision as a Prosemirror document.",
-            "readOnly": true
-          },
-          "text": {
-            "type": "string",
-            "description": "Body of the document, may contain markdown formatting",
-            "readOnly": true
-          },
           "icon": {
             "type": "string",
             "nullable": true,
@@ -9687,6 +9677,28 @@
             "readOnly": true
           }
         }
+      },
+      "RevisionDetail": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Revision"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "object",
+                "description": "The body of the revision as a Prosemirror document.",
+                "readOnly": true
+              },
+              "text": {
+                "type": "string",
+                "description": "Body of the document, may contain markdown formatting",
+                "readOnly": true
+              }
+            }
+          }
+        ]
       },
       "Share": {
         "type": "object",

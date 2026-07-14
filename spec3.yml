@@ -5612,6 +5612,9 @@ paths:
                       type: string
                       format: uuid
                       description: Optionally filter to a specific collection
+                    query:
+                      type: string
+                      description: Search query to filter templates by title
       responses:
         "200":
           description: OK

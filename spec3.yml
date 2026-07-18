@@ -7206,6 +7206,7 @@ components:
           enum:
             - api
             - app
+            - mcp
         createdAt:
           type: string
           description: The date and time that this object was created

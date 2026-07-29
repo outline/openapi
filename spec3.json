@@ -3524,6 +3524,7 @@
                   },
                   "text": {
                     "type": "string",
+                    "maxLength": 1536000,
                     "description": "The body of the document in markdown"
                   },
                   "icon": {
@@ -3664,6 +3665,7 @@
                   },
                   "text": {
                     "type": "string",
+                    "maxLength": 1536000,
                     "description": "The body of the document in markdown."
                   },
                   "icon": {
@@ -9818,7 +9820,14 @@
             "readOnly": true
           },
           "createdBy": {
-            "$ref": "#/components/schemas/User"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ],
+            "nullable": true,
+            "description": "The user that created the share. Only returned to viewers with access to read the share; omitted from responses to unauthenticated viewers of a published share, and when the creating user has been deleted.",
+            "readOnly": true
           },
           "updatedAt": {
             "type": "string",

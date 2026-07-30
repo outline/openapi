@@ -1095,6 +1095,77 @@
         "operationId": "collectionsUpdate"
       }
     },
+    "/collections.duplicate": {
+      "post": {
+        "tags": [
+          "Collections"
+        ],
+        "summary": "Duplicate a collection",
+        "description": "Duplicate an existing collection along with its documents into a new collection.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Identifier for the collection to duplicate",
+                    "format": "uuid"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "New name for the duplicated collection"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Collection"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "collectionsDuplicate"
+      }
+    },
     "/collections.add_user": {
       "post": {
         "tags": [

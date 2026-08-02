@@ -2034,8 +2034,8 @@ paths:
               properties:
                 file:
                   type: object
-                  description: Plain text, markdown, docx, csv, tsv, and html format
-                    are supported.
+                  description: Plain text, markdown, docx, csv, tsv, html, mhtml
+                    (or mht) web pages, and eml email messages are supported.
                 collectionId:
                   type: string
                   format: uuid

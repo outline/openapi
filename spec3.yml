@@ -2035,7 +2035,8 @@ paths:
                 file:
                   type: object
                   description: Plain text, markdown, docx, csv, tsv, html, mhtml
-                    (or mht) web pages, and eml email messages are supported.
+                    (or mht) web pages, eml email messages, and textbundle/textpack
+                    bundles are supported.
                 collectionId:
                   type: string
                   format: uuid
@@ -6499,6 +6500,16 @@ components:
           type: string
           description: The user that performed the action.
           format: uuid
+          readOnly: true
+        authType:
+          type: string
+          description: The authentication method used to perform the action.
+          enum:
+            - api
+            - app
+            - mcp
+            - oauth
+          nullable: true
           readOnly: true
         actorIpAddress:
           type: string

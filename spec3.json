@@ -9764,6 +9764,26 @@
             "nullable": true,
             "description": "Date and time when this revision was deleted, if applicable.",
             "readOnly": true
+          },
+          "sourceMetadata": {
+            "type": "object",
+            "nullable": true,
+            "description": "Metadata about the source of this revision, if any.",
+            "readOnly": true,
+            "properties": {
+              "authType": {
+                "type": "string",
+                "nullable": true,
+                "description": "The authentication method used when this revision was created.",
+                "enum": [
+                  "api",
+                  "app",
+                  "mcp",
+                  "oauth"
+                ],
+                "readOnly": true
+              }
+            }
           }
         }
       },
@@ -10129,6 +10149,16 @@
             "description": "The date and time that this user was deleted, if applicable.",
             "readOnly": true,
             "format": "date-time"
+          },
+          "invitedBy": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ],
+            "nullable": true,
+            "description": "The user who invited this user, if any. Only returned to admins.",
+            "readOnly": true
           }
         }
       },

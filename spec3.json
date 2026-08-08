@@ -10129,6 +10129,16 @@
             "description": "The date and time that this user was deleted, if applicable.",
             "readOnly": true,
             "format": "date-time"
+          },
+          "invitedBy": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ],
+            "nullable": true,
+            "description": "The user that invited this user, if they were invited. Only included in responses to admin users.",
+            "readOnly": true
           }
         }
       },

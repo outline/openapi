@@ -8064,7 +8064,7 @@
           "Templates"
         ],
         "summary": "Create a template",
-        "description": "Create a new template that can be used as a starting point for new documents. Templates can optionally be scoped to a specific collection.",
+        "description": "Create a new template that can be used as a starting point for new documents. Templates can optionally be scoped to a specific collection. When `publish` is false the template is saved as a draft visible only to its creator.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -8079,7 +8079,6 @@
                   "title": {
                     "type": "string",
                     "description": "The title of the template.",
-                    "minLength": 1,
                     "maxLength": 255
                   },
                   "data": {
@@ -8101,12 +8100,13 @@
                     "type": "string",
                     "format": "uuid",
                     "description": "Identifier for the collection to which the template belongs."
+                  },
+                  "publish": {
+                    "type": "boolean",
+                    "description": "Whether the template is available to other members. Set to false to create a draft visible only to its creator. Defaults to true.",
+                    "default": true
                   }
-                },
-                "required": [
-                  "title",
-                  "data"
-                ]
+                }
               }
             }
           }
@@ -8299,7 +8299,7 @@
           "Templates"
         ],
         "summary": "Update a template",
-        "description": "Update an existing template by its unique identifier.",
+        "description": "Update an existing template by its unique identifier. Draft templates can be made available to other members by passing `publish: true`.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -8338,6 +8338,10 @@
                     "format": "uuid",
                     "description": "Identifier for the collection to which the template belongs. Set to null for a workspace-wide template.",
                     "nullable": true
+                  },
+                  "publish": {
+                    "type": "boolean",
+                    "description": "Whether to make a draft template available to other members."
                   }
                 },
                 "required": [

@@ -8078,13 +8078,12 @@
                   },
                   "title": {
                     "type": "string",
-                    "description": "The title of the template.",
-                    "minLength": 1,
+                    "description": "The title of the template. Required when publishing.",
                     "maxLength": 255
                   },
                   "data": {
                     "type": "object",
-                    "description": "The body of the template as a Prosemirror document."
+                    "description": "The body of the template as a Prosemirror document. Required when publishing."
                   },
                   "icon": {
                     "type": "string",
@@ -8101,12 +8100,13 @@
                     "type": "string",
                     "format": "uuid",
                     "description": "Identifier for the collection to which the template belongs."
+                  },
+                  "publish": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Whether the template is available to other members. Set to false to create a draft that is only visible to its creator."
                   }
-                },
-                "required": [
-                  "title",
-                  "data"
-                ]
+                }
               }
             }
           }
@@ -8338,6 +8338,10 @@
                     "format": "uuid",
                     "description": "Identifier for the collection to which the template belongs. Set to null for a workspace-wide template.",
                     "nullable": true
+                  },
+                  "publish": {
+                    "type": "boolean",
+                    "description": "Set to true to publish a draft template so it becomes available to other members."
                   }
                 },
                 "required": [

@@ -2771,6 +2771,14 @@ paths:
                   type: boolean
                   description: Whether this document should be published and made
                     visible to other workspace members, if a draft
+                lastRevision:
+                  type: integer
+                  minimum: 0
+                  description: If set, the update is rejected with a 409 response
+                    when the document's current revision number does not match this
+                    value. Use this for optimistic concurrency control to avoid
+                    overwriting changes made since the client last loaded the
+                    document.
                 dataAttributes:
                   type: array
                   description: Data attributes to be updated. Attributes not included will be removed from the document.
@@ -2816,6 +2824,9 @@ paths:
           "$ref": "#/components/responses/Unauthorized"
         "404":
           "$ref": "#/components/responses/NotFound"
+        "409":
+          description: The provided `lastRevision` did not match the document's
+            current revision, indicating a conflicting update.
         "429":
           "$ref": "#/components/responses/RateLimited"
       operationId: documentsUpdate
@@ -6721,7 +6732,9 @@ components:
           example: 2bquf8avrpdv31par42a
         clientSecret:
           type: string
-          description: The client secret for the OAuth client.
+          description: The client secret for the OAuth client. Only returned when
+            the request is authenticated with a credential whose scope permits
+            managing OAuth clients.
           readOnly: true
           example: ol_sk_rapdv31...
         clientType:

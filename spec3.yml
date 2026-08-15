@@ -2139,20 +2139,39 @@ paths:
                 - "$ref": "#/components/schemas/Sorting"
                 - type: object
                   properties:
+                    filters:
+                      type: array
+                      description:
+                        Structured filter expression, evaluated as an AND of
+                        top-level entries. Cannot be combined with the
+                        deprecated `collectionId`, `userId`, `parentDocumentId`
+                        or `statusFilter` parameters.
+                      items:
+                        "$ref": "#/components/schemas/DocumentFilter"
                     collectionId:
                       type: string
                       format: uuid
-                      description: Optionally filter to a specific collection
+                      deprecated: true
+                      description:
+                        Optionally filter to a specific collection.
+                        Deprecated – prefer the `filters` parameter.
                     userId:
                       type: string
                       format: uuid
-                      description: Optionally filter to documents created by a specific user
+                      deprecated: true
+                      description:
+                        Optionally filter to documents created by a specific
+                        user. Deprecated – prefer the `filters` parameter.
                     backlinkDocumentId:
                       type: string
                       format: uuid
                     parentDocumentId:
                       type: string
                       format: uuid
+                      deprecated: true
+                      description:
+                        Optionally filter to child documents of a specific
+                        parent. Deprecated – prefer the `filters` parameter.
                     statusFilter:
                       type: array
                       items:
@@ -2161,7 +2180,10 @@ paths:
                           - draft
                           - archived
                           - published
-                      description: Document statuses to include in results
+                      deprecated: true
+                      description:
+                        Document statuses to include in results. Deprecated –
+                        prefer the `filters` parameter.
       responses:
         "200":
           description: OK
@@ -2418,18 +2440,37 @@ paths:
                     query:
                       type: string
                       description: Search query to match against document titles
+                    filters:
+                      type: array
+                      description:
+                        Structured filter expression, evaluated as an AND of
+                        top-level entries. Cannot be combined with the
+                        deprecated `collectionId`, `userId`, `documentId`,
+                        `dateFilter` or `statusFilter` parameters.
+                      items:
+                        "$ref": "#/components/schemas/DocumentFilter"
                     collectionId:
                       type: string
                       format: uuid
-                      description: Filter to a specific collection
+                      deprecated: true
+                      description:
+                        Filter to a specific collection. Deprecated – prefer
+                        the `filters` parameter.
                     userId:
                       type: string
                       format: uuid
-                      description: Filter results based on user
+                      deprecated: true
+                      description:
+                        Filter results based on user. Deprecated – prefer the
+                        `filters` parameter.
                     documentId:
                       type: string
                       format: uuid
-                      description: Filter results based on content within a document and its children
+                      deprecated: true
+                      description:
+                        Filter results based on content within a document and
+                        its children. Deprecated – prefer the `filters`
+                        parameter.
                     statusFilter:
                       type: array
                       items:
@@ -2438,12 +2479,18 @@ paths:
                           - draft
                           - archived
                           - published
-                      description: Document statuses to include in results
+                      deprecated: true
+                      description:
+                        Document statuses to include in results. Deprecated –
+                        prefer the `filters` parameter.
                     dateFilter:
                       type: string
+                      deprecated: true
                       description:
                         Any documents that have not been updated within the
-                        specified period will be filtered out
+                        specified period will be filtered out. Deprecated –
+                        prefer the `filters` parameter with a date field and
+                        an ISO 8601 duration value.
                       enum:
                         - day
                         - week
@@ -2513,23 +2560,43 @@ paths:
                     query:
                       type: string
                       example: hiring
+                    filters:
+                      type: array
+                      description:
+                        Structured filter expression, evaluated as an AND of
+                        top-level entries. Cannot be combined with the
+                        deprecated `collectionId`, `userId`, `documentId`,
+                        `dateFilter` or `statusFilter` parameters.
+                      items:
+                        "$ref": "#/components/schemas/DocumentFilter"
                     userId:
                       type: string
+                      deprecated: true
                       description:
                         Any documents that have not been edited by the user
-                        identifier will be filtered out
+                        identifier will be filtered out. Deprecated – prefer
+                        the `filters` parameter.
                       format: uuid
                     collectionId:
                       type: string
-                      description: A collection to search within
+                      deprecated: true
+                      description:
+                        A collection to search within. Deprecated – prefer the
+                        `filters` parameter.
                       format: uuid
                     documentId:
                       type: string
-                      description: A document to search within
+                      deprecated: true
+                      description:
+                        A document to search within. Deprecated – prefer the
+                        `filters` parameter.
                       format: uuid
                     statusFilter:
                       type: array
-                      description: Document statuses to include in results
+                      deprecated: true
+                      description:
+                        Document statuses to include in results. Deprecated –
+                        prefer the `filters` parameter.
                       items:
                         type: string
                         enum:
@@ -2538,9 +2605,12 @@ paths:
                           - published
                     dateFilter:
                       type: string
+                      deprecated: true
                       description:
                         Any documents that have not been updated within the
-                        specified period will be filtered out
+                        specified period will be filtered out. Deprecated –
+                        prefer the `filters` parameter with a date field and
+                        an ISO 8601 duration value.
                       example: month
                       enum:
                         - day
@@ -6060,6 +6130,77 @@ components:
           enum:
             - ASC
             - DESC
+    DocumentFilter:
+      description:
+        A single filter node, either a leaf condition matching a document
+        field or a group combining nested filters with a logical operator.
+      oneOf:
+        - type: object
+          description: A condition that compares a document field against a value.
+          required:
+            - field
+            - operator
+          properties:
+            field:
+              type: string
+              description: Name of the document field to filter on.
+              enum:
+                - createdAt
+                - updatedAt
+                - publishedAt
+                - archivedAt
+                - title
+                - templateId
+                - collectionId
+                - userId
+                - documentId
+                - parentDocumentId
+            operator:
+              type: string
+              description:
+                Comparison operator to apply. Note that some fields only
+                accept a subset of operators – for example `userId` and
+                `documentId` only support `eq` and `in`.
+              enum:
+                - eq
+                - neq
+                - lt
+                - lte
+                - gt
+                - gte
+                - contains
+                - startsWith
+                - endsWith
+                - containsStrict
+                - startsWithStrict
+                - endsWithStrict
+                - in
+                - notIn
+                - isNull
+                - isNotNull
+            value:
+              description:
+                Value to compare against. May be a string, number, boolean
+                or array of these depending on the field and operator. Date
+                fields accept an ISO 8601 date or an ISO 8601 duration
+                (relative to now). Omit for `isNull` and `isNotNull`.
+        - type: object
+          description:
+            A logical group that combines nested filters with an `AND` or
+            `OR` operator. Groups may themselves contain further groups.
+          required:
+            - operator
+            - filters
+          properties:
+            operator:
+              type: string
+              enum:
+                - AND
+                - OR
+            filters:
+              type: array
+              items:
+                "$ref": "#/components/schemas/DocumentFilter"
     NavigationNode:
       type: object
       properties:

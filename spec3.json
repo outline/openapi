@@ -4763,6 +4763,18 @@
                   },
                   {
                     "$ref": "#/components/schemas/Sorting"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "filters": {
+                        "type": "array",
+                        "description": "Structured filter expression, evaluated as an AND of top-level entries. Supported fields are `deletedAt` (date) and `deletedById` (uuid, identifier of the user who deleted the document).",
+                        "items": {
+                          "$ref": "#/components/schemas/DocumentsDeletedFilter"
+                        }
+                      }
+                    }
                   }
                 ]
               }
@@ -8857,6 +8869,71 @@
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/DocumentFilter"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "DocumentsDeletedFilter": {
+        "description": "A single filter node for `/documents.deleted`, either a leaf condition matching a supported field or a group combining nested filters with a logical operator.",
+        "oneOf": [
+          {
+            "type": "object",
+            "description": "A condition that compares a deleted-document field against a value.",
+            "required": [
+              "field",
+              "operator"
+            ],
+            "properties": {
+              "field": {
+                "type": "string",
+                "description": "Name of the field to filter on.",
+                "enum": [
+                  "deletedAt",
+                  "deletedById"
+                ]
+              },
+              "operator": {
+                "type": "string",
+                "description": "Comparison operator to apply. `deletedById` only supports `eq` and `in`.",
+                "enum": [
+                  "eq",
+                  "neq",
+                  "lt",
+                  "lte",
+                  "gt",
+                  "gte",
+                  "in",
+                  "notIn",
+                  "isNull",
+                  "isNotNull"
+                ]
+              },
+              "value": {
+                "description": "Value to compare against. `deletedAt` accepts an ISO 8601 date or an ISO 8601 duration (relative to now); `deletedById` accepts a user UUID (or an array of UUIDs with `in`/`notIn`). Omit for `isNull` and `isNotNull`."
+              }
+            }
+          },
+          {
+            "type": "object",
+            "description": "A logical group that combines nested filters with an `AND` or `OR` operator. Groups may themselves contain further groups.",
+            "required": [
+              "operator",
+              "filters"
+            ],
+            "properties": {
+              "operator": {
+                "type": "string",
+                "enum": [
+                  "AND",
+                  "OR"
+                ]
+              },
+              "filters": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/DocumentsDeletedFilter"
                 }
               }
             }

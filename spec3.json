@@ -7695,6 +7695,24 @@
                   "avatarUrl": {
                     "type": "string",
                     "format": "uri"
+                  },
+                  "preferences": {
+                    "type": "object",
+                    "description": "User-level preference flags. Only the fields supplied are updated; existing values for other preferences are preserved.",
+                    "properties": {
+                      "sidebarSectionOrder": {
+                        "type": "array",
+                        "description": "The order in which the top-level sections appear in the sidebar of the app UI.",
+                        "items": {
+                          "type": "string",
+                          "enum": [
+                            "starred",
+                            "shared",
+                            "collections"
+                          ]
+                        }
+                      }
+                    }
                   }
                 }
               }

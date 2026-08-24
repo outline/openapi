@@ -2748,6 +2748,25 @@ paths:
                 fullWidth:
                   type: boolean
                   description: Whether the document should be displayed in full width
+                preferences:
+                  type: object
+                  nullable: true
+                  description:
+                    Document-level display preferences. Only the fields
+                    supplied are updated; existing values for other
+                    preferences are preserved. Pass `null` to clear all
+                    preferences.
+                  properties:
+                    headingPrefix:
+                      type: string
+                      description:
+                        Numbering style applied to the document's headings
+                        when rendered.
+                      enum:
+                        - none
+                        - numeric
+                        - alphanumeric
+                        - outline
                 createdAt:
                   type: string
                   format: date-time
@@ -2831,6 +2850,25 @@ paths:
                 fullWidth:
                   type: boolean
                   description: Whether the document should be displayed in full width
+                preferences:
+                  type: object
+                  nullable: true
+                  description:
+                    Document-level display preferences. Only the fields
+                    supplied are updated; existing values for other
+                    preferences are preserved. Pass `null` to clear all
+                    preferences.
+                  properties:
+                    headingPrefix:
+                      type: string
+                      description:
+                        Numbering style applied to the document's headings
+                        when rendered.
+                      enum:
+                        - none
+                        - numeric
+                        - alphanumeric
+                        - outline
                 templateId:
                   type: string
                   format: uuid
@@ -5352,9 +5390,20 @@ paths:
                     query:
                       type: string
                       example: jane
+                    filters:
+                      type: array
+                      description:
+                        Structured filter expression, evaluated as an AND of
+                        top-level entries. Cannot be combined with the
+                        deprecated `emails`, `role` or `filter` parameters.
+                      items:
+                        "$ref": "#/components/schemas/UserFilter"
                     emails:
                       type: array
-                      description: Array of emails
+                      deprecated: true
+                      description:
+                        Array of emails. Deprecated – prefer the `filters`
+                        parameter with an `email` field and the `in` operator.
                       items:
                         type: string
                       example:
@@ -5362,14 +5411,23 @@ paths:
                         - prudence.crandall@mail.com
                     filter:
                       type: string
-                      description: The status to filter by
+                      deprecated: true
+                      description:
+                        The status to filter by. Deprecated – prefer the
+                        `filters` parameter (for example filter on
+                        `suspendedAt` or `lastActiveAt`).
                       enum:
                         - all
                         - invited
                         - active
                         - suspended
                     role:
-                      "$ref": "#/components/schemas/UserRole"
+                      deprecated: true
+                      description:
+                        The role to filter by. Deprecated – prefer the
+                        `filters` parameter with a `role` field.
+                      allOf:
+                        - "$ref": "#/components/schemas/UserRole"
       responses:
         "200":
           description: OK
@@ -6371,6 +6429,77 @@ components:
               type: array
               items:
                 "$ref": "#/components/schemas/CollectionFilter"
+    UserFilter:
+      description:
+        A single filter node for `/users.list`, either a leaf condition
+        matching a user field or a group combining nested filters with a
+        logical operator.
+      oneOf:
+        - type: object
+          description: A condition that compares a user field against a value.
+          required:
+            - field
+            - operator
+          properties:
+            field:
+              type: string
+              description: Name of the user field to filter on.
+              enum:
+                - id
+                - name
+                - email
+                - role
+                - createdAt
+                - updatedAt
+                - lastActiveAt
+                - suspendedAt
+            operator:
+              type: string
+              description:
+                Comparison operator to apply. Note that some fields only
+                accept a subset of operators – `id` and `role` only support
+                `eq`, `neq`, `in` and `notIn`.
+              enum:
+                - eq
+                - neq
+                - lt
+                - lte
+                - gt
+                - gte
+                - contains
+                - startsWith
+                - endsWith
+                - containsStrict
+                - startsWithStrict
+                - endsWithStrict
+                - in
+                - notIn
+                - isNull
+                - isNotNull
+            value:
+              description:
+                Value to compare against. May be a string, number, boolean
+                or array of these depending on the field and operator. Date
+                fields accept an ISO 8601 date or an ISO 8601 duration
+                (relative to now). `role` accepts one of the values in
+                `UserRole`. Omit for `isNull` and `isNotNull`.
+        - type: object
+          description:
+            A logical group that combines nested filters with an `AND` or
+            `OR` operator. Groups may themselves contain further groups.
+          required:
+            - operator
+            - filters
+          properties:
+            operator:
+              type: string
+              enum:
+                - AND
+                - OR
+            filters:
+              type: array
+              items:
+                "$ref": "#/components/schemas/UserFilter"
     NavigationNode:
       type: object
       properties:
@@ -6763,7 +6892,27 @@ components:
           readOnly: true
           format: date-time
         deletedBy:
-          "$ref": "#/components/schemas/User"
+          nullable: true
+          description:
+            The user who deleted this document, if any. Only present on
+            deleted documents.
+          allOf:
+            - "$ref": "#/components/schemas/User"
+        preferences:
+          type: object
+          nullable: true
+          description: Document-level display preferences.
+          properties:
+            headingPrefix:
+              type: string
+              description:
+                Numbering style applied to the document's headings when
+                rendered.
+              enum:
+                - none
+                - numeric
+                - alphanumeric
+                - outline
     DocumentInsight:
       type: object
       description: A rollup of activity counts for a document over a daily or weekly

@@ -783,14 +783,28 @@ paths:
                 - "$ref": "#/components/schemas/Sorting"
                 - type: object
                   properties:
+                    filters:
+                      type: array
+                      description:
+                        Structured filter expression, evaluated as an AND of
+                        top-level entries. Cannot be combined with the
+                        deprecated `query` or `statusFilter` parameters.
+                      items:
+                        "$ref": "#/components/schemas/CollectionFilter"
                     query:
                       type: string
-                      description: If set, will filter the results by collection name.
+                      deprecated: true
+                      description:
+                        If set, will filter the results by collection name.
+                        Deprecated – prefer the `filters` parameter.
                     statusFilter:
                       type: array
                       items:
                         "$ref": "#/components/schemas/CollectionStatus"
-                      description: An optional array of statuses to filter by.
+                      deprecated: true
+                      description:
+                        An optional array of statuses to filter by. Deprecated
+                        – prefer the `filters` parameter.
       responses:
         "200":
           description: OK
@@ -6345,6 +6359,76 @@ components:
               type: array
               items:
                 "$ref": "#/components/schemas/DocumentsDeletedFilter"
+    CollectionFilter:
+      description:
+        A single filter node for `/collections.list`, either a leaf
+        condition matching a collection field or a group combining nested
+        filters with a logical operator.
+      oneOf:
+        - type: object
+          description: A condition that compares a collection field against a value.
+          required:
+            - field
+            - operator
+          properties:
+            field:
+              type: string
+              description: Name of the collection field to filter on.
+              enum:
+                - name
+                - createdAt
+                - updatedAt
+                - archivedAt
+                - createdById
+                - permission
+            operator:
+              type: string
+              description:
+                Comparison operator to apply. Note that some fields only
+                accept a subset of operators – for example `permission`
+                only supports `eq`, `neq`, `in`, `notIn`, `isNull` and
+                `isNotNull`.
+              enum:
+                - eq
+                - neq
+                - lt
+                - lte
+                - gt
+                - gte
+                - contains
+                - startsWith
+                - endsWith
+                - containsStrict
+                - startsWithStrict
+                - endsWithStrict
+                - in
+                - notIn
+                - isNull
+                - isNotNull
+            value:
+              description:
+                Value to compare against. May be a string, boolean or array
+                of these depending on the field and operator. Date fields
+                accept an ISO 8601 date or an ISO 8601 duration (relative to
+                now). `permission` accepts a `Permission` enum value (or an
+                array with `in`/`notIn`). Omit for `isNull` and `isNotNull`.
+        - type: object
+          description:
+            A logical group that combines nested filters with an `AND` or
+            `OR` operator. Groups may themselves contain further groups.
+          required:
+            - operator
+            - filters
+          properties:
+            operator:
+              type: string
+              enum:
+                - AND
+                - OR
+            filters:
+              type: array
+              items:
+                "$ref": "#/components/schemas/CollectionFilter"
     UserFilter:
       description:
         A single filter node for `/users.list`, either a leaf condition

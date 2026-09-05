@@ -614,6 +614,156 @@
         "operationId": "attachmentsDelete"
       }
     },
+    "/attachments.list": {
+      "post": {
+        "tags": [
+          "Attachments"
+        ],
+        "summary": "List all attachments",
+        "description": "List all attachments in the workspace, optionally filtered by the document or user they are associated with.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Pagination"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Sorting"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "documentId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Filter to attachments associated with this document."
+                      },
+                      "userId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Filter to attachments uploaded by this user."
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Attachment"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "attachmentsList"
+      }
+    },
+    "/attachments.createFromUrl": {
+      "post": {
+        "tags": [
+          "Attachments"
+        ],
+        "summary": "Create an attachment from a URL",
+        "description": "Fetch a file from a remote URL and store it as an attachment. Unlike `attachments.create`, the server downloads and uploads the file, so the returned attachment is immediately available.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "The remote URL to fetch the file from."
+                  },
+                  "documentId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Identifier for the associated document, if any."
+                  },
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "An optional client-generated identifier for the attachment."
+                  }
+                },
+                "required": [
+                  "url"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Attachment"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "attachmentsCreateFromUrl"
+      }
+    },
     "/auth.info": {
       "post": {
         "tags": [
@@ -706,6 +856,49 @@
           }
         },
         "operationId": "authConfig"
+      }
+    },
+    "/auth.delete": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Sign out",
+        "description": "Sign out the authenticated user. This rotates the user's token secret, immediately invalidating all existing API tokens and sessions for that user.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "authDelete"
       }
     },
     "/collections.info": {
@@ -1855,6 +2048,294 @@
         "operationId": "collectionsExportAll"
       }
     },
+    "/collections.archive": {
+      "post": {
+        "tags": [
+          "Collections"
+        ],
+        "summary": "Archive a collection",
+        "description": "Archiving a collection hides it, and all of the documents within it, from the sidebar and search results. Archived collections can be restored at a later date.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unique identifier for the collection."
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Collection"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "collectionsArchive"
+      }
+    },
+    "/collections.restore": {
+      "post": {
+        "tags": [
+          "Collections"
+        ],
+        "summary": "Restore an archived collection",
+        "description": "Restore a previously archived collection, making it and the documents within it visible in the sidebar and search results once again.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unique identifier for the collection."
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Collection"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "collectionsRestore"
+      }
+    },
+    "/collections.move": {
+      "post": {
+        "tags": [
+          "Collections"
+        ],
+        "summary": "Move a collection",
+        "description": "Move a collection to a new position in the sidebar. Collections are ordered using a fractional index; provide the new index to reposition the collection relative to its siblings.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unique identifier for the collection."
+                  },
+                  "index": {
+                    "type": "string",
+                    "description": "The fractional index to move the collection to, used for ordering in the sidebar."
+                  }
+                },
+                "required": [
+                  "id",
+                  "index"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "index": {
+                          "type": "string",
+                          "description": "The fractional index the collection was moved to."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "collectionsMove"
+      }
+    },
+    "/collections.import": {
+      "post": {
+        "tags": [
+          "Collections"
+        ],
+        "summary": "Import documents into a new collection",
+        "description": "Import a file that was previously uploaded through `attachments.create` and create a new collection from its contents. The endpoint returns a `FileOperation` that can be queried to track the progress of the import.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "attachmentId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Identifier for the attachment that contains the file to import."
+                  },
+                  "format": {
+                    "type": "string",
+                    "default": "outline-markdown",
+                    "enum": [
+                      "outline-markdown",
+                      "json"
+                    ],
+                    "description": "The format of the file being imported."
+                  },
+                  "permission": {
+                    "$ref": "#/components/schemas/Permission"
+                  }
+                },
+                "required": [
+                  "attachmentId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "fileOperation": {
+                          "$ref": "#/components/schemas/FileOperation"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "collectionsImport"
+      }
+    },
     "/comments.create": {
       "post": {
         "tags": [
@@ -2214,6 +2695,274 @@
           }
         },
         "operationId": "commentsList"
+      }
+    },
+    "/comments.resolve": {
+      "post": {
+        "tags": [
+          "Comments"
+        ],
+        "summary": "Resolve a comment",
+        "description": "Mark a comment thread as resolved. Resolved comments are hidden from the document by default and indicate that the discussion has been dealt with.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unique identifier for the comment."
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Comment"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "commentsResolve"
+      }
+    },
+    "/comments.unresolve": {
+      "post": {
+        "tags": [
+          "Comments"
+        ],
+        "summary": "Unresolve a comment",
+        "description": "Mark a previously resolved comment thread as unresolved, making it visible on the document again.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unique identifier for the comment."
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Comment"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "commentsUnresolve"
+      }
+    },
+    "/comments.add_reaction": {
+      "post": {
+        "tags": [
+          "Comments"
+        ],
+        "summary": "Add a reaction to a comment",
+        "description": "Add an emoji reaction to a comment on behalf of the authenticated user.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unique identifier for the comment."
+                  },
+                  "emoji": {
+                    "type": "string",
+                    "description": "A native emoji to react with, for example `😄`."
+                  }
+                },
+                "required": [
+                  "id",
+                  "emoji"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "commentsAddReaction"
+      }
+    },
+    "/comments.remove_reaction": {
+      "post": {
+        "tags": [
+          "Comments"
+        ],
+        "summary": "Remove a reaction from a comment",
+        "description": "Remove an emoji reaction that the authenticated user previously added to a comment.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unique identifier for the comment."
+                  },
+                  "emoji": {
+                    "type": "string",
+                    "description": "The native emoji reaction to remove, for example `😄`."
+                  }
+                },
+                "required": [
+                  "id",
+                  "emoji"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "commentsRemoveReaction"
       }
     },
     "/dataAttributes.info": {
@@ -6171,6 +6920,102 @@
         "operationId": "groupsRemoveUser"
       }
     },
+    "/groups.update_user": {
+      "post": {
+        "tags": [
+          "Groups"
+        ],
+        "summary": "Update a group member",
+        "description": "Update the role of an existing member of a group, for example to promote them to a group admin or demote them back to a regular member.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Identifier for the group",
+                    "format": "uuid"
+                  },
+                  "userId": {
+                    "type": "string",
+                    "description": "Identifier for the user whose membership should be updated",
+                    "format": "uuid"
+                  },
+                  "permission": {
+                    "type": "string",
+                    "description": "The permission the user should have within the group",
+                    "enum": [
+                      "member",
+                      "admin"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "userId",
+                  "permission"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "users": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/User"
+                          }
+                        },
+                        "groups": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Group"
+                          }
+                        },
+                        "groupMemberships": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/GroupMembership"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "groupsUpdateUser"
+      }
+    },
     "/oauthClients.info": {
       "post": {
         "tags": [
@@ -6855,6 +7700,201 @@
           }
         },
         "operationId": "revisionsList"
+      }
+    },
+    "/revisions.update": {
+      "post": {
+        "tags": [
+          "Revisions"
+        ],
+        "summary": "Update a revision",
+        "description": "Update the details of a revision. Currently only the name of the revision can be changed, which is used to label significant versions of a document.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the revision.",
+                    "format": "uuid"
+                  },
+                  "name": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "The name of the revision, or `null` to remove an existing name."
+                  }
+                },
+                "required": [
+                  "id",
+                  "name"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Revision"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "revisionsUpdate"
+      }
+    },
+    "/revisions.delete": {
+      "post": {
+        "tags": [
+          "Revisions"
+        ],
+        "summary": "Delete a revision",
+        "description": "Delete a specific revision of a document. The latest revision of a document cannot be deleted.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the revision.",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "revisionsDelete"
+      }
+    },
+    "/revisions.export": {
+      "post": {
+        "tags": [
+          "Revisions"
+        ],
+        "summary": "Export a revision",
+        "description": "Triggers an export of a single revision to a file. The endpoint returns a `FileOperation` that can be queried to track the progress of the export and get the url for the final file.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the revision.",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "fileOperation": {
+                          "$ref": "#/components/schemas/FileOperation"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "revisionsExport"
       }
     },
     "/shares.info": {
@@ -8072,6 +9112,283 @@
           }
         },
         "operationId": "usersDelete"
+      }
+    },
+    "/users.updateEmail": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update a user's email",
+        "description": "Begin the process of changing a user's email address. For security the email is not changed immediately; a confirmation link is sent to the new address and the change only takes effect once that link is followed.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "The new email address to change to."
+                  },
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The user to update. Defaults to the authenticated user. Changing another user's email requires admin permission."
+                  }
+                },
+                "required": [
+                  "email"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "usersUpdateEmail"
+      }
+    },
+    "/users.resendInvite": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Resend a user invite",
+        "description": "Resend the invitation email to a user who has been invited but has not yet signed in. Only applies to users in the invited state.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Identifier for the invited user."
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "usersResendInvite"
+      }
+    },
+    "/users.notificationsSubscribe": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Subscribe to a notification type",
+        "description": "Enable a specific type of notification for the authenticated user. This controls which events the user receives email and in-app notifications for.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "eventType": {
+                    "type": "string",
+                    "description": "The notification event type to subscribe to.",
+                    "enum": [
+                      "documents.publish",
+                      "documents.update",
+                      "documents.add_user",
+                      "collections.add_user",
+                      "revisions.create",
+                      "collections.create",
+                      "comments.create",
+                      "comments.resolve",
+                      "reactions.create",
+                      "documents.mentioned",
+                      "comments.mentioned",
+                      "documents.group_mentioned",
+                      "comments.group_mentioned",
+                      "emails.invite_accepted",
+                      "emails.onboarding",
+                      "emails.features",
+                      "emails.export_completed",
+                      "access_requests.create"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "usersNotificationsSubscribe"
+      }
+    },
+    "/users.notificationsUnsubscribe": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Unsubscribe from a notification type",
+        "description": "Disable a specific type of notification for the authenticated user.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "eventType": {
+                    "type": "string",
+                    "description": "The notification event type to unsubscribe from.",
+                    "enum": [
+                      "documents.publish",
+                      "documents.update",
+                      "documents.add_user",
+                      "collections.add_user",
+                      "revisions.create",
+                      "collections.create",
+                      "comments.create",
+                      "comments.resolve",
+                      "reactions.create",
+                      "documents.mentioned",
+                      "comments.mentioned",
+                      "documents.group_mentioned",
+                      "comments.group_mentioned",
+                      "emails.invite_accepted",
+                      "emails.onboarding",
+                      "emails.features",
+                      "emails.export_completed",
+                      "access_requests.create"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "usersNotificationsUnsubscribe"
       }
     },
     "/webhookSubscriptions.list": {

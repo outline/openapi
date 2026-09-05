@@ -425,6 +425,215 @@
         "operationId": "accessRequestsDismiss"
       }
     },
+    "/apiKeys.create": {
+      "post": {
+        "tags": [
+          "ApiKeys"
+        ],
+        "summary": "Create an API key",
+        "description": "Create a new personal API key for the authenticated user. The full key `value` is only returned in this response and cannot be retrieved again, so it should be stored securely.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "A name to identify the API key."
+                  },
+                  "expiresAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "An optional date and time when the key should expire."
+                  },
+                  "scope": {
+                    "type": "array",
+                    "description": "An optional list of scopes to restrict which endpoints the key can access.",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ApiKey"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "apiKeysCreate"
+      }
+    },
+    "/apiKeys.list": {
+      "post": {
+        "tags": [
+          "ApiKeys"
+        ],
+        "summary": "List API keys",
+        "description": "List API keys for the authenticated user, or for all users in the workspace when called by an administrator. The secret key `value` is never included in this response.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Pagination"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Sorting"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "userId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Filter to keys belonging to this user (admin only)."
+                      },
+                      "query": {
+                        "type": "string",
+                        "description": "Filter to keys whose name matches this search term."
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ApiKey"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "apiKeysList"
+      }
+    },
+    "/apiKeys.delete": {
+      "post": {
+        "tags": [
+          "ApiKeys"
+        ],
+        "summary": "Delete an API key",
+        "description": "Permanently revoke an API key. Any requests made with the key afterwards will be rejected.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unique identifier for the API key."
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "apiKeysDelete"
+      }
+    },
     "/attachments.create": {
       "post": {
         "tags": [
@@ -6344,6 +6553,94 @@
         "operationId": "fileOperationsList"
       }
     },
+    "/groupMemberships.list": {
+      "post": {
+        "tags": [
+          "GroupMemberships"
+        ],
+        "summary": "List group memberships",
+        "description": "List the documents that have been shared with groups the authenticated user belongs to, along with the associated group membership records.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Pagination"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "groupId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Filter to memberships for a specific group."
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "groupMemberships": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/GroupMembership"
+                          }
+                        },
+                        "groups": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Group"
+                          }
+                        },
+                        "documents": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Document"
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "groupMembershipsList"
+      }
+    },
     "/groups.info": {
       "post": {
         "tags": [
@@ -7044,6 +7341,343 @@
         "operationId": "groupsUpdateUser"
       }
     },
+    "/notifications.list": {
+      "post": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "List notifications",
+        "description": "List the authenticated user's notifications, most recent first, optionally filtered by event type or archived status.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Pagination"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "eventType": {
+                        "type": "string",
+                        "description": "Filter to notifications of a specific event type."
+                      },
+                      "archived": {
+                        "type": "boolean",
+                        "description": "When true, only archived notifications are returned."
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Notification"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "notificationsList"
+      }
+    },
+    "/notifications.update": {
+      "post": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "Update a notification",
+        "description": "Update a single notification, for example to mark it as viewed or archived by setting the relevant timestamp.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unique identifier for the notification."
+                  },
+                  "viewedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true,
+                    "description": "The date and time the notification was viewed, or `null` to mark it unviewed."
+                  },
+                  "archivedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true,
+                    "description": "The date and time the notification was archived, or `null` to unarchive it."
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Notification"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "notificationsUpdate"
+      }
+    },
+    "/notifications.update_all": {
+      "post": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "Update all notifications",
+        "description": "Update all of the authenticated user's notifications at once, for example to mark them all as viewed or archived.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "viewedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true,
+                    "description": "The date and time to mark notifications viewed, or `null` to mark them unviewed."
+                  },
+                  "archivedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true,
+                    "description": "The date and time to archive notifications, or `null` to unarchive them."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "notificationsUpdateAll"
+      }
+    },
+    "/oauthAuthentications.list": {
+      "post": {
+        "tags": [
+          "OAuthAuthentications"
+        ],
+        "summary": "List accessible OAuth authentications",
+        "description": "List all OAuth authentications for the current user. These represent the third-party applications that the user has authorized to access their account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Pagination"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/OAuthAuthentication"
+                      }
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "oauthAuthenticationsList"
+      }
+    },
+    "/oauthAuthentications.delete": {
+      "post": {
+        "tags": [
+          "OAuthAuthentications"
+        ],
+        "summary": "Delete an OAuth authentiation",
+        "description": "Revoke an OAuth authentication, removing the third-party application's access to the user's account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "oauthClientId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "scope": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "oauthClientId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "oauthAuthenticationsDelete"
+      }
+    },
     "/oauthClients.info": {
       "post": {
         "tags": [
@@ -7480,18 +8114,180 @@
         "operationId": "oauthClientsDelete"
       }
     },
-    "/oauthAuthentications.list": {
+    "/pins.create": {
       "post": {
         "tags": [
-          "OAuthAuthentications"
+          "Pins"
         ],
-        "summary": "List accessible OAuth authentications",
-        "description": "List all OAuth authentications for the current user. These represent the third-party applications that the user has authorized to access their account.",
+        "summary": "Pin a document",
+        "description": "Pin a document to the top of a collection or to the home screen. Pinned documents are visible to all members of the workspace. Provide a `collectionId` to pin within a collection, or omit it to pin to the home screen.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Pagination"
+                "type": "object",
+                "properties": {
+                  "documentId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Identifier for the document to pin."
+                  },
+                  "collectionId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "nullable": true,
+                    "description": "Identifier for the collection to pin the document to. Omit to pin to the home screen."
+                  },
+                  "index": {
+                    "type": "string",
+                    "description": "An optional fractional index to control the position of the pin."
+                  }
+                },
+                "required": [
+                  "documentId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Pin"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "pinsCreate"
+      }
+    },
+    "/pins.info": {
+      "post": {
+        "tags": [
+          "Pins"
+        ],
+        "summary": "Retrieve a pin",
+        "description": "Retrieve the pin for a document, either within a collection or on the home screen.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "documentId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Identifier for the pinned document."
+                  },
+                  "collectionId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "nullable": true,
+                    "description": "Identifier for the collection. Omit to retrieve the home screen pin."
+                  }
+                },
+                "required": [
+                  "documentId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Pin"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "pinsInfo"
+      }
+    },
+    "/pins.list": {
+      "post": {
+        "tags": [
+          "Pins"
+        ],
+        "summary": "List pins",
+        "description": "List the pinned documents for a collection, or for the home screen when no `collectionId` is provided.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Pagination"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "collectionId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "nullable": true,
+                        "description": "The collection to list pins for. Omit to list home screen pins."
+                      }
+                    }
+                  }
+                ]
               }
             }
           }
@@ -7507,17 +8303,17 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/OAuthAuthentication"
+                        "$ref": "#/components/schemas/Pin"
                       }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
                     },
                     "policies": {
                       "type": "array",
                       "items": {
                         "$ref": "#/components/schemas/Policy"
                       }
-                    },
-                    "pagination": {
-                      "$ref": "#/components/schemas/Pagination"
                     }
                   }
                 }
@@ -7534,35 +8330,102 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "oauthAuthenticationsList"
+        "operationId": "pinsList"
       }
     },
-    "/oauthAuthentications.delete": {
+    "/pins.update": {
       "post": {
         "tags": [
-          "OAuthAuthentications"
+          "Pins"
         ],
-        "summary": "Delete an OAuth authentiation",
-        "description": "Revoke an OAuth authentication, removing the third-party application's access to the user's account.",
+        "summary": "Update a pin",
+        "description": "Update the position of an existing pin, used to reorder pinned documents.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "oauthClientId": {
+                  "id": {
                     "type": "string",
-                    "format": "uuid"
+                    "format": "uuid",
+                    "description": "Unique identifier for the pin."
                   },
-                  "scope": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
+                  "index": {
+                    "type": "string",
+                    "description": "The fractional index to move the pin to."
                   }
                 },
                 "required": [
-                  "oauthClientId"
+                  "id",
+                  "index"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Pin"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "pinsUpdate"
+      }
+    },
+    "/pins.delete": {
+      "post": {
+        "tags": [
+          "Pins"
+        ],
+        "summary": "Delete a pin",
+        "description": "Remove a pin, un-pinning the document from its collection or the home screen. The document itself is not affected.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unique identifier for the pin."
+                  }
+                },
+                "required": [
+                  "id"
                 ]
               }
             }
@@ -7601,7 +8464,84 @@
             "$ref": "#/components/responses/RateLimited"
           }
         },
-        "operationId": "oauthAuthenticationsDelete"
+        "operationId": "pinsDelete"
+      }
+    },
+    "/reactions.list": {
+      "post": {
+        "tags": [
+          "Reactions"
+        ],
+        "summary": "List reactions",
+        "description": "List the emoji reactions that have been added to a comment.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Pagination"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "commentId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Identifier for the comment to list reactions for."
+                      }
+                    },
+                    "required": [
+                      "commentId"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Reaction"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "reactionsList"
       }
     },
     "/revisions.info": {
@@ -8552,6 +9492,991 @@
         "operationId": "starsDelete"
       }
     },
+    "/subscriptions.list": {
+      "post": {
+        "tags": [
+          "Subscriptions"
+        ],
+        "summary": "List subscriptions",
+        "description": "List the authenticated user's subscriptions for a given document or collection.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Pagination"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event": {
+                        "type": "string",
+                        "enum": [
+                          "documents"
+                        ],
+                        "description": "The type of event that is subscribed to."
+                      },
+                      "documentId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Filter to subscriptions for this document. Provide exactly one of documentId or collectionId."
+                      },
+                      "collectionId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Filter to subscriptions for this collection. Provide exactly one of documentId or collectionId."
+                      }
+                    },
+                    "required": [
+                      "event"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Subscription"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "subscriptionsList"
+      }
+    },
+    "/subscriptions.info": {
+      "post": {
+        "tags": [
+          "Subscriptions"
+        ],
+        "summary": "Retrieve a subscription",
+        "description": "Retrieve the authenticated user's subscription for a specific document or collection, if one exists.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "event": {
+                    "type": "string",
+                    "enum": [
+                      "documents"
+                    ],
+                    "description": "The type of event that is subscribed to."
+                  },
+                  "documentId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The subscribed document. Provide exactly one of documentId or collectionId."
+                  },
+                  "collectionId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The subscribed collection. Provide exactly one of documentId or collectionId."
+                  }
+                },
+                "required": [
+                  "event"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Subscription"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "subscriptionsInfo"
+      }
+    },
+    "/subscriptions.create": {
+      "post": {
+        "tags": [
+          "Subscriptions"
+        ],
+        "summary": "Create a subscription",
+        "description": "Subscribe the authenticated user to a document or collection so that they receive notifications when it changes. Provide exactly one of `documentId` or `collectionId`.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "event": {
+                    "type": "string",
+                    "enum": [
+                      "documents"
+                    ],
+                    "description": "The type of event to subscribe to."
+                  },
+                  "documentId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The document to subscribe to. Provide exactly one of documentId or collectionId."
+                  },
+                  "collectionId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The collection to subscribe to. Provide exactly one of documentId or collectionId."
+                  }
+                },
+                "required": [
+                  "event"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Subscription"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "subscriptionsCreate"
+      }
+    },
+    "/subscriptions.delete": {
+      "post": {
+        "tags": [
+          "Subscriptions"
+        ],
+        "summary": "Delete a subscription",
+        "description": "Unsubscribe the authenticated user from a document or collection by the subscription's identifier.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unique identifier for the subscription."
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "subscriptionsDelete"
+      }
+    },
+    "/templates.create": {
+      "post": {
+        "tags": [
+          "Templates"
+        ],
+        "summary": "Create a template",
+        "description": "Create a new template that can be used as a starting point for new documents. Templates can optionally be scoped to a specific collection.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Optionally provide a specific UUID for the template."
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "The title of the template. Required when publishing.",
+                    "maxLength": 255
+                  },
+                  "data": {
+                    "type": "object",
+                    "description": "The body of the template as a Prosemirror document. Required when publishing."
+                  },
+                  "icon": {
+                    "type": "string",
+                    "description": "An emoji to use as the template icon.",
+                    "nullable": true
+                  },
+                  "color": {
+                    "type": "string",
+                    "description": "The color of the template icon in hex format.",
+                    "nullable": true,
+                    "pattern": "^#[0-9A-Fa-f]{6}$"
+                  },
+                  "collectionId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Identifier for the collection to which the template belongs."
+                  },
+                  "publish": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Whether the template is available to other members. Set to false to create a draft that is only visible to its creator."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Template"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "templatesCreate"
+      }
+    },
+    "/templates.list": {
+      "post": {
+        "tags": [
+          "Templates"
+        ],
+        "summary": "List all templates",
+        "description": "List all templates available to the current user. Optionally filter by collection. Templates not associated with a collection are workspace-wide.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Pagination"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Sorting"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "collectionId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Optionally filter to a specific collection"
+                      },
+                      "query": {
+                        "type": "string",
+                        "description": "Search query to filter templates by title"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Template"
+                      }
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "templatesList"
+      }
+    },
+    "/templates.info": {
+      "post": {
+        "tags": [
+          "Templates"
+        ],
+        "summary": "Retrieve a template",
+        "description": "Retrieve a template by its unique identifier.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the template. Either the UUID or the urlId is acceptable."
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Template"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "templatesInfo"
+      }
+    },
+    "/templates.update": {
+      "post": {
+        "tags": [
+          "Templates"
+        ],
+        "summary": "Update a template",
+        "description": "Update an existing template by its unique identifier.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the template. Either the UUID or the urlId is acceptable."
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "The title of the template."
+                  },
+                  "data": {
+                    "type": "object",
+                    "description": "The body of the template as a Prosemirror document."
+                  },
+                  "icon": {
+                    "type": "string",
+                    "description": "An emoji to use as the template icon.",
+                    "nullable": true
+                  },
+                  "color": {
+                    "type": "string",
+                    "description": "The color of the template icon in hex format.",
+                    "nullable": true,
+                    "pattern": "^#[0-9A-Fa-f]{6}$"
+                  },
+                  "fullWidth": {
+                    "type": "boolean",
+                    "description": "Whether the template should be displayed full width."
+                  },
+                  "collectionId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Identifier for the collection to which the template belongs. Set to null for a workspace-wide template.",
+                    "nullable": true
+                  },
+                  "publish": {
+                    "type": "boolean",
+                    "description": "Set to true to publish a draft template so it becomes available to other members."
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Template"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "templatesUpdate"
+      }
+    },
+    "/templates.delete": {
+      "post": {
+        "tags": [
+          "Templates"
+        ],
+        "summary": "Delete a template",
+        "description": "Delete a template by its unique identifier. This will soft-delete the template, it can be restored later.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the template. Either the UUID or the urlId is acceptable."
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "templatesDelete"
+      }
+    },
+    "/templates.restore": {
+      "post": {
+        "tags": [
+          "Templates"
+        ],
+        "summary": "Restore a template",
+        "description": "Restore a previously deleted template by its unique identifier.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the template. Either the UUID or the urlId is acceptable."
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Template"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "templatesRestore"
+      }
+    },
+    "/templates.duplicate": {
+      "post": {
+        "tags": [
+          "Templates"
+        ],
+        "summary": "Duplicate a template",
+        "description": "Create a copy of an existing template. Optionally override the title and target collection.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the template to duplicate. Either the UUID or the urlId is acceptable."
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Override the title of the duplicated template."
+                  },
+                  "collectionId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Identifier for the collection to place the duplicated template in. If not provided, uses the original template's collection.",
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Template"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "templatesDuplicate"
+      }
+    },
+    "/userMemberships.list": {
+      "post": {
+        "tags": [
+          "UserMemberships"
+        ],
+        "summary": "List document memberships",
+        "description": "List the documents that have been shared directly with the authenticated user, along with the associated membership records.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Pagination"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "memberships": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Membership"
+                          }
+                        },
+                        "documents": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Document"
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "userMembershipsList"
+      }
+    },
+    "/userMemberships.update": {
+      "post": {
+        "tags": [
+          "UserMemberships"
+        ],
+        "summary": "Update a document membership",
+        "description": "Update the authenticated user's membership of a shared document, used to reorder documents in the sidebar.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unique identifier for the membership."
+                  },
+                  "index": {
+                    "type": "string",
+                    "description": "The fractional index to move the document to in the sidebar."
+                  }
+                },
+                "required": [
+                  "id",
+                  "index"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Membership"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Policy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "userMembershipsUpdate"
+      }
+    },
     "/users.invite": {
       "post": {
         "tags": [
@@ -9419,6 +11344,69 @@
         "operationId": "usersNotificationsUnsubscribe"
       }
     },
+    "/views.list": {
+      "post": {
+        "tags": [
+          "Views"
+        ],
+        "summary": "List all views",
+        "description": "List all users that have viewed a document and the overall view count.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "documentId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The document ID to retrieve views for"
+                  },
+                  "includeSuspended": {
+                    "type": "boolean",
+                    "description": "Whether to include views from suspended users",
+                    "default": false
+                  }
+                },
+                "required": [
+                  "documentId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/View"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "viewsList"
+      }
+    },
     "/webhookSubscriptions.list": {
       "post": {
         "tags": [
@@ -9728,2051 +11716,6 @@
           }
         },
         "operationId": "webhookSubscriptionsDelete"
-      }
-    },
-    "/views.list": {
-      "post": {
-        "tags": [
-          "Views"
-        ],
-        "summary": "List all views",
-        "description": "List all users that have viewed a document and the overall view count.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "documentId": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "The document ID to retrieve views for"
-                  },
-                  "includeSuspended": {
-                    "type": "boolean",
-                    "description": "Whether to include views from suspended users",
-                    "default": false
-                  }
-                },
-                "required": [
-                  "documentId"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/View"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "viewsList"
-      }
-    },
-    "/views.create": {
-      "post": {
-        "tags": [
-          "Views"
-        ],
-        "summary": "Create a view",
-        "description": "Creates a new view for a document. This is documented in the interests of thoroughness however it is recommended that views are not created from outside of the Outline UI.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "documentId": {
-                    "type": "string",
-                    "format": "uuid"
-                  }
-                },
-                "required": [
-                  "documentId"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/View"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "viewsCreate"
-      }
-    },
-    "/templates.create": {
-      "post": {
-        "tags": [
-          "Templates"
-        ],
-        "summary": "Create a template",
-        "description": "Create a new template that can be used as a starting point for new documents. Templates can optionally be scoped to a specific collection.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "Optionally provide a specific UUID for the template."
-                  },
-                  "title": {
-                    "type": "string",
-                    "description": "The title of the template. Required when publishing.",
-                    "maxLength": 255
-                  },
-                  "data": {
-                    "type": "object",
-                    "description": "The body of the template as a Prosemirror document. Required when publishing."
-                  },
-                  "icon": {
-                    "type": "string",
-                    "description": "An emoji to use as the template icon.",
-                    "nullable": true
-                  },
-                  "color": {
-                    "type": "string",
-                    "description": "The color of the template icon in hex format.",
-                    "nullable": true,
-                    "pattern": "^#[0-9A-Fa-f]{6}$"
-                  },
-                  "collectionId": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "Identifier for the collection to which the template belongs."
-                  },
-                  "publish": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Whether the template is available to other members. Set to false to create a draft that is only visible to its creator."
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/Template"
-                    },
-                    "policies": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Policy"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/Validation"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "templatesCreate"
-      }
-    },
-    "/templates.list": {
-      "post": {
-        "tags": [
-          "Templates"
-        ],
-        "summary": "List all templates",
-        "description": "List all templates available to the current user. Optionally filter by collection. Templates not associated with a collection are workspace-wide.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/Pagination"
-                  },
-                  {
-                    "$ref": "#/components/schemas/Sorting"
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "collectionId": {
-                        "type": "string",
-                        "format": "uuid",
-                        "description": "Optionally filter to a specific collection"
-                      },
-                      "query": {
-                        "type": "string",
-                        "description": "Search query to filter templates by title"
-                      }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Template"
-                      }
-                    },
-                    "policies": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Policy"
-                      }
-                    },
-                    "pagination": {
-                      "$ref": "#/components/schemas/Pagination"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "templatesList"
-      }
-    },
-    "/templates.info": {
-      "post": {
-        "tags": [
-          "Templates"
-        ],
-        "summary": "Retrieve a template",
-        "description": "Retrieve a template by its unique identifier.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "description": "Unique identifier for the template. Either the UUID or the urlId is acceptable."
-                  }
-                },
-                "required": [
-                  "id"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/Template"
-                    },
-                    "policies": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Policy"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/Validation"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "templatesInfo"
-      }
-    },
-    "/templates.update": {
-      "post": {
-        "tags": [
-          "Templates"
-        ],
-        "summary": "Update a template",
-        "description": "Update an existing template by its unique identifier.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "description": "Unique identifier for the template. Either the UUID or the urlId is acceptable."
-                  },
-                  "title": {
-                    "type": "string",
-                    "description": "The title of the template."
-                  },
-                  "data": {
-                    "type": "object",
-                    "description": "The body of the template as a Prosemirror document."
-                  },
-                  "icon": {
-                    "type": "string",
-                    "description": "An emoji to use as the template icon.",
-                    "nullable": true
-                  },
-                  "color": {
-                    "type": "string",
-                    "description": "The color of the template icon in hex format.",
-                    "nullable": true,
-                    "pattern": "^#[0-9A-Fa-f]{6}$"
-                  },
-                  "fullWidth": {
-                    "type": "boolean",
-                    "description": "Whether the template should be displayed full width."
-                  },
-                  "collectionId": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "Identifier for the collection to which the template belongs. Set to null for a workspace-wide template.",
-                    "nullable": true
-                  },
-                  "publish": {
-                    "type": "boolean",
-                    "description": "Set to true to publish a draft template so it becomes available to other members."
-                  }
-                },
-                "required": [
-                  "id"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/Template"
-                    },
-                    "policies": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Policy"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/Validation"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "templatesUpdate"
-      }
-    },
-    "/templates.delete": {
-      "post": {
-        "tags": [
-          "Templates"
-        ],
-        "summary": "Delete a template",
-        "description": "Delete a template by its unique identifier. This will soft-delete the template, it can be restored later.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "description": "Unique identifier for the template. Either the UUID or the urlId is acceptable."
-                  }
-                },
-                "required": [
-                  "id"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/Validation"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "templatesDelete"
-      }
-    },
-    "/templates.restore": {
-      "post": {
-        "tags": [
-          "Templates"
-        ],
-        "summary": "Restore a template",
-        "description": "Restore a previously deleted template by its unique identifier.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "description": "Unique identifier for the template. Either the UUID or the urlId is acceptable."
-                  }
-                },
-                "required": [
-                  "id"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/Template"
-                    },
-                    "policies": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Policy"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/Validation"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "templatesRestore"
-      }
-    },
-    "/templates.duplicate": {
-      "post": {
-        "tags": [
-          "Templates"
-        ],
-        "summary": "Duplicate a template",
-        "description": "Create a copy of an existing template. Optionally override the title and target collection.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "description": "Unique identifier for the template to duplicate. Either the UUID or the urlId is acceptable."
-                  },
-                  "title": {
-                    "type": "string",
-                    "description": "Override the title of the duplicated template."
-                  },
-                  "collectionId": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "Identifier for the collection to place the duplicated template in. If not provided, uses the original template's collection.",
-                    "nullable": true
-                  }
-                },
-                "required": [
-                  "id"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/Template"
-                    },
-                    "policies": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Policy"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/Validation"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "templatesDuplicate"
-      }
-    },
-    "/apiKeys.create": {
-      "post": {
-        "tags": [
-          "ApiKeys"
-        ],
-        "summary": "Create an API key",
-        "description": "Create a new personal API key for the authenticated user. The full key `value` is only returned in this response and cannot be retrieved again, so it should be stored securely.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "A name to identify the API key."
-                  },
-                  "expiresAt": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "An optional date and time when the key should expire."
-                  },
-                  "scope": {
-                    "type": "array",
-                    "description": "An optional list of scopes to restrict which endpoints the key can access.",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "required": [
-                  "name"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/ApiKey"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/Validation"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "apiKeysCreate"
-      }
-    },
-    "/apiKeys.list": {
-      "post": {
-        "tags": [
-          "ApiKeys"
-        ],
-        "summary": "List API keys",
-        "description": "List API keys for the authenticated user, or for all users in the workspace when called by an administrator. The secret key `value` is never included in this response.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/Pagination"
-                  },
-                  {
-                    "$ref": "#/components/schemas/Sorting"
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "userId": {
-                        "type": "string",
-                        "format": "uuid",
-                        "description": "Filter to keys belonging to this user (admin only)."
-                      },
-                      "query": {
-                        "type": "string",
-                        "description": "Filter to keys whose name matches this search term."
-                      }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/ApiKey"
-                      }
-                    },
-                    "pagination": {
-                      "$ref": "#/components/schemas/Pagination"
-                    },
-                    "policies": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Policy"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "apiKeysList"
-      }
-    },
-    "/apiKeys.delete": {
-      "post": {
-        "tags": [
-          "ApiKeys"
-        ],
-        "summary": "Delete an API key",
-        "description": "Permanently revoke an API key. Any requests made with the key afterwards will be rejected.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "Unique identifier for the API key."
-                  }
-                },
-                "required": [
-                  "id"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/Validation"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "apiKeysDelete"
-      }
-    },
-    "/pins.create": {
-      "post": {
-        "tags": [
-          "Pins"
-        ],
-        "summary": "Pin a document",
-        "description": "Pin a document to the top of a collection or to the home screen. Pinned documents are visible to all members of the workspace. Provide a `collectionId` to pin within a collection, or omit it to pin to the home screen.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "documentId": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "Identifier for the document to pin."
-                  },
-                  "collectionId": {
-                    "type": "string",
-                    "format": "uuid",
-                    "nullable": true,
-                    "description": "Identifier for the collection to pin the document to. Omit to pin to the home screen."
-                  },
-                  "index": {
-                    "type": "string",
-                    "description": "An optional fractional index to control the position of the pin."
-                  }
-                },
-                "required": [
-                  "documentId"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/Pin"
-                    },
-                    "policies": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Policy"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/Validation"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "pinsCreate"
-      }
-    },
-    "/pins.info": {
-      "post": {
-        "tags": [
-          "Pins"
-        ],
-        "summary": "Retrieve a pin",
-        "description": "Retrieve the pin for a document, either within a collection or on the home screen.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "documentId": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "Identifier for the pinned document."
-                  },
-                  "collectionId": {
-                    "type": "string",
-                    "format": "uuid",
-                    "nullable": true,
-                    "description": "Identifier for the collection. Omit to retrieve the home screen pin."
-                  }
-                },
-                "required": [
-                  "documentId"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/Pin"
-                    },
-                    "policies": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Policy"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "pinsInfo"
-      }
-    },
-    "/pins.list": {
-      "post": {
-        "tags": [
-          "Pins"
-        ],
-        "summary": "List pins",
-        "description": "List the pinned documents for a collection, or for the home screen when no `collectionId` is provided.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/Pagination"
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "collectionId": {
-                        "type": "string",
-                        "format": "uuid",
-                        "nullable": true,
-                        "description": "The collection to list pins for. Omit to list home screen pins."
-                      }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Pin"
-                      }
-                    },
-                    "pagination": {
-                      "$ref": "#/components/schemas/Pagination"
-                    },
-                    "policies": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Policy"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "pinsList"
-      }
-    },
-    "/pins.update": {
-      "post": {
-        "tags": [
-          "Pins"
-        ],
-        "summary": "Update a pin",
-        "description": "Update the position of an existing pin, used to reorder pinned documents.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "Unique identifier for the pin."
-                  },
-                  "index": {
-                    "type": "string",
-                    "description": "The fractional index to move the pin to."
-                  }
-                },
-                "required": [
-                  "id",
-                  "index"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/Pin"
-                    },
-                    "policies": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Policy"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/Validation"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "pinsUpdate"
-      }
-    },
-    "/pins.delete": {
-      "post": {
-        "tags": [
-          "Pins"
-        ],
-        "summary": "Delete a pin",
-        "description": "Remove a pin, un-pinning the document from its collection or the home screen. The document itself is not affected.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "Unique identifier for the pin."
-                  }
-                },
-                "required": [
-                  "id"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/Validation"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "pinsDelete"
-      }
-    },
-    "/subscriptions.list": {
-      "post": {
-        "tags": [
-          "Subscriptions"
-        ],
-        "summary": "List subscriptions",
-        "description": "List the authenticated user's subscriptions for a given document or collection.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/Pagination"
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "event": {
-                        "type": "string",
-                        "enum": [
-                          "documents"
-                        ],
-                        "description": "The type of event that is subscribed to."
-                      },
-                      "documentId": {
-                        "type": "string",
-                        "format": "uuid",
-                        "description": "Filter to subscriptions for this document. Provide exactly one of documentId or collectionId."
-                      },
-                      "collectionId": {
-                        "type": "string",
-                        "format": "uuid",
-                        "description": "Filter to subscriptions for this collection. Provide exactly one of documentId or collectionId."
-                      }
-                    },
-                    "required": [
-                      "event"
-                    ]
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Subscription"
-                      }
-                    },
-                    "pagination": {
-                      "$ref": "#/components/schemas/Pagination"
-                    },
-                    "policies": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Policy"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/Validation"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "subscriptionsList"
-      }
-    },
-    "/subscriptions.info": {
-      "post": {
-        "tags": [
-          "Subscriptions"
-        ],
-        "summary": "Retrieve a subscription",
-        "description": "Retrieve the authenticated user's subscription for a specific document or collection, if one exists.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "event": {
-                    "type": "string",
-                    "enum": [
-                      "documents"
-                    ],
-                    "description": "The type of event that is subscribed to."
-                  },
-                  "documentId": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "The subscribed document. Provide exactly one of documentId or collectionId."
-                  },
-                  "collectionId": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "The subscribed collection. Provide exactly one of documentId or collectionId."
-                  }
-                },
-                "required": [
-                  "event"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/Subscription"
-                    },
-                    "policies": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Policy"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/Validation"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "subscriptionsInfo"
-      }
-    },
-    "/subscriptions.create": {
-      "post": {
-        "tags": [
-          "Subscriptions"
-        ],
-        "summary": "Create a subscription",
-        "description": "Subscribe the authenticated user to a document or collection so that they receive notifications when it changes. Provide exactly one of `documentId` or `collectionId`.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "event": {
-                    "type": "string",
-                    "enum": [
-                      "documents"
-                    ],
-                    "description": "The type of event to subscribe to."
-                  },
-                  "documentId": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "The document to subscribe to. Provide exactly one of documentId or collectionId."
-                  },
-                  "collectionId": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "The collection to subscribe to. Provide exactly one of documentId or collectionId."
-                  }
-                },
-                "required": [
-                  "event"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/Subscription"
-                    },
-                    "policies": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Policy"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/Validation"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "subscriptionsCreate"
-      }
-    },
-    "/subscriptions.delete": {
-      "post": {
-        "tags": [
-          "Subscriptions"
-        ],
-        "summary": "Delete a subscription",
-        "description": "Unsubscribe the authenticated user from a document or collection by the subscription's identifier.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "Unique identifier for the subscription."
-                  }
-                },
-                "required": [
-                  "id"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/Validation"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "subscriptionsDelete"
-      }
-    },
-    "/notifications.list": {
-      "post": {
-        "tags": [
-          "Notifications"
-        ],
-        "summary": "List notifications",
-        "description": "List the authenticated user's notifications, most recent first, optionally filtered by event type or archived status.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/Pagination"
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "eventType": {
-                        "type": "string",
-                        "description": "Filter to notifications of a specific event type."
-                      },
-                      "archived": {
-                        "type": "boolean",
-                        "description": "When true, only archived notifications are returned."
-                      }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Notification"
-                      }
-                    },
-                    "pagination": {
-                      "$ref": "#/components/schemas/Pagination"
-                    },
-                    "policies": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Policy"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "notificationsList"
-      }
-    },
-    "/notifications.update": {
-      "post": {
-        "tags": [
-          "Notifications"
-        ],
-        "summary": "Update a notification",
-        "description": "Update a single notification, for example to mark it as viewed or archived by setting the relevant timestamp.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "Unique identifier for the notification."
-                  },
-                  "viewedAt": {
-                    "type": "string",
-                    "format": "date-time",
-                    "nullable": true,
-                    "description": "The date and time the notification was viewed, or `null` to mark it unviewed."
-                  },
-                  "archivedAt": {
-                    "type": "string",
-                    "format": "date-time",
-                    "nullable": true,
-                    "description": "The date and time the notification was archived, or `null` to unarchive it."
-                  }
-                },
-                "required": [
-                  "id"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/Notification"
-                    },
-                    "policies": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Policy"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/Validation"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "notificationsUpdate"
-      }
-    },
-    "/notifications.update_all": {
-      "post": {
-        "tags": [
-          "Notifications"
-        ],
-        "summary": "Update all notifications",
-        "description": "Update all of the authenticated user's notifications at once, for example to mark them all as viewed or archived.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "viewedAt": {
-                    "type": "string",
-                    "format": "date-time",
-                    "nullable": true,
-                    "description": "The date and time to mark notifications viewed, or `null` to mark them unviewed."
-                  },
-                  "archivedAt": {
-                    "type": "string",
-                    "format": "date-time",
-                    "nullable": true,
-                    "description": "The date and time to archive notifications, or `null` to unarchive them."
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "notificationsUpdateAll"
-      }
-    },
-    "/userMemberships.list": {
-      "post": {
-        "tags": [
-          "UserMemberships"
-        ],
-        "summary": "List document memberships",
-        "description": "List the documents that have been shared directly with the authenticated user, along with the associated membership records.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Pagination"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "memberships": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Membership"
-                          }
-                        },
-                        "documents": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Document"
-                          }
-                        }
-                      }
-                    },
-                    "pagination": {
-                      "$ref": "#/components/schemas/Pagination"
-                    },
-                    "policies": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Policy"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "userMembershipsList"
-      }
-    },
-    "/userMemberships.update": {
-      "post": {
-        "tags": [
-          "UserMemberships"
-        ],
-        "summary": "Update a document membership",
-        "description": "Update the authenticated user's membership of a shared document, used to reorder documents in the sidebar.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "Unique identifier for the membership."
-                  },
-                  "index": {
-                    "type": "string",
-                    "description": "The fractional index to move the document to in the sidebar."
-                  }
-                },
-                "required": [
-                  "id",
-                  "index"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/Membership"
-                    },
-                    "policies": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Policy"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/Validation"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "userMembershipsUpdate"
-      }
-    },
-    "/groupMemberships.list": {
-      "post": {
-        "tags": [
-          "GroupMemberships"
-        ],
-        "summary": "List group memberships",
-        "description": "List the documents that have been shared with groups the authenticated user belongs to, along with the associated group membership records.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/Pagination"
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "groupId": {
-                        "type": "string",
-                        "format": "uuid",
-                        "description": "Filter to memberships for a specific group."
-                      }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "groupMemberships": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/GroupMembership"
-                          }
-                        },
-                        "groups": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Group"
-                          }
-                        },
-                        "documents": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Document"
-                          }
-                        }
-                      }
-                    },
-                    "pagination": {
-                      "$ref": "#/components/schemas/Pagination"
-                    },
-                    "policies": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Policy"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "groupMembershipsList"
-      }
-    },
-    "/reactions.list": {
-      "post": {
-        "tags": [
-          "Reactions"
-        ],
-        "summary": "List reactions",
-        "description": "List the emoji reactions that have been added to a comment.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/Pagination"
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "commentId": {
-                        "type": "string",
-                        "format": "uuid",
-                        "description": "Identifier for the comment to list reactions for."
-                      }
-                    },
-                    "required": [
-                      "commentId"
-                    ]
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Reaction"
-                      }
-                    },
-                    "pagination": {
-                      "$ref": "#/components/schemas/Pagination"
-                    },
-                    "policies": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Policy"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/Validation"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "reactionsList"
       }
     }
   },

@@ -2160,7 +2160,8 @@
                     "enum": [
                       "outline-markdown",
                       "json",
-                      "html"
+                      "html",
+                      "okf"
                     ]
                   },
                   "id": {
@@ -2229,7 +2230,8 @@
                     "enum": [
                       "outline-markdown",
                       "json",
-                      "html"
+                      "html",
+                      "okf"
                     ]
                   },
                   "includeAttachments": {

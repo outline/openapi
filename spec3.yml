@@ -186,6 +186,11 @@ tags:
       `AccessRequests` represent a request by a user for access to a document
       they do not currently have permission to view. The request can be approved
       or dismissed by a user with permission to share the document.
+  - name: ApiKeys
+    description: |
+      `ApiKeys` are personal access tokens that authenticate requests to the
+      API on behalf of a user. Keys inherit the permissions of the user that
+      created them and should be treated like passwords.
   - name: Attachments
     description: |
       `Attachments` represent a file uploaded to cloud storage. They are created
@@ -227,19 +232,36 @@ tags:
       `FileOperations` represent background jobs for importing or exporting files.
       You can query the file operation to find the state of progress and any
       resulting output.
+  - name: GroupMemberships
+    description: |
+      `GroupMemberships` represent the relationship between a group and the
+      documents and collections it has been given access to.
   - name: Groups
     description: |
       `Groups` represent a list of users that logically belong together, for
       example there might be groups for each department in your organization.
       Groups can be granted access to collections with read or write permissions.
-  - name: OAuthClients
+  - name: Notifications
     description: |
-      `OAuthClients` represent OAuth clients that can be used to authenticate
-      users with third-party services.
+      `Notifications` represent in-app and email notifications generated for a
+      user in response to events such as mentions, comments, and document
+      updates.
   - name: OAuthAuthentications
     description: |
       `OAuthAuthentications` represent individual scoped authentications between
       Outline and an `OAuthClient`.
+  - name: OAuthClients
+    description: |
+      `OAuthClients` represent OAuth clients that can be used to authenticate
+      users with third-party services.
+  - name: Pins
+    description: |
+      `Pins` represent documents that have been pinned to the top of a
+      collection or to the home screen for quick access by all members of the
+      workspace.
+  - name: Reactions
+    description: |
+      `Reactions` represent emoji reactions that users have added to comments.
   - name: Revisions
     description: |
       `Revisions` represent a snapshot of a document at a point in time. They
@@ -254,57 +276,35 @@ tags:
     description: |
       `Stars` represent a favorited document or collection in the application sidebar.
       Each user has their own collection of starred items.
-  - name: Users
-    description: |
-      `Users` represent an individual with access to the knowledge base. Users
-      can be created automatically when signing in with SSO or when a user is
-      invited via email.
-  - name: Templates
-    description: |
-      `Templates` represent reusable document templates that can be used as a
-      starting point when creating new documents. Templates can be scoped to a
-      specific collection or available workspace-wide.
-  - name: WebhookSubscriptions
-    description: |
-      `WebhookSubscriptions` represent subscriptions that send HTTP requests to
-      a configured URL when matching events occur. Only workspace administrators
-      can manage webhook subscriptions.
-  - name: Views
-    description: |
-      `Views` represent a compressed record of an individual users views of a
-      document. Individual views are not recorded but a first, last and total
-      is kept per user.
-  - name: ApiKeys
-    description: |
-      `ApiKeys` are personal access tokens that authenticate requests to the
-      API on behalf of a user. Keys inherit the permissions of the user that
-      created them and should be treated like passwords.
-  - name: Pins
-    description: |
-      `Pins` represent documents that have been pinned to the top of a
-      collection or to the home screen for quick access by all members of the
-      workspace.
   - name: Subscriptions
     description: |
       `Subscriptions` represent a user's interest in a document or collection.
       Subscribed users receive notifications when the subscribed resource
       changes.
-  - name: Notifications
+  - name: Templates
     description: |
-      `Notifications` represent in-app and email notifications generated for a
-      user in response to events such as mentions, comments, and document
-      updates.
+      `Templates` represent reusable document templates that can be used as a
+      starting point when creating new documents. Templates can be scoped to a
+      specific collection or available workspace-wide.
   - name: UserMemberships
     description: |
       `UserMemberships` represent the relationship between a user and the
       documents that have been shared directly with them.
-  - name: GroupMemberships
+  - name: Users
     description: |
-      `GroupMemberships` represent the relationship between a group and the
-      documents and collections it has been given access to.
-  - name: Reactions
+      `Users` represent an individual with access to the knowledge base. Users
+      can be created automatically when signing in with SSO or when a user is
+      invited via email.
+  - name: Views
     description: |
-      `Reactions` represent emoji reactions that users have added to comments.
+      `Views` represent a compressed record of an individual users views of a
+      document. Individual views are not recorded but a first, last and total
+      is kept per user.
+  - name: WebhookSubscriptions
+    description: |
+      `WebhookSubscriptions` represent subscriptions that send HTTP requests to
+      a configured URL when matching events occur. Only workspace administrators
+      can manage webhook subscriptions.
 paths:
   "/accessRequests.create":
     post:

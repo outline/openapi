@@ -15,9 +15,9 @@
   "scripts": {
     "prepare": "husky",
     "lint": "spectral lint spec3.yml",
-    "validate": "yarn lint --fail-severity=error && node utils/validateOperationIds.js && node utils/sortPaths.js --check",
+    "validate": "yarn lint --fail-severity=error && node utils/validateOperationIds.js && node utils/sortSpec.js --check",
     "validate:operationIds": "node utils/validateOperationIds.js",
-    "sort:paths": "node utils/sortPaths.js"
+    "sort": "node utils/sortSpec.js"
   },
   "devDependencies": {
     "@stoplight/spectral-cli": "^6.15.0",

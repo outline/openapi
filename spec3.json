@@ -44,6 +44,10 @@
       "description": "`AccessRequests` represent a request by a user for access to a document\nthey do not currently have permission to view. The request can be approved\nor dismissed by a user with permission to share the document.\n"
     },
     {
+      "name": "ApiKeys",
+      "description": "`ApiKeys` are personal access tokens that authenticate requests to the\nAPI on behalf of a user. Keys inherit the permissions of the user that\ncreated them and should be treated like passwords.\n"
+    },
+    {
       "name": "Attachments",
       "description": "`Attachments` represent a file uploaded to cloud storage. They are created\nbefore the upload happens from the client and store all the meta information\nsuch as file type, size, and location.\n"
     },
@@ -76,16 +80,32 @@
       "description": "`FileOperations` represent background jobs for importing or exporting files.\nYou can query the file operation to find the state of progress and any\nresulting output.\n"
     },
     {
+      "name": "GroupMemberships",
+      "description": "`GroupMemberships` represent the relationship between a group and the\ndocuments and collections it has been given access to.\n"
+    },
+    {
       "name": "Groups",
       "description": "`Groups` represent a list of users that logically belong together, for\nexample there might be groups for each department in your organization.\nGroups can be granted access to collections with read or write permissions.\n"
+    },
+    {
+      "name": "Notifications",
+      "description": "`Notifications` represent in-app and email notifications generated for a\nuser in response to events such as mentions, comments, and document\nupdates.\n"
+    },
+    {
+      "name": "OAuthAuthentications",
+      "description": "`OAuthAuthentications` represent individual scoped authentications between\nOutline and an `OAuthClient`.\n"
     },
     {
       "name": "OAuthClients",
       "description": "`OAuthClients` represent OAuth clients that can be used to authenticate\nusers with third-party services.\n"
     },
     {
-      "name": "OAuthAuthentications",
-      "description": "`OAuthAuthentications` represent individual scoped authentications between\nOutline and an `OAuthClient`.\n"
+      "name": "Pins",
+      "description": "`Pins` represent documents that have been pinned to the top of a\ncollection or to the home screen for quick access by all members of the\nworkspace.\n"
+    },
+    {
+      "name": "Reactions",
+      "description": "`Reactions` represent emoji reactions that users have added to comments.\n"
     },
     {
       "name": "Revisions",
@@ -100,48 +120,28 @@
       "description": "`Stars` represent a favorited document or collection in the application sidebar.\nEach user has their own collection of starred items.\n"
     },
     {
-      "name": "Users",
-      "description": "`Users` represent an individual with access to the knowledge base. Users\ncan be created automatically when signing in with SSO or when a user is\ninvited via email.\n"
+      "name": "Subscriptions",
+      "description": "`Subscriptions` represent a user's interest in a document or collection.\nSubscribed users receive notifications when the subscribed resource\nchanges.\n"
     },
     {
       "name": "Templates",
       "description": "`Templates` represent reusable document templates that can be used as a\nstarting point when creating new documents. Templates can be scoped to a\nspecific collection or available workspace-wide.\n"
     },
     {
-      "name": "WebhookSubscriptions",
-      "description": "`WebhookSubscriptions` represent subscriptions that send HTTP requests to\na configured URL when matching events occur. Only workspace administrators\ncan manage webhook subscriptions.\n"
+      "name": "UserMemberships",
+      "description": "`UserMemberships` represent the relationship between a user and the\ndocuments that have been shared directly with them.\n"
+    },
+    {
+      "name": "Users",
+      "description": "`Users` represent an individual with access to the knowledge base. Users\ncan be created automatically when signing in with SSO or when a user is\ninvited via email.\n"
     },
     {
       "name": "Views",
       "description": "`Views` represent a compressed record of an individual users views of a\ndocument. Individual views are not recorded but a first, last and total\nis kept per user.\n"
     },
     {
-      "name": "ApiKeys",
-      "description": "`ApiKeys` are personal access tokens that authenticate requests to the\nAPI on behalf of a user. Keys inherit the permissions of the user that\ncreated them and should be treated like passwords.\n"
-    },
-    {
-      "name": "Pins",
-      "description": "`Pins` represent documents that have been pinned to the top of a\ncollection or to the home screen for quick access by all members of the\nworkspace.\n"
-    },
-    {
-      "name": "Subscriptions",
-      "description": "`Subscriptions` represent a user's interest in a document or collection.\nSubscribed users receive notifications when the subscribed resource\nchanges.\n"
-    },
-    {
-      "name": "Notifications",
-      "description": "`Notifications` represent in-app and email notifications generated for a\nuser in response to events such as mentions, comments, and document\nupdates.\n"
-    },
-    {
-      "name": "UserMemberships",
-      "description": "`UserMemberships` represent the relationship between a user and the\ndocuments that have been shared directly with them.\n"
-    },
-    {
-      "name": "GroupMemberships",
-      "description": "`GroupMemberships` represent the relationship between a group and the\ndocuments and collections it has been given access to.\n"
-    },
-    {
-      "name": "Reactions",
-      "description": "`Reactions` represent emoji reactions that users have added to comments.\n"
+      "name": "WebhookSubscriptions",
+      "description": "`WebhookSubscriptions` represent subscriptions that send HTTP requests to\na configured URL when matching events occur. Only workspace administrators\ncan manage webhook subscriptions.\n"
     }
   ],
   "paths": {

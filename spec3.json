@@ -108,6 +108,10 @@
       "description": "`Templates` represent reusable document templates that can be used as a\nstarting point when creating new documents. Templates can be scoped to a\nspecific collection or available workspace-wide.\n"
     },
     {
+      "name": "WebhookSubscriptions",
+      "description": "`WebhookSubscriptions` represent subscriptions that send HTTP requests to\na configured URL when matching events occur. Only workspace administrators\ncan manage webhook subscriptions.\n"
+    },
+    {
       "name": "Views",
       "description": "`Views` represent a compressed record of an individual users views of a\ndocument. Individual views are not recorded but a first, last and total\nis kept per user.\n"
     }
@@ -8070,6 +8074,317 @@
         "operationId": "usersDelete"
       }
     },
+    "/webhookSubscriptions.list": {
+      "post": {
+        "tags": [
+          "WebhookSubscriptions"
+        ],
+        "summary": "List all webhook subscriptions",
+        "description": "List all webhook subscriptions for the workspace. Only workspace administrators can access this endpoint.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Pagination"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Sorting"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "query": {
+                        "type": "string",
+                        "description": "Search query to filter webhook subscriptions by name."
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/WebhookSubscription"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "webhookSubscriptionsList"
+      }
+    },
+    "/webhookSubscriptions.create": {
+      "post": {
+        "tags": [
+          "WebhookSubscriptions"
+        ],
+        "summary": "Create a webhook subscription",
+        "description": "Create a webhook subscription for the workspace. Only workspace administrators can access this endpoint.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "description": "A descriptive name for the webhook subscription.",
+                    "example": "Production webhook"
+                  },
+                  "url": {
+                    "type": "string",
+                    "format": "uri",
+                    "maxLength": 1024,
+                    "description": "The URL that receives webhook requests. Cloud-hosted workspaces require an HTTPS URL.",
+                    "example": "https://example.com/webhooks/outline"
+                  },
+                  "secret": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "An optional secret used to sign webhook requests.",
+                    "example": "ol_whs_1234567890abcdef"
+                  },
+                  "events": {
+                    "type": "array",
+                    "description": "Event names or namespaces that trigger the webhook. Use `*` to subscribe to all events.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": [
+                      "documents.create",
+                      "documents.update"
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "url",
+                  "events"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/WebhookSubscription"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "webhookSubscriptionsCreate"
+      }
+    },
+    "/webhookSubscriptions.update": {
+      "post": {
+        "tags": [
+          "WebhookSubscriptions"
+        ],
+        "summary": "Update a webhook subscription",
+        "description": "Update an existing webhook subscription. Updating a disabled subscription enables it again. Only workspace administrators can access this endpoint.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unique identifier for the webhook subscription."
+                  },
+                  "name": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "description": "A descriptive name for the webhook subscription.",
+                    "example": "Production webhook"
+                  },
+                  "url": {
+                    "type": "string",
+                    "format": "uri",
+                    "maxLength": 1024,
+                    "description": "The URL that receives webhook requests. Cloud-hosted workspaces require an HTTPS URL.",
+                    "example": "https://example.com/webhooks/outline"
+                  },
+                  "secret": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "An optional secret used to sign webhook requests.",
+                    "example": "ol_whs_1234567890abcdef"
+                  },
+                  "events": {
+                    "type": "array",
+                    "description": "Event names or namespaces that trigger the webhook. Use `*` to subscribe to all events.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": [
+                      "documents.create",
+                      "documents.update"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "url",
+                  "events"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/WebhookSubscription"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "webhookSubscriptionsUpdate"
+      }
+    },
+    "/webhookSubscriptions.delete": {
+      "post": {
+        "tags": [
+          "WebhookSubscriptions"
+        ],
+        "summary": "Delete a webhook subscription",
+        "description": "Delete a webhook subscription. Only workspace administrators can access this endpoint.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unique identifier for the webhook subscription."
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Validation"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "operationId": "webhookSubscriptionsDelete"
+      }
+    },
     "/views.list": {
       "post": {
         "tags": [
@@ -10937,6 +11252,79 @@
             "description": "The date and time that the template was published.",
             "readOnly": true,
             "format": "date-time"
+          }
+        }
+      },
+      "WebhookSubscription": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the webhook subscription.",
+            "readOnly": true,
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "The descriptive name of the webhook subscription.",
+            "example": "Production webhook"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 1024,
+            "description": "The URL that receives webhook requests.",
+            "example": "https://example.com/webhooks/outline"
+          },
+          "secret": {
+            "type": "string",
+            "nullable": true,
+            "description": "The optional secret used to sign webhook requests.",
+            "example": "ol_whs_1234567890abcdef"
+          },
+          "events": {
+            "type": "array",
+            "description": "Event names or namespaces that trigger the webhook. `*` subscribes to all events.",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "documents.create",
+              "documents.update"
+            ]
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether the webhook subscription is enabled.",
+            "readOnly": true
+          },
+          "createdBy": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ],
+            "description": "The user who created the webhook subscription, if available.",
+            "readOnly": true
+          },
+          "createdById": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identifier for the user who created the webhook subscription.",
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time that the webhook subscription was created.",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time that the webhook subscription was last changed.",
+            "readOnly": true
           }
         }
       },

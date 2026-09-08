@@ -1669,6 +1669,7 @@ paths:
                     - outline-markdown
                     - json
                     - html
+                    - okf
                 id:
                   type: string
                   format: uuid
@@ -1713,6 +1714,7 @@ paths:
                     - outline-markdown
                     - json
                     - html
+                    - okf
                 includeAttachments:
                   type: boolean
                   description: Whether to include attachments in the export.

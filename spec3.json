@@ -1559,6 +1559,12 @@
                     "type": "boolean",
                     "description": "Whether public sharing of documents is allowed",
                     "example": false
+                  },
+                  "deprecatedReason": {
+                    "type": "string",
+                    "maxLength": 2000,
+                    "nullable": true,
+                    "description": "The reason the collection was archived. Can only be updated on an archived collection."
                   }
                 },
                 "required": [
@@ -2100,6 +2106,12 @@
                   "id": {
                     "type": "string",
                     "format": "uuid"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "maxLength": 2000,
+                    "nullable": true,
+                    "description": "An optional reason for deleting the collection. This is stored and returned as `deprecatedReason`."
                   }
                 },
                 "required": [
@@ -2304,6 +2316,12 @@
                     "type": "string",
                     "format": "uuid",
                     "description": "Unique identifier for the collection."
+                  },
+                  "reason": {
+                    "type": "string",
+                    "maxLength": 2000,
+                    "nullable": true,
+                    "description": "An optional reason for archiving the collection. This is stored and returned as `deprecatedReason`."
                   }
                 },
                 "required": [
@@ -4889,6 +4907,12 @@
                         "value"
                       ]
                     }
+                  },
+                  "deprecatedReason": {
+                    "type": "string",
+                    "maxLength": 2000,
+                    "nullable": true,
+                    "description": "The reason the document was archived or deleted. Can only be updated on an archived or deleted document."
                   }
                 },
                 "required": [
@@ -5198,6 +5222,12 @@
                     "type": "string",
                     "example": "hDYep1TPAM",
                     "description": "Unique identifier for the document. Either the UUID or the urlId is acceptable."
+                  },
+                  "reason": {
+                    "type": "string",
+                    "maxLength": 2000,
+                    "nullable": true,
+                    "description": "An optional reason for archiving the document. This is stored and returned as `deprecatedReason`."
                   }
                 },
                 "required": [
@@ -5347,6 +5377,12 @@
                     "type": "boolean",
                     "example": false,
                     "description": "If set to true the document will be destroyed with no way to recover rather than moved to the trash."
+                  },
+                  "reason": {
+                    "type": "string",
+                    "maxLength": 2000,
+                    "nullable": true,
+                    "description": "An optional reason for deleting the document. This is stored and returned as `deprecatedReason`."
                   }
                 },
                 "required": [
@@ -6819,6 +6855,11 @@
                   "name": {
                     "type": "string",
                     "example": "Designers"
+                  },
+                  "description": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "A short description of the group."
                   }
                 },
                 "required": [
@@ -12308,6 +12349,12 @@
           "archivedBy": {
             "$ref": "#/components/schemas/User"
           },
+          "deprecatedReason": {
+            "type": "string",
+            "nullable": true,
+            "description": "The reason the collection was archived or deleted, if one was provided.",
+            "readOnly": true
+          },
           "sourceMetadata": {
             "type": "object",
             "nullable": true,
@@ -12673,6 +12720,12 @@
                 "$ref": "#/components/schemas/User"
               }
             ]
+          },
+          "deprecatedReason": {
+            "type": "string",
+            "nullable": true,
+            "description": "The reason the document was archived or deleted, if one was provided.",
+            "readOnly": true
           },
           "preferences": {
             "type": "object",

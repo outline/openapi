@@ -6196,8 +6196,8 @@ paths:
               properties:
                 id:
                   type: string
-                  description: Unique identifier for the share.
-                  format: uuid
+                  description: Unique identifier for the share. Either the UUID
+                    or the share slug is acceptable.
                 documentId:
                   type: string
                   description:

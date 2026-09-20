@@ -1270,6 +1270,13 @@ paths:
                   type: boolean
                   description: Whether public sharing of documents is allowed
                   example: false
+                deprecatedReason:
+                  type: string
+                  nullable: true
+                  maxLength: 2000
+                  description: An optional reason explaining why the collection was
+                    archived or deleted. Can only be set on collections that are
+                    already archived or deleted.
               required:
                 - id
       responses:
@@ -1626,6 +1633,13 @@ paths:
                 id:
                   type: string
                   format: uuid
+                reason:
+                  type: string
+                  nullable: true
+                  maxLength: 2000
+                  description: An optional reason explaining why the collection is
+                    being deleted. If omitted, any existing reason set while the
+                    collection was archived is preserved.
               required:
                 - id
       responses:
@@ -1766,6 +1780,12 @@ paths:
                   type: string
                   format: uuid
                   description: Unique identifier for the collection.
+                reason:
+                  type: string
+                  nullable: true
+                  maxLength: 2000
+                  description: An optional reason explaining why the collection is
+                    being archived.
               required:
                 - id
       responses:
@@ -3575,6 +3595,13 @@ paths:
                     required:
                       - dataAttributeId
                       - value
+                deprecatedReason:
+                  type: string
+                  nullable: true
+                  maxLength: 2000
+                  description: An optional reason explaining why the document was
+                    archived or deleted. Can only be set on documents that are
+                    already archived or deleted.
               required:
                 - id
       responses:
@@ -3787,6 +3814,12 @@ paths:
                   example: hDYep1TPAM
                   description: Unique identifier for the document. Either the UUID
                     or the urlId is acceptable.
+                reason:
+                  type: string
+                  nullable: true
+                  maxLength: 2000
+                  description: An optional reason explaining why the document is
+                    being archived.
               required:
                 - id
       responses:
@@ -3891,6 +3924,13 @@ paths:
                   example: false
                   description: If set to true the document will be destroyed with
                     no way to recover rather than moved to the trash.
+                reason:
+                  type: string
+                  nullable: true
+                  maxLength: 2000
+                  description: An optional reason explaining why the document is
+                    being deleted. If omitted, any existing reason set while the
+                    document was archived is preserved.
               required:
                 - id
       responses:
@@ -8574,6 +8614,12 @@ components:
           format: date-time
         archivedBy:
           "$ref": "#/components/schemas/User"
+        deprecatedReason:
+          type: string
+          nullable: true
+          description: An optional reason explaining why the collection was archived
+            or deleted, if one was provided.
+          readOnly: true
         sourceMetadata:
           type: object
           nullable: true
@@ -8855,6 +8901,12 @@ components:
             deleted documents.
           allOf:
             - "$ref": "#/components/schemas/User"
+        deprecatedReason:
+          type: string
+          nullable: true
+          description: An optional reason explaining why the document was archived
+            or deleted, if one was provided.
+          readOnly: true
         preferences:
           type: object
           nullable: true

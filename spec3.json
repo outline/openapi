@@ -2624,6 +2624,7 @@
                   },
                   "text": {
                     "type": "string",
+                    "maxLength": 10000,
                     "description": "The body of the comment in markdown.",
                     "example": "Sounds great"
                   },

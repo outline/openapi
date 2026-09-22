@@ -440,6 +440,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
+                    "maxLength": 255,
                     "description": "A name to identify the API key."
                   },
                   "expiresAt": {
@@ -1368,10 +1369,12 @@
                 "properties": {
                   "name": {
                     "type": "string",
+                    "maxLength": 100,
                     "example": "Human Resources"
                   },
                   "description": {
                     "type": "string",
+                    "maxLength": 100000,
                     "description": "A brief description of the collection, markdown supported. Only one of `description` or `data` may be provided.",
                     "example": "HR documentation is confidential and should be handled with care."
                   },
@@ -1462,6 +1465,7 @@
                   },
                   "name": {
                     "type": "string",
+                    "maxLength": 100,
                     "description": "An optional name for the new collection. If omitted, the original collection's name is reused."
                   }
                 },
@@ -1532,10 +1536,12 @@
                   },
                   "name": {
                     "type": "string",
+                    "maxLength": 100,
                     "example": "Human Resources"
                   },
                   "description": {
                     "type": "string",
+                    "maxLength": 100000,
                     "description": "A brief description of the collection, markdown supported. Only one of `description` or `data` may be provided.",
                     "example": "HR documentation is confidential and should be handled with care."
                   },
@@ -4647,6 +4653,7 @@
                   },
                   "title": {
                     "type": "string",
+                    "maxLength": 100,
                     "example": "Welcome to Acme Inc"
                   },
                   "text": {
@@ -4805,6 +4812,7 @@
                   },
                   "title": {
                     "type": "string",
+                    "maxLength": 100,
                     "description": "The title of the document."
                   },
                   "text": {
@@ -5913,6 +5921,7 @@
                   },
                   "title": {
                     "type": "string",
+                    "maxLength": 100,
                     "description": "New title for the duplicated document"
                   },
                   "recursive": {
@@ -6855,11 +6864,13 @@
                 "properties": {
                   "name": {
                     "type": "string",
+                    "maxLength": 255,
                     "example": "Designers"
                   },
                   "description": {
                     "type": "string",
                     "nullable": true,
+                    "maxLength": 2000,
                     "description": "A short description of the group."
                   }
                 },
@@ -6927,6 +6938,7 @@
                   },
                   "name": {
                     "type": "string",
+                    "maxLength": 255,
                     "example": "Designers"
                   }
                 },
@@ -7860,32 +7872,38 @@
                 "properties": {
                   "name": {
                     "type": "string",
+                    "maxLength": 100,
                     "description": "Name of the OAuth client.",
                     "example": "My App"
                   },
                   "description": {
                     "type": "string",
+                    "maxLength": 255,
                     "description": "A short description of this OAuth client.",
                     "example": "Integrate Acme Inc's services into Outline."
                   },
                   "developerName": {
                     "type": "string",
+                    "maxLength": 100,
                     "description": "The name of the developer who created this OAuth client.",
                     "example": "Acme Inc"
                   },
                   "developerUrl": {
                     "type": "string",
+                    "maxLength": 1024,
                     "description": "The URL of the developer who created this OAuth client.",
                     "example": "https://example.com"
                   },
                   "avatarUrl": {
                     "type": "string",
+                    "maxLength": 1024,
                     "description": "A URL pointing to an image representing the OAuth client."
                   },
                   "redirectUris": {
                     "type": "array",
                     "items": {
-                      "type": "string"
+                      "type": "string",
+                      "maxLength": 1024
                     },
                     "description": "List of redirect URIs for the OAuth client.",
                     "example": [
@@ -7961,32 +7979,38 @@
                   },
                   "name": {
                     "type": "string",
+                    "maxLength": 100,
                     "description": "Name of the OAuth client.",
                     "example": "My App"
                   },
                   "description": {
                     "type": "string",
+                    "maxLength": 255,
                     "description": "A short description of this OAuth client.",
                     "example": "Integrate Acme Inc's services into Outline."
                   },
                   "developerName": {
                     "type": "string",
+                    "maxLength": 100,
                     "description": "The name of the developer who created this OAuth client.",
                     "example": "Acme Inc"
                   },
                   "developerUrl": {
                     "type": "string",
+                    "maxLength": 1024,
                     "description": "The URL of the developer who created this OAuth client.",
                     "example": "https://example.com"
                   },
                   "avatarUrl": {
                     "type": "string",
+                    "maxLength": 1024,
                     "description": "A URL pointing to an image representing the OAuth client."
                   },
                   "redirectUris": {
                     "type": "array",
                     "items": {
-                      "type": "string"
+                      "type": "string",
+                      "maxLength": 1024
                     },
                     "description": "List of redirect URIs for the OAuth client.",
                     "example": [
@@ -8735,6 +8759,7 @@
                   "name": {
                     "type": "string",
                     "nullable": true,
+                    "maxLength": 255,
                     "description": "The name of the revision, or `null` to remove an existing name."
                   }
                 },
@@ -10784,7 +10809,8 @@
                 "type": "object",
                 "properties": {
                   "name": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 255
                   },
                   "language": {
                     "type": "string",

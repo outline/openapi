@@ -513,6 +513,7 @@ paths:
               properties:
                 name:
                   type: string
+                  maxLength: 255
                   description: A name to identify the API key.
                 expiresAt:
                   type: string
@@ -1134,9 +1135,11 @@ paths:
               properties:
                 name:
                   type: string
+                  maxLength: 100
                   example: Human Resources
                 description:
                   type: string
+                  maxLength: 100000
                   description: A brief description of the collection, markdown supported. Only one of `description` or `data` may be provided.
                   example: HR documentation is confidential and should be handled with care.
                 data:
@@ -1204,6 +1207,7 @@ paths:
                   format: uuid
                 name:
                   type: string
+                  maxLength: 100
                   description: An optional name for the new collection. If omitted, the original collection's name is reused.
               required:
                 - id
@@ -1249,9 +1253,11 @@ paths:
                   format: uuid
                 name:
                   type: string
+                  maxLength: 100
                   example: Human Resources
                 description:
                   type: string
+                  maxLength: 100000
                   description: A brief description of the collection, markdown supported. Only one of `description` or `data` may be provided.
                   example: HR documentation is confidential and should be handled with care.
                 data:
@@ -3388,6 +3394,7 @@ paths:
                   description: Optional identifier for the document
                 title:
                   type: string
+                  maxLength: 100
                   example: Welcome to Acme Inc
                 text:
                   type: string
@@ -3506,6 +3513,7 @@ paths:
                     or the urlId is acceptable.
                 title:
                   type: string
+                  maxLength: 100
                   description: The title of the document.
                 text:
                   type: string
@@ -4281,6 +4289,7 @@ paths:
                     or the urlId is acceptable.
                 title:
                   type: string
+                  maxLength: 100
                   description: New title for the duplicated document
                 recursive:
                   type: boolean
@@ -4892,10 +4901,12 @@ paths:
               properties:
                 name:
                   type: string
+                  maxLength: 255
                   example: Designers
                 description:
                   type: string
                   nullable: true
+                  maxLength: 2000
                   description: A short description of the group.
               required:
                 - name
@@ -4939,6 +4950,7 @@ paths:
                   format: uuid
                 name:
                   type: string
+                  maxLength: 255
                   example: Designers
               required:
                 - id
@@ -5547,27 +5559,33 @@ paths:
               properties:
                 name:
                   type: string
+                  maxLength: 100
                   description: Name of the OAuth client.
                   example: My App
                 description:
                   type: string
+                  maxLength: 255
                   description: A short description of this OAuth client.
                   example: Integrate Acme Inc's services into Outline.
                 developerName:
                   type: string
+                  maxLength: 100
                   description: The name of the developer who created this OAuth client.
                   example: Acme Inc
                 developerUrl:
                   type: string
+                  maxLength: 1024
                   description: The URL of the developer who created this OAuth client.
                   example: https://example.com
                 avatarUrl:
                   type: string
+                  maxLength: 1024
                   description: A URL pointing to an image representing the OAuth client.
                 redirectUris:
                   type: array
                   items:
                     type: string
+                    maxLength: 1024
                   description: List of redirect URIs for the OAuth client.
                   example: ["https://example.com/callback"]
                 published:
@@ -5617,27 +5635,33 @@ paths:
                   format: uuid
                 name:
                   type: string
+                  maxLength: 100
                   description: Name of the OAuth client.
                   example: My App
                 description:
                   type: string
+                  maxLength: 255
                   description: A short description of this OAuth client.
                   example: Integrate Acme Inc's services into Outline.
                 developerName:
                   type: string
+                  maxLength: 100
                   description: The name of the developer who created this OAuth client.
                   example: Acme Inc
                 developerUrl:
                   type: string
+                  maxLength: 1024
                   description: The URL of the developer who created this OAuth client.
                   example: https://example.com
                 avatarUrl:
                   type: string
+                  maxLength: 1024
                   description: A URL pointing to an image representing the OAuth client.
                 redirectUris:
                   type: array
                   items:
                     type: string
+                    maxLength: 1024
                   description: List of redirect URIs for the OAuth client.
                   example: ["https://example.com/callback"]
                 published:
@@ -6116,6 +6140,7 @@ paths:
                 name:
                   type: string
                   nullable: true
+                  maxLength: 255
                   description: The name of the revision, or `null` to remove an existing name.
               required:
                 - id
@@ -7459,6 +7484,7 @@ paths:
               properties:
                 name:
                   type: string
+                  maxLength: 255
                 language:
                   type: string
                   format: BCP47

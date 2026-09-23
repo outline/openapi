@@ -2080,7 +2080,7 @@ paths:
       tags:
         - Comments
       summary: Update a comment
-      description: Update a comment
+      description: Update a comment, either `data` or `text` is required.
       requestBody:
         content:
           application/json:
@@ -2092,9 +2092,14 @@ paths:
                   format: uuid
                 data:
                   type: object
+                  description: The body of the comment.
+                text:
+                  type: string
+                  maxLength: 10000
+                  description: The body of the comment in markdown.
+                  example: Sounds great
               required:
                 - id
-                - data
       responses:
         "200":
           description: OK

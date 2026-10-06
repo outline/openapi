@@ -9660,6 +9660,19 @@ components:
           type: string
           nullable: true
           description: Guidance text provided to MCP integrations.
+        plan:
+          allOf:
+            - "$ref": "#/components/schemas/Plan"
+          description: The plan that this workspace is currently on.
+          readOnly: true
+        entitlements:
+          type: array
+          description:
+            The set of plan-based features that this workspace is entitled
+            to use, derived from its current plan.
+          readOnly: true
+          items:
+            "$ref": "#/components/schemas/PlanFeature"
     User:
       type: object
       properties:
@@ -9750,6 +9763,29 @@ components:
         - member
         - viewer
         - guest
+    Plan:
+      type: string
+      description: The subscription plan that a workspace is on.
+      enum:
+        - community
+        - standard
+        - business
+        - enterprise
+        - legacy
+    PlanFeature:
+      type: string
+      description: A feature that may be entitled to a workspace based on its plan.
+      enum:
+        - auditLog
+        - advancedSecurity
+        - guests
+        - groupSync
+        - premiumIntegrations
+        - apiKeyManagement
+        - contentManagement
+        - aiAnswers
+        - customDomain
+        - saml
     CollectionStatus:
       type: string
       enum:

@@ -3013,7 +3013,23 @@ paths:
             schema:
               allOf:
                 - "$ref": "#/components/schemas/Pagination"
-                - "$ref": "#/components/schemas/Sorting"
+                - type: object
+                  properties:
+                    sort:
+                      type: string
+                      description: The field to sort by. Note that sorting is by a
+                        column of the view record, not the document itself.
+                      default: updatedAt
+                      enum:
+                        - updatedAt
+                        - createdAt
+                    direction:
+                      type: string
+                      example: DESC
+                      default: DESC
+                      enum:
+                        - ASC
+                        - DESC
       responses:
         "200":
           description: OK

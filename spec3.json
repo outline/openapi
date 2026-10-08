@@ -11162,73 +11162,6 @@
         "operationId": "usersDelete"
       }
     },
-    "/users.updateEmail": {
-      "post": {
-        "tags": [
-          "Users"
-        ],
-        "summary": "Update a user's email",
-        "description": "Begin the process of changing a user's email address. For security the email is not changed immediately; a confirmation link is sent to the new address and the change only takes effect once that link is followed.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "description": "The new email address to change to."
-                  },
-                  "id": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "The user to update. Defaults to the authenticated user. Changing another user's email requires admin permission."
-                  }
-                },
-                "required": [
-                  "email"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/Validation"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthenticated"
-          },
-          "403": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "operationId": "usersUpdateEmail"
-      }
-    },
     "/users.resendInvite": {
       "post": {
         "tags": [
@@ -11981,6 +11914,7 @@
                   "title",
                   "templateId",
                   "collectionId",
+                  "createdById",
                   "userId",
                   "documentId",
                   "parentDocumentId"
@@ -11988,7 +11922,7 @@
               },
               "operator": {
                 "type": "string",
-                "description": "Comparison operator to apply. Note that some fields only accept a subset of operators – for example `userId` and `documentId` only support `eq` and `in`.",
+                "description": "Comparison operator to apply. Note that some fields only accept a subset of operators – for example `createdById`, `userId` and `documentId` only support `eq` and `in`.",
                 "enum": [
                   "eq",
                   "neq",

@@ -5607,8 +5607,13 @@ paths:
                   items:
                     type: string
                     maxLength: 1024
-                  description: List of redirect URIs for the OAuth client.
-                  example: ["https://example.com/callback"]
+                  description: >-
+                    List of redirect URIs for the OAuth client. Each entry must
+                    be an absolute URL that includes a scheme, for example
+                    `https://example.com/callback`. Private-use URI schemes for
+                    native applications are also accepted, for example
+                    `com.example.app:/oauth2redirect` (see RFC 8252).
+                  example: ["https://example.com/callback", "com.example.app:/oauth2redirect"]
                 published:
                   type: boolean
                   description: Whether the OAuth client is available to other workspaces.
@@ -5683,8 +5688,13 @@ paths:
                   items:
                     type: string
                     maxLength: 1024
-                  description: List of redirect URIs for the OAuth client.
-                  example: ["https://example.com/callback"]
+                  description: >-
+                    List of redirect URIs for the OAuth client. Each entry must
+                    be an absolute URL that includes a scheme, for example
+                    `https://example.com/callback`. Private-use URI schemes for
+                    native applications are also accepted, for example
+                    `com.example.app:/oauth2redirect` (see RFC 8252).
+                  example: ["https://example.com/callback", "com.example.app:/oauth2redirect"]
                 published:
                   type: boolean
                   description: Whether the OAuth client is available to other workspaces.

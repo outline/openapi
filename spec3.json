@@ -13889,6 +13889,19 @@
           "permission": {
             "$ref": "#/components/schemas/Permission"
           },
+          "createdById": {
+            "type": "string",
+            "description": "Identifier for the user who created this membership.",
+            "readOnly": true,
+            "format": "uuid",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "The date and time that this membership was created.",
+            "readOnly": true,
+            "format": "date-time"
+          },
           "sourceId": {
             "type": "string",
             "description": "Identifier for the membership this one was inherited from, if any.",

@@ -4929,6 +4929,15 @@ paths:
                   nullable: true
                   maxLength: 2000
                   description: A short description of the group.
+                icon:
+                  type: string
+                  nullable: true
+                  description: An icon or emoji to use as the group icon.
+                color:
+                  type: string
+                  nullable: true
+                  description: The color of the group icon in hex format.
+                  pattern: "^#[0-9A-Fa-f]{6}$"
               required:
                 - name
       responses:
@@ -4973,6 +4982,15 @@ paths:
                   type: string
                   maxLength: 255
                   example: Designers
+                icon:
+                  type: string
+                  nullable: true
+                  description: An icon or emoji to use as the group icon.
+                color:
+                  type: string
+                  nullable: true
+                  description: The color of the group icon in hex format.
+                  pattern: "^#[0-9A-Fa-f]{6}$"
               required:
                 - id
                 - name
@@ -9154,6 +9172,15 @@ components:
           type: string
           nullable: true
           description: A short description of this group.
+        icon:
+          type: string
+          nullable: true
+          description: An icon or emoji to use as the group icon.
+        color:
+          type: string
+          nullable: true
+          description: The color of the group icon in hex format.
+          pattern: "^#[0-9A-Fa-f]{6}$"
         externalId:
           type: string
           nullable: true

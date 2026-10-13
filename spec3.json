@@ -7780,7 +7780,8 @@
                   },
                   "clientId": {
                     "type": "string",
-                    "description": "Public identifier for the OAuth client.",
+                    "maxLength": 1024,
+                    "description": "Public identifier for the OAuth client. This may also be the URL of a client ID metadata document, in which case the client's details are resolved from that document.",
                     "example": "2bquf8avrpdv31par42a"
                   }
                 }

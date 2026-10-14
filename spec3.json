@@ -3767,9 +3767,8 @@
                   },
                   "collectionId": {
                     "type": "string",
-                    "format": "uuid",
                     "nullable": true,
-                    "description": "Identifier for the collection to import into. One of collectionId or parentDocumentId is required."
+                    "description": "Identifier for the collection to import into. One of collectionId or parentDocumentId is required. Pass the literal string `personal` to import into the authenticated user's personal collection."
                   },
                   "parentDocumentId": {
                     "type": "string",
@@ -4698,9 +4697,8 @@
                   },
                   "collectionId": {
                     "type": "string",
-                    "format": "uuid",
                     "nullable": true,
-                    "description": "Identifier for the collection. Required to publish unless parentDocumentId is provided"
+                    "description": "Identifier for the collection. Required to publish unless parentDocumentId is provided. Pass the literal string `personal` to create the document in the authenticated user's personal collection."
                   },
                   "parentDocumentId": {
                     "type": "string",
@@ -12316,6 +12314,13 @@
             "nullable": true,
             "description": "A string that represents an icon in the outline-icons package or an emoji"
           },
+          "ownerId": {
+            "type": "string",
+            "nullable": true,
+            "description": "The identifier of the user who owns this collection when it is a personal collection. This is `null` for regular shared collections.",
+            "readOnly": true,
+            "format": "uuid"
+          },
           "permission": {
             "$ref": "#/components/schemas/Permission"
           },
@@ -13929,6 +13934,9 @@
             "readOnly": true,
             "format": "uuid",
             "nullable": true
+          },
+          "createdBy": {
+            "$ref": "#/components/schemas/User"
           },
           "createdAt": {
             "type": "string",

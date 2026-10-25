@@ -7917,18 +7917,20 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                documentId:
-                  type: string
-                  format: uuid
-                  description: The document ID to retrieve views for
-                includeSuspended:
-                  type: boolean
-                  description: Whether to include views from suspended users
-                  default: false
-              required:
-                - documentId
+              allOf:
+                - "$ref": "#/components/schemas/Pagination"
+                - type: object
+                  properties:
+                    documentId:
+                      type: string
+                      format: uuid
+                      description: The document ID to retrieve views for
+                    includeSuspended:
+                      type: boolean
+                      description: Whether to include views from suspended users
+                      default: false
+                  required:
+                    - documentId
       responses:
         "200":
           description: OK
@@ -7941,6 +7943,8 @@ paths:
                     type: array
                     items:
                       "$ref": "#/components/schemas/View"
+                  pagination:
+                    "$ref": "#/components/schemas/Pagination"
         "401":
           "$ref": "#/components/responses/Unauthenticated"
         "403":

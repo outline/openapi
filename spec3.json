@@ -7207,6 +7207,14 @@
                     "type": "string",
                     "description": "Identifier for the user to add to the group",
                     "format": "uuid"
+                  },
+                  "permission": {
+                    "type": "string",
+                    "description": "The permission level for the user within the group. When omitted for a new membership this defaults to `member`, and an existing membership's permission is left unchanged.",
+                    "enum": [
+                      "member",
+                      "admin"
+                    ]
                   }
                 },
                 "required": [

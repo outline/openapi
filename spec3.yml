@@ -8888,6 +8888,10 @@ components:
           type: string
           description: A URL path to access the document.
           readOnly: true
+        path:
+          type: string
+          description: A URL path to access the document.
+          readOnly: true
         urlId:
           type: string
           description: A short unique ID that can be used to identify the document
@@ -10010,6 +10014,10 @@ components:
           readOnly: true
           format: uuid
         url:
+          type: string
+          description: A URL path to access the template.
+          readOnly: true
+        path:
           type: string
           description: A URL path to access the template.
           readOnly: true

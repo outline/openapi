@@ -12663,8 +12663,9 @@
           },
           "url": {
             "type": "string",
-            "description": "A URL path to access the document.",
-            "readOnly": true
+            "description": "A URL path to access the document. Deprecated – prefer the `path` field.",
+            "readOnly": true,
+            "deprecated": true
           },
           "path": {
             "type": "string",
@@ -14027,8 +14028,9 @@
           },
           "url": {
             "type": "string",
-            "description": "A URL path to access the template.",
-            "readOnly": true
+            "description": "A URL path to access the template. Deprecated – prefer the `path` field.",
+            "readOnly": true,
+            "deprecated": true
           },
           "path": {
             "type": "string",

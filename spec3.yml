@@ -8886,6 +8886,11 @@ components:
             in place of text when requested.
         url:
           type: string
+          description: A URL path to access the document. Deprecated – prefer the `path` field.
+          readOnly: true
+          deprecated: true
+        path:
+          type: string
           description: A URL path to access the document.
           readOnly: true
         urlId:
@@ -10010,6 +10015,11 @@ components:
           readOnly: true
           format: uuid
         url:
+          type: string
+          description: A URL path to access the template. Deprecated – prefer the `path` field.
+          readOnly: true
+          deprecated: true
+        path:
           type: string
           description: A URL path to access the template.
           readOnly: true

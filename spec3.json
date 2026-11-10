@@ -9151,6 +9151,12 @@
                     "type": "string",
                     "format": "uuid",
                     "description": "Identifier for the collection to share. Mutually exclusive with `documentId`."
+                  },
+                  "expiresAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true,
+                    "description": "Date and time when the public share link should expire and no longer be accessible. Set to `null` for no expiry."
                   }
                 },
                 "oneOf": [
@@ -9239,6 +9245,12 @@
                     "maxLength": 4096,
                     "nullable": true,
                     "description": "URL of an icon to display on the publicly shared page, overriding the workspace branding."
+                  },
+                  "expiresAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "nullable": true,
+                    "description": "Date and time when the public share link should expire and no longer be accessible. Set to `null` for no expiry."
                   }
                 },
                 "required": [
@@ -13466,6 +13478,12 @@
           "showTOC": {
             "type": "boolean",
             "description": "Whether to show a table of contents on the shared page."
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "Date and time when the public share link expires and can no longer be accessed. If not set the link does not expire."
           },
           "views": {
             "type": "number",

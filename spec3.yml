@@ -6425,6 +6425,13 @@ paths:
                   type: string
                   format: uuid
                   description: Identifier for the collection to share. Mutually exclusive with `documentId`.
+                expiresAt:
+                  type: string
+                  format: date-time
+                  nullable: true
+                  description: Date and time when the share should expire and can no
+                    longer be accessed. If omitted the workspace's default share
+                    expiry is applied; pass `null` for a share that never expires.
               oneOf:
                 - required:
                     - documentId
@@ -6487,6 +6494,12 @@ paths:
                   description:
                     URL of an icon to display on the publicly shared page,
                     overriding the workspace branding.
+                expiresAt:
+                  type: string
+                  format: date-time
+                  nullable: true
+                  description: Date and time when the share should expire and can no
+                    longer be accessed. Pass `null` to remove an existing expiry.
               required:
                 - id
                 - published
@@ -9545,6 +9558,12 @@ components:
         showTOC:
           type: boolean
           description: Whether to show a table of contents on the shared page.
+        expiresAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date and time when this share expires and can no longer be
+            accessed. If null the share does not expire.
         views:
           type: number
           description: The number of times the shared page has been viewed.

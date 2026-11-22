@@ -14432,6 +14432,15 @@
             "nullable": true,
             "description": "Identifier for the associated revision, if any."
           },
+          "fileOperationId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true,
+            "description": "Identifier for the associated file operation, such as an export, if any."
+          },
+          "fileOperation": {
+            "$ref": "#/components/schemas/FileOperation"
+          },
           "viewedAt": {
             "type": "string",
             "format": "date-time",

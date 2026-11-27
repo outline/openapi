@@ -1158,6 +1158,15 @@ paths:
                   type: boolean
                   description: Whether public sharing of documents is allowed
                   example: false
+                ownerIds:
+                  type: array
+                  maxItems: 5
+                  description: Identifiers of up to 5 users who own the collection.
+                    Owners are responsible for the collection and can manage its
+                    access, and also own every document in the collection.
+                  items:
+                    type: string
+                    format: uuid
               required:
                 - name
       responses:
@@ -1282,6 +1291,16 @@ paths:
                   nullable: true
                   description: The reason the collection was archived. Can only be
                     updated on an archived collection.
+                ownerIds:
+                  type: array
+                  maxItems: 5
+                  description: Identifiers of up to 5 users who own the collection.
+                    Owners are responsible for the collection and can manage its
+                    access, and also own every document in the collection. Replaces
+                    the existing set of owners.
+                  items:
+                    type: string
+                    format: uuid
               required:
                 - id
       responses:
@@ -1332,6 +1351,11 @@ paths:
                   format: uuid
                 permission:
                   "$ref": "#/components/schemas/Permission"
+                owner:
+                  type: boolean
+                  description: Whether the user is an owner of the collection.
+                    Owners are responsible for the collection and can manage its
+                    access. An owner must be granted the manage permission.
               required:
                 - id
                 - userId
@@ -3495,6 +3519,15 @@ paths:
                     required:
                       - dataAttributeId
                       - value
+                ownerIds:
+                  type: array
+                  maxItems: 5
+                  description: Identifiers of up to 5 users who own the document.
+                    Owners are responsible for the document and can manage its
+                    access.
+                  items:
+                    type: string
+                    format: uuid
 
       responses:
         "200":
@@ -3633,6 +3666,15 @@ paths:
                   nullable: true
                   description: The reason the document was archived or deleted. Can
                     only be updated on an archived or deleted document.
+                ownerIds:
+                  type: array
+                  maxItems: 5
+                  description: Identifiers of up to 5 users who own the document.
+                    Owners are responsible for the document and can manage its
+                    access. Replaces the existing set of owners.
+                  items:
+                    type: string
+                    format: uuid
               required:
                 - id
       responses:
@@ -4121,6 +4163,11 @@ paths:
                   format: uuid
                 permission:
                   "$ref": "#/components/schemas/Permission"
+                owner:
+                  type: boolean
+                  description: Whether the user is an owner of the document. Owners
+                    are responsible for the document and can manage its access. An
+                    owner must be granted the manage permission.
               required:
                 - id
                 - userId
@@ -8314,6 +8361,7 @@ components:
                 - collectionId
                 - createdById
                 - userId
+                - ownerIds
                 - documentId
                 - parentDocumentId
             operator:
@@ -8321,7 +8369,8 @@ components:
               description:
                 Comparison operator to apply. Note that some fields only
                 accept a subset of operators – for example `createdById`,
-                `userId` and `documentId` only support `eq` and `in`.
+                `userId`, `ownerIds` and `documentId` only support `eq` and
+                `in`.
               enum:
                 - eq
                 - neq
@@ -8648,6 +8697,15 @@ components:
             is a personal collection. This is `null` for regular shared collections.
           readOnly: true
           format: uuid
+        ownerIds:
+          type: array
+          description: Identifiers of the users who own the collection. Owners are
+            responsible for the collection and can manage its access. Collection
+            owners also own every document in the collection. A collection can have
+            at most 5 owners.
+          items:
+            type: string
+            format: uuid
         permission:
           "$ref": "#/components/schemas/Permission"
         templateManagement:
@@ -8911,6 +8969,14 @@ components:
         collaboratorIds:
           type: array
           description: Identifiers of users who have edited the document.
+          items:
+            type: string
+            format: uuid
+        ownerIds:
+          type: array
+          description: Identifiers of the users who own the document. Owners are
+            responsible for the document and can manage its access. A document can
+            have at most 5 owners.
           items:
             type: string
             format: uuid

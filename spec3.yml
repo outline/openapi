@@ -5895,8 +5895,7 @@ paths:
               properties:
                 documentId:
                   type: string
-                  format: uuid
-                  description: Identifier for the document to pin.
+                  description: Identifier for the document to pin. Either the UUID or the urlId is acceptable.
                 collectionId:
                   type: string
                   format: uuid
@@ -6466,8 +6465,7 @@ paths:
               properties:
                 documentId:
                   type: string
-                  format: uuid
-                  description: Identifier for the document to share. Mutually exclusive with `collectionId`.
+                  description: Identifier for the document to share. Either the UUID or the urlId is acceptable. Mutually exclusive with `collectionId`.
                 collectionId:
                   type: string
                   format: uuid
@@ -6624,7 +6622,7 @@ paths:
               properties:
                 documentId:
                   type: string
-                  format: uuid
+                  description: Identifier for the document to star. Either the UUID or the urlId is acceptable.
                 collectionId:
                   type: string
                   format: uuid
@@ -6803,8 +6801,7 @@ paths:
                       description: The type of event that is subscribed to.
                     documentId:
                       type: string
-                      format: uuid
-                      description: Filter to subscriptions for this document. Provide exactly one of documentId or collectionId.
+                      description: Filter to subscriptions for this document. Either the UUID or the urlId is acceptable. Provide exactly one of documentId or collectionId.
                     collectionId:
                       type: string
                       format: uuid
@@ -6857,8 +6854,7 @@ paths:
                   description: The type of event that is subscribed to.
                 documentId:
                   type: string
-                  format: uuid
-                  description: The subscribed document. Provide exactly one of documentId or collectionId.
+                  description: The subscribed document. Either the UUID or the urlId is acceptable. Provide exactly one of documentId or collectionId.
                 collectionId:
                   type: string
                   format: uuid
@@ -6909,8 +6905,7 @@ paths:
                   description: The type of event to subscribe to.
                 documentId:
                   type: string
-                  format: uuid
-                  description: The document to subscribe to. Provide exactly one of documentId or collectionId.
+                  description: The document to subscribe to. Either the UUID or the urlId is acceptable. Provide exactly one of documentId or collectionId.
                 collectionId:
                   type: string
                   format: uuid
